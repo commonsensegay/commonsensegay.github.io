@@ -60,6 +60,7 @@ out = f"""<!doctype html>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>body{{margin:0}}img{{max-width:100%}}[hidden]{{display:none!important}}</style>
 <link rel="stylesheet" href="/assets/votebar.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
 {chr(10).join(head)}
 </head>
 <body>

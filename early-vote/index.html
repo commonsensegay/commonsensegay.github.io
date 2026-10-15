@@ -24,6 +24,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="stylesheet" href="/assets/votebar.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
 <title>Common Sense Gay Early Vote Tracker</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Archivo+Narrow:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/fontawesome.min.js" defer></script>
@@ -579,19 +580,16 @@ body > .csg-top{margin:0 -16px 24px}
 #csg-summary li{margin:3px 0}
 
 
-/* compact header: keep the look, lose the height */
-body > .wrap > header.brand{gap:18px;align-items:center}
-body .logo{width:92px;height:92px}
-body .kicker{font-size:12px;margin-bottom:2px}
-body h1{font-size:clamp(28px,4.2vw,40px)}
-body header.brand .sub{font-size:15px;line-height:1.55;margin-top:6px;max-width:72ch}
-body header.brand .stamp{margin-top:6px}
-body header.brand .follow{margin-top:6px}
-body .sky{height:58px;margin-top:-22px}
-body .csg-tabs{margin-top:-22px}
-@media (max-width:600px){body .logo{width:72px;height:72px}body .sky{height:44px;margin-top:-14px}body .csg-tabs{margin-top:-14px}}
+/* clean header replaces the original brand header and sunset strip */
+body > .wrap > header.brand, body .sky{display:none!important}
+.csg-head{padding:34px 0 6px}
+.csg-head .pill{display:inline-flex;align-items:center;gap:10px;background:#b8362e;color:#fff6e3;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:16px;padding:6px 15px 6px 12px;border-radius:999px;margin:0 0 16px}
+.csg-head .pill i{width:10px;height:10px;border-radius:50%;background:#ffd27a;box-shadow:0 0 0 4px rgba(255,210,122,.3)}
+.csg-head h1{font-family:"Anton",Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(44px,7vw,84px);line-height:1;letter-spacing:.01em;margin:0 0 14px;color:#f4e7c9;text-shadow:none}
+.csg-head p.lede{font-size:clamp(18px,2vw,21px);line-height:1.55;color:#d8dfeb;margin:0;max-width:52ch}
 .csg-top .in a.home{display:flex;align-items:center;gap:10px}
 .csg-top .in a.home img{width:32px;height:32px}
+@media (max-width:600px){.csg-head{padding:22px 0 0}.csg-head .pill{font-size:14px;padding:5px 12px 5px 10px}}
 /* breathing room */
 body .wrap{gap:40px}
 body section{padding:28px 30px 30px}
@@ -769,7 +767,12 @@ body .vrow{font-family:var(--body);font-size:14px}
   var tabs=TABS.filter(function(t){return map[t.id].length});
   var nav=document.createElement("div"); nav.className="csg-tabs";
   nav.innerHTML='<div class="row" role="tablist" aria-label="Tracker sections">'+tabs.map(function(t){return '<button role="tab" type="button" id="tab-'+t.id+'" aria-controls="panel-'+t.id+'" data-t="'+t.id+'">'+t.label+'</button>'}).join("")+'</div>';
-  var anchor=secs[0]; anchor.parentNode.insertBefore(nav,map[tabs[0].id][0]);
+  var head=document.createElement("div"); head.className="csg-head";
+  var lastPull=(typeof SNAPSHOTS!=="undefined"&&SNAPSHOTS.length)?SNAPSHOTS[SNAPSHOTS.length-1].pulled:"";
+  head.innerHTML='<p class="pill"><i aria-hidden="true"></i>Updated every morning'+(lastPull?' · '+lastPull.replace(/^([A-Za-z]+ \d+), \d{4},/,"$1,"):'')+'</p>'
+    +'<h1>Early vote tracker 2026</h1>'
+    +'<p class="lede">Who has already voted in the November 3 midterm, by the party they\'re registered with. Not how they voted, just who showed up.</p>';
+  var anchor=secs[0]; anchor.parentNode.insertBefore(head,map[tabs[0].id][0]); anchor.parentNode.insertBefore(nav,map[tabs[0].id][0]);
   var allSecs=[].slice.call(wrap.querySelectorAll(":scope > [data-tab]"));
   function show(id,push){
     if(!map[id]||!map[id].length)id=tabs[0].id;
