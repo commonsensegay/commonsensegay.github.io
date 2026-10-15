@@ -10,13 +10,13 @@
 <meta property="og:description" content="Reality over ideology. Data over narratives. Political commentary and investigations built on receipts, plus the live 2026 early vote tracker.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://commonsensegay.com/">
-<meta property="og:image" content="https://commonsensegay.com/assets/og-home-v2.jpg">
+<meta property="og:image" content="https://commonsensegay.com/assets/og-home-v3.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Common Sense Gay">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@commonsensegay">
-<meta name="twitter:image" content="https://commonsensegay.com/assets/og-home-v2.jpg">
+<meta name="twitter:image" content="https://commonsensegay.com/assets/og-home-v3.jpg">
 <meta name="theme-color" content="#0d1f3a">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -234,6 +234,10 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 }
 @media (prefers-reduced-motion:reduce){.dock{transition:none}}
 footer{padding-bottom:110px}
+.livepill{display:inline-flex;align-items:center;gap:10px;margin:0 0 14px;background:var(--red);color:#fff6e3;font-family:var(--narrow);font-weight:700;font-size:17px;padding:7px 16px 7px 13px;border-radius:999px}
+.livepill i{width:11px;height:11px;border-radius:50%;background:#ffd27a;box-shadow:0 0 0 4px rgba(255,210,122,.3);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(255,210,122,0)}}
+@media (prefers-reduced-motion:reduce){.livepill i{animation:none}}
 /* sign-off */
 footer{background:var(--night);border-top:6px solid var(--red);padding:48px 0 56px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px}
@@ -297,6 +301,7 @@ footer small{color:#7d8ca5;font-size:14px}
 
 <section class="paper" id="tracker" aria-labelledby="tracker-title">
   <div class="wrap">
+    <p class="livepill"><i aria-hidden="true"></i><span>Updated every morning <span id="ev-upd"></span></span></p>
     <h2 id="tracker-title">2026 early vote tracker</h2>
     <p class="intro">Who has already voted in the midterm, by the party they're registered with, state by state. Pulled from official state files every morning and checked against the University of Florida Election Lab.</p>
     <div class="tracker">
@@ -416,6 +421,7 @@ footer small{color:#7d8ca5;font-size:14px}
     if(!d||!d.hard)return;
     var h=d.hard;
     set("ev-asof","Party-registration states, pulled "+d.pulled);
+    set("ev-upd","· last pull "+d.pulled.replace(/^([A-Za-z]+ \d+), \d{4},/,"$1,"));
     set("ev-dem",h.dem_pct+"%");set("ev-rep",h.rep_pct+"%");
     document.getElementById("ev-bd").style.width=h.dem_pct+"%";
     document.getElementById("ev-bo").style.width=h.other_pct+"%";
