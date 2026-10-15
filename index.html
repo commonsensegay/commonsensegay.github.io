@@ -119,6 +119,22 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 @media (prefers-reduced-motion:reduce){.horizon .sun{animation:none}}
 @media (max-width:600px){.horizon{height:150px}.horizon .sun{width:300px;height:300px;margin-left:-150px;bottom:-130px}.horizon .stripes i{height:12px;margin-top:10px}}
 
+/* daily take */
+.take{background:var(--night);padding:64px 0;border-top:6px solid var(--red)}
+.tk-k{font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:16px;color:var(--sun);margin:0 0 16px;display:flex;justify-content:space-between;gap:12px}
+.tk-k a{color:var(--mist);text-decoration:none;letter-spacing:.06em}
+.tk-k a:hover{color:var(--cream)}
+.tk-card{display:block;text-decoration:none;background:var(--navy);border:2px solid #27456f;border-left:8px solid var(--sun);border-radius:8px;padding:28px 32px}
+.tk-card:hover{border-color:var(--sun)}
+.tk-card h2{font-size:clamp(34px,4.6vw,56px);margin:6px 0 12px;color:var(--cream)}
+.tk-card p{margin:0 0 16px;color:#c9d3e3;max-width:70ch}
+.tk-d{font-family:var(--narrow);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);filter:brightness(1.4)}
+.tk-go{font-family:var(--narrow);font-weight:700;font-size:18px;color:var(--sun)}
+.tk-more{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.tk-more a{display:flex;gap:14px;align-items:baseline;text-decoration:none;color:var(--cream);font-family:var(--narrow);font-weight:700;font-size:19px}
+.tk-more span{color:var(--mist);font-weight:600;font-size:15px;min-width:64px}
+@media (max-width:600px){.tk-card{padding:22px}}
+
 /* paper sections */
 .paper{background:var(--paper);color:var(--ink)}
 .paper a{color:var(--navy)}
@@ -266,7 +282,7 @@ footer small{color:#7d8ca5;font-size:14px}
       <a class="keep gv-nav" href="/vote/"><span class="gv-star" aria-hidden="true">★</span> Get out the vote</a>
       <a class="keep ev-link" href="/early-vote/"><span class="ev-long">Early vote </span>tracker</a>
       <a class="keep gotv-link" href="/early-vote/#volunteer"><span class="ev-long">Start texting for a win</span><span class="ev-short">Text to win</span></a>
-      <a href="#about">What I cover</a>
+      <a href="/blog/">Blog</a>
       <a href="#follow">Follow</a>
     </nav>
   </div>
@@ -342,6 +358,14 @@ footer small{color:#7d8ca5;font-size:14px}
         <p>State election offices via the Election Data Guy tracker, cross-checked with Dr. Michael McDonald's UF Election Lab. The 2022 baseline is from the US Elections Project.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="take" id="take" aria-labelledby="take-title" hidden>
+  <div class="wrap">
+    <p class="tk-k">The Daily Take <a href="/blog/">All posts →</a></p>
+    <a class="tk-card" id="tk-latest" href="/blog/"><span class="tk-d" id="tk-date"></span><h2 id="take-title"></h2><p id="tk-sum"></p><span class="tk-go">Read today's take →</span></a>
+    <ul class="tk-more" id="tk-more"></ul>
   </div>
 </section>
 
@@ -511,6 +535,21 @@ function initDock(){
       (function step(t){var p=Math.min(1,(t-s)/dur),e=1-Math.pow(1-p,3);show(Math.round(target*e));if(p<1)requestAnimationFrame(step);})(s);
     },{threshold:.6});
     io.observe(el);
+  }).catch(function(){});
+})();
+</script>
+<script>
+(function(){
+  fetch("/blog/posts.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():[]}).then(function(ps){
+    if(!ps||!ps.length)return;
+    var f=function(d,o){return new Date(d+"T12:00:00").toLocaleDateString("en-US",o)};
+    var p=ps[0], el=document.getElementById("take");
+    document.getElementById("tk-latest").href=p.url;
+    document.getElementById("tk-date").textContent=f(p.date,{weekday:"long",month:"long",day:"numeric"});
+    document.getElementById("take-title").textContent=p.title;
+    document.getElementById("tk-sum").textContent=p.summary;
+    document.getElementById("tk-more").innerHTML=ps.slice(1,4).map(function(q){return '<li><a href="'+q.url+'"><span>'+f(q.date,{month:"short",day:"numeric"})+'</span>'+q.title.replace(/</g,"&lt;")+'</a></li>'}).join("");
+    el.hidden=false;
   }).catch(function(){});
 })();
 </script>
