@@ -219,6 +219,11 @@ def main():
                 f'<h1>{e(p["title"])}</h1><p class="meta">{nice(p["date"])} · {p["minutes"]} min read</p></div></div>'
                 f'<main><div class="wrap narrow"><article class="post">{p["html"]}</article>{share}{nav2}</div></main>')
         out += FOOT
+        ld = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": p["title"], "description": p["summary"],
+              "datePublished": p["date"], "dateModified": p["date"], "mainEntityOfPage": url, "image": OG,
+              "author": {"@type": "Organization", "name": "Common Sense Gay", "url": SITE + "/"},
+              "publisher": {"@type": "Organization", "name": "Common Sense Gay", "logo": {"@type": "ImageObject", "url": SITE + "/assets/logo.png"}}}
+        out = out.replace("</head>", '<script type="application/ld+json">' + json.dumps(ld).replace("</", "<\\/") + "</script>\n</head>", 1)
         os.makedirs(os.path.join(OUT, p["slug"]), exist_ok=True)
         open(os.path.join(OUT, p["slug"], "index.html"), "w", encoding="utf-8").write(out)
 
@@ -245,6 +250,18 @@ def main():
                    f'<pubDate>{d}</pubDate><description>{e(p["summary"])}</description></item>')
     rss.append("</channel></rss>")
     open(os.path.join(OUT, "feed.xml"), "w", encoding="utf-8").write("".join(rss))
+    # sitemap + robots for the whole site
+    today = datetime.date.today().isoformat()
+    newest = posts[0]["date"] if posts else today
+    urls = [("/", today, "daily", "1.0"), ("/early-vote/", today, "daily", "0.9"), ("/vote/", today, "weekly", "0.8"),
+            ("/blog/", newest, "daily", "0.8")] + [(p["url"], p["date"], "monthly", "0.7") for p in posts]
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for u, d, f, pr in urls:
+        sm.append(f"<url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod><changefreq>{f}</changefreq><priority>{pr}</priority></url>")
+    sm.append("</urlset>")
+    open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sm) + "\n")
+    open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8").write(
+        "User-agent: *\nAllow: /\nDisallow: /tools/\nDisallow: /posts/\n\nSitemap: " + SITE + "/sitemap.xml\n")
     print(f"built {len(posts)} post(s)")
 
 

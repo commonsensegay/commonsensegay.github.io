@@ -22,6 +22,7 @@ def grab(pat):
         head.append(mm.group(0).strip())
         body = body[:mm.start()] + body[mm.end():]
 grab(r"<title>.*?</title>")
+head = [h for h in head if not h.startswith("<title>")] + ["<title>2026 Early Vote Tracker by Party, Updated Daily | Common Sense Gay</title>"]
 grab(r'<link rel="stylesheet"[^>]*>')
 grab(r'<script src="https://cdnjs[^>]*fontawesome\.min\.js"[^>]*></script>')
 grab(r'<script src="https://cdnjs[^>]*brands\.min\.js"[^>]*></script>')
@@ -39,7 +40,7 @@ out = f"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Common Sense Gay's 2026 midterm early vote tracker. Daily party-registration counts by state, compared against the 2022 final numbers.">
+<meta name="description" content="Who has already voted in the 2026 midterm, by party, in every state. Updated every morning and measured against 2022 and 2024.">
 <meta property="og:title" content="Common Sense Gay Early Vote Tracker">
 <meta property="og:description" content="2026 midterm early vote by party, state by state, against the 2022 baseline. Receipts over rhetoric.">
 <meta property="og:type" content="website">
