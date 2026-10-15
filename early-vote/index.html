@@ -640,6 +640,10 @@ body .vrow{font-family:var(--body);font-size:14px}
 .csg-bottom .big .dm{color:#2a62b8}
 .csg-bottom ul{margin:0;padding-left:20px;font-size:17px;line-height:1.6;max-width:70ch}
 .csg-bottom li{margin:6px 0}
+.csg-bottom a{color:#2a62b8;font-weight:700}
+.csg-bottom li.gotv{list-style:none;margin:4px 0 12px -20px;padding:14px 18px;background:#b8362e;color:#fff6e3;border-radius:6px}
+.csg-bottom li.gotv b{color:#fff}
+.csg-bottom li.gotv a{color:#ffd27a;font-weight:700;margin-left:4px;white-space:nowrap}
 .csg-bottom details.csg-gloss{margin-top:18px;border:0;border-top:1px solid #d6c9a4;padding:14px 0 0;background:transparent}
 .csg-bottom .csg-gloss summary{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:17px;color:#0c1e38;cursor:pointer}
 .csg-gloss dl{margin:12px 0 0;display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:8px 18px;font-size:16px;line-height:1.55}
@@ -660,7 +664,7 @@ body .vrow{font-family:var(--body);font-size:14px}
     {id:"overall",label:"Overall",match:["overall","hard counts: party","trend"]},
     {id:"states",label:"By state",match:["state by state","totals only"]},
     {id:"inperson",label:"In person vs mail",match:["in person or mail"]},
-    {id:"vs2022",label:"vs 2022",match:["against 2022"]},
+    {id:"vs2022",label:"vs 2022 & 2024",match:["against 2022"]},
     {id:"registration",label:"Voter registration",match:["voter registration"]},
     {id:"sources",label:"Sources",match:["cross-check"]}
   ];
@@ -752,7 +756,7 @@ body .vrow{font-family:var(--body);font-size:14px}
     bottom.innerHTML='<p class="lab">The bottom line, as of '+fd(cur.date)+'</p>'
       +'<p class="big">About <b>'+millions+' million</b> Americans have already voted. In the '+C.stp+' states that track party, registered Democrats cast <span class="dm">'+per(C.dp)+'</span> of every 100 ballots and registered Republicans cast <b>'+per(C.rp)+'</b>. '+lead+', '+trend+' when tracking started on '+fd(first.date)+'. '+who+'</p>'
       +'<ul>'
-      +'<li><b>Republicans historically wait for Election Day.</b> They vote early far less than Democrats, so a big Democratic lead at this stage is normal, not a warning sign.</li>'
+      +'<li class="gotv"><b>Republicans, vote early.</b> We\'ve long saved our vote for Election Day, which is why Democrats lead right now. If you don\'t trust mail ballots, vote early in person. We\'ll swamp Election Day, but we can\'t afford to miss a single vote, so if you can vote early, do it, and bring your friends and family. <a href="/vote/">Find your early voting dates</a></li>'
       +(gainTxt?'<li>'+gainTxt+'</li>':'')
       +(fwTxt?'<li>'+fwTxt+'</li>':'')
       +'<li><b>This is who voted, not how they voted.</b> A registered Democrat can vote Republican and the reverse. Party registration is the best early signal states publish.</li>'
@@ -801,7 +805,45 @@ body .vrow{font-family:var(--body);font-size:14px}
     var bs=[].slice.call(nav.querySelectorAll("button")),i=bs.indexOf(document.activeElement);if(i<0)return;
     var j=(i+(e.key==="ArrowRight"?1:-1)+bs.length)%bs.length; bs[j].focus(); show(bs[j].dataset.t,true); e.preventDefault();
   });
+  // ---- Same day: North Carolina 2022 vs 2024 vs 2026
+  fetch("/data/nc-sameday.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||!d.years||!d.years["2026"]||!map.vs2022||!map.vs2022.length)return;
+    var Y=d.years, cur26=Y["2026"].series[Y["2026"].series.length-1], k=cur26.out;
+    var at=function(y){var s=Y[y]&&Y[y].series;if(!s)return null;for(var i=0;i<s.length;i++)if(s[i].out===k)return s[i];return null};
+    var a22=at("2022"), a24=at("2024");
+    var mt=function(m){return m==null?"n/a":(m>=0?"D +":"R +")+Math.abs(m).toFixed(1)};
+    var pc2=function(x,t){return t?(x/t*100).toFixed(1)+"%":"n/a"};
+    var row=function(y,o,bold){return '<tr'+(bold?' style="font-weight:700"':'')+'><td>'+y+'</td><td>'+fd(o.date)+'</td><td>'+n(o.total)+'</td><td>'+pc2(o.D,o.total)+'</td><td>'+pc2(o.R,o.total)+'</td><td><span class="'+(o.margin>=0?'dm':'r')+'">'+mt(o.margin)+'</span></td><td>'+n(o.inperson)+'</td></tr>'};
+    var cmp=function(o,y){if(!o)return "";var x=cur26.margin-o.margin;return Math.abs(x)<0.5?"about even with "+y:Math.abs(x).toFixed(1)+" points "+(x<0?"more Republican":"more Democratic")+" than "+y};
+    var take='<b>'+k+' days before Election Day, North Carolina 2026 is running '+[cmp(a22,"2022"),cmp(a24,"2024")].filter(Boolean).join(" and ")+'</b> at the same point.';
+    // chart: margin by days out
+    var W=720,H=300,L=46,R=14,T=16,B=36,maxOut=40;
+    var xs=function(o){return L+(maxOut-o)/maxOut*(W-L-R)}, ys=function(m){return T+(40-Math.max(-15,Math.min(40,m)))/55*(H-T-B)};
+    var line=function(y,color,w){var s=Y[y]&&Y[y].series;if(!s)return "";var pts=s.filter(function(p){return p.out<=maxOut&&p.margin!=null&&p.total>=500}).map(function(p){return xs(p.out).toFixed(1)+","+ys(p.margin).toFixed(1)});return '<polyline fill="none" stroke="'+color+'" stroke-width="'+w+'" stroke-linejoin="round" points="'+pts.join(" ")+'"/>'};
+    var grid="";[40,30,20,10,0,-10].forEach(function(m){grid+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+ys(m)+'" y2="'+ys(m)+'" stroke="'+(m===0?'#8a8170':'#ddd0ae')+'" stroke-width="'+(m===0?1.5:1)+'"/><text x="'+(L-8)+'" y="'+(ys(m)+4)+'" text-anchor="end" font-size="12" fill="#5f5a4e">'+(m===0?"Even":(m>0?"D +":"R +")+Math.abs(m))+'</text>'});
+    [40,30,20,10,0].forEach(function(o){grid+='<text x="'+xs(o)+'" y="'+(H-12)+'" text-anchor="'+(o===0?"end":o===40?"start":"middle")+'" font-size="12" fill="#5f5a4e">'+(o===0?"Election Day":o+" days out")+'</text>'});
+    var today='<line x1="'+xs(k)+'" x2="'+xs(k)+'" y1="'+T+'" y2="'+(H-B)+'" stroke="#b8362e" stroke-dasharray="4 4"/><circle cx="'+xs(k)+'" cy="'+ys(cur26.margin)+'" r="5" fill="#b8362e"/>';
+    var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="North Carolina Democratic margin among early ballots by days before Election Day, 2022, 2024 and 2026" style="width:100%;height:auto;display:block">'+grid+line("2022","#9a958a",2.5)+line("2024","#2a62b8",2.5)+line("2026","#b8362e",4)+today+'</svg>';
+    var sec=document.createElement("section"); sec.setAttribute("data-tab","vs2022"); sec.id="csg-sameday";
+    sec.innerHTML='<h2>Same day: North Carolina 2022, 2024, 2026</h2>'
+      +'<p class="note">The fair comparison: where each election stood on the same number of days before Election Day. North Carolina publishes every ballot with the date it came back and the voter\'s party, so these are exact counts, not estimates.</p>'
+      +'<div class="flag" style="max-width:none"><p style="margin:0">'+take+'</p></div>'
+      +'<div class="scroll"><table><tr><th>Year</th><th>Same day</th><th>Ballots in</th><th>Dem %</th><th>Rep %</th><th>Margin</th><th>In person</th></tr>'
+      +(a22?row("2022",a22):"")+(a24?row("2024",a24):"")+row("2026",cur26,true)+'</table></div>'
+      +'<div style="margin-top:14px">'+svg+'</div>'
+      +'<div class="legend"><span><b style="background:#9a958a"></b>2022 midterm</span><span><b style="background:#2a62b8"></b>2024 presidential</span><span><b style="background:#b8362e"></b>2026 so far</span></div>'
+      +'<p class="note">Watch what happens when in-person early voting opens: in both 2022 and 2024 the Democratic lead fell fast once it started, and in 2024 Republicans took the lead about 10 days out. North Carolina early in-person voting opens Oct 15. Counts are accepted ballots by return date from the <a href="https://dl.ncsbe.gov/?prefix=ENRS/">NC State Board of Elections</a>; 2026 updates each morning.</p>';
+    var first=map.vs2022[0]; var anchorEl=map.vs2022.length>1?map.vs2022[1]:first;
+    anchorEl.parentNode.insertBefore(sec,anchorEl);
+    map.vs2022.splice(1,0,sec); allSecs.push(sec);
+    var active=nav.querySelector('button[aria-selected="true"]');
+    sec.classList.toggle("csg-hidden",!(active&&active.dataset.t==="vs2022"));
+    // add a line to the summary bottom line
+    var ul=document.querySelector(".csg-bottom ul");
+    if(ul){var li=document.createElement("li");li.innerHTML='<b>Same day in North Carolina:</b> '+take.replace(/<\/?b>/g,"")+' <a href="#vs2022" onclick="document.getElementById(\'tab-vs2022\').click();return false">See the chart</a>';ul.insertBefore(li,ul.children[2]||null);}
+  }).catch(function(){});
   show((location.hash||"").slice(1),false);
+  window.addEventListener("hashchange",function(){show((location.hash||"").slice(1),false)});
   }catch(err){ if(window.console)console.warn("tabs",err); }
 })();
 </script>
