@@ -159,6 +159,7 @@ main{{padding:48px 0 64px}}
 .cta p{{margin:0;font-size:19px;max-width:52ch}}
 .cta strong{{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:30px;display:block;color:var(--sun);margin-bottom:4px}}
 .cta .acts{{display:flex;gap:10px;flex-wrap:wrap}}
+.sub{{background:#fff6e3;border-top:2px solid var(--rule);padding:44px 0}}.sub h2{{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(30px,4vw,44px);color:var(--navy);margin:0 0 10px;line-height:1.05}}.sub p{{margin:0 0 18px;color:var(--ink-soft)}}.btn.sub-btn{{background:var(--red);color:#fff;font-size:19px;padding:13px 24px}}
 footer{{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;border-top:6px solid var(--red)}}
 </style>
 </head>
@@ -179,7 +180,8 @@ footer{{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;bord
 </header>
 """
 
-FOOT = """<section class="cta">
+FOOT = """<section class="sub"><div class="wrap narrow"><p class="kick" style="color:var(--red)">Out &amp; Right, the newsletter</p><h2>Get the daily take in your inbox</h2><p>Out of the closet, right of center. The research the headlines skip, with the receipts, delivered free by email.</p><a class="btn sub-btn" href="https://commonsensegay.substack.com/subscribe" rel="noopener">Subscribe free on Substack</a></div></section>
+<section class="cta">
   <div class="wrap">
     <p><strong>Follow along</strong>New takes every day. Facebook is home base, TikTok is where the receipts go viral.</p>
     <div class="acts"><a class="btn fb" href="https://www.facebook.com/Commonsensegay/" rel="noopener">Follow on Facebook</a><a class="btn alt" style="color:var(--cream);border-color:var(--cream)" href="https://www.tiktok.com/@commonsensegay" rel="noopener">Follow on TikTok</a></div>
