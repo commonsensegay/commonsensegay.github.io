@@ -39,6 +39,19 @@ out = f"""<!doctype html>
 <meta property="og:type" content="website">
 <meta property="og:url" content="{URL}">
 <link rel="canonical" href="{URL}">
+<meta property="og:image" content="https://commonsensegay.com/assets/og-early-vote.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Common Sense Gay Early Vote Tracker 2026">
+<meta property="og:site_name" content="Common Sense Gay">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@commonsensegay">
+<meta name="twitter:title" content="Common Sense Gay Early Vote Tracker">
+<meta name="twitter:description" content="2026 midterm early vote by party, state by state, against the 2022 baseline. Receipts over rhetoric.">
+<meta name="twitter:image" content="https://commonsensegay.com/assets/og-early-vote.jpg">
+<meta name="theme-color" content="#0c1e38">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>body{{margin:0}}img{{max-width:100%}}[hidden]{{display:none!important}}</style>
 {chr(10).join(head)}
 </head>
