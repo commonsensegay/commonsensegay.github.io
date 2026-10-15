@@ -1,0 +1,19 @@
+{
+ "date": "2026-10-14",
+ "pulled": "Oct 14, 2026, 10:01 AM CT",
+ "all_ballots": 3765784,
+ "states_reporting": 35,
+ "hard": {
+  "rep": 506484,
+  "dem": 978788,
+  "other": 352998,
+  "total": 1838270,
+  "states": 22,
+  "rep_pct": 27.6,
+  "dem_pct": 53.2,
+  "other_pct": 19.2,
+  "margin": 25.7
+ },
+ "prev_date": "2026-10-13",
+ "margin_change": -0.1
+}

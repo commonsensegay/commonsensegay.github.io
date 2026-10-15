@@ -4,7 +4,7 @@
 Usage: python3 tools/build_early_vote.py <path-to-artifact-html>
 Run from the repo root. Exits non-zero and writes nothing if the input doesn't look right.
 """
-import os, re, sys
+import json, os, re, sys
 
 src = open(sys.argv[1], encoding="utf-8").read()
 if "/*DATA-START*/" not in src or "SNAPSHOTS" not in src:
@@ -63,3 +63,46 @@ out = f"""<!doctype html>
 os.makedirs("early-vote", exist_ok=True)
 open("early-vote/index.html", "w", encoding="utf-8").write(out)
 print(f"wrote early-vote/index.html ({len(out):,} bytes)")
+
+# Headline numbers for the homepage: early-vote/latest.json
+def snapshots(html):
+    a = html.find("/*DATA-START*/"); b = html.find("/*DATA-END*/")
+    js = html[a:b]
+    js = js[js.find("["):js.rfind("]") + 1]
+    js = re.sub(r'([{,]\s*)([A-Za-z_]\w*)\s*:', r'\1"\2":', js)
+    js = re.sub(r',\s*([}\]])', r'\1', js)
+    return json.loads(js)
+
+def hard(snap, reg):
+    r = d = o = n = 0
+    for ab, v in snap["states"].items():
+        if ab in reg and v[1] + v[2] > 0:
+            r += v[1]; d += v[2]; o += v[3]; n += 1
+    t = r + d + o
+    return {"rep": r, "dem": d, "other": o, "total": t, "states": n,
+            "rep_pct": round(r / t * 100, 1) if t else 0,
+            "dem_pct": round(d / t * 100, 1) if t else 0,
+            "other_pct": round(o / t * 100, 1) if t else 0,
+            "margin": round((d - r) / t * 100, 1) if t else 0,
+            "_m": (d - r) / t * 100 if t else 0}
+
+try:
+    reg = set(re.findall(r'"([A-Z]{2})"', re.search(r"const PARTY_REG=new Set\(\[(.*?)\]\)", src).group(1)))
+    snaps = snapshots(src)
+    cur = snaps[-1]
+    h = hard(cur, reg)
+    latest = {"date": cur["date"], "pulled": cur["pulled"],
+              "all_ballots": sum(v[0] for v in cur["states"].values()),
+              "states_reporting": sum(1 for v in cur["states"].values() if v[0] > 0),
+              "hard": h}
+    if len(snaps) <= 1:
+        h.pop("_m", None)
+    if len(snaps) > 1:
+        p = hard(snaps[-2], reg)
+        latest["prev_date"] = snaps[-2]["date"]
+        latest["margin_change"] = round(h["_m"] - p["_m"], 1)
+    h.pop("_m", None)
+    open("early-vote/latest.json", "w").write(json.dumps(latest, indent=1))
+    print("wrote early-vote/latest.json", latest["date"], h["dem_pct"], h["rep_pct"])
+except Exception as e:
+    print("warning: latest.json not updated:", e)
