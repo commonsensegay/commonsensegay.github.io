@@ -383,6 +383,26 @@ body .vrow{font-family:var(--body);font-size:14px}
     var ul=document.querySelector(".csg-bottom ul");
     if(ul){var li=document.createElement("li");li.innerHTML='<b>Same day in North Carolina:</b> '+take.replace(/<\/?b>/g,"")+' <a href="#vs2022" onclick="document.getElementById(\'tab-vs2022\').click();return false">See the chart</a>';ul.insertBefore(li,ul.children[2]||null);}
   }).catch(function(){});
+  // ---- 2022 baseline for modeled states: final pre-Election Day early vote totals (US Elections Project)
+  try{
+    var V22={GA:2524348,MI:1525312,VA:930017,WI:719429,MN:586883,IL:1407808,OH:1392767,IN:606040,TX:5492276,TN:882310,MS:36633,SC:616544,WA:1772794,VT:179147,MT:308540,MA:1038113,NY:1407295,AR:509044,ND:105854};
+    var PART={TX:"2022 count stopped Nov 4",TN:"2022 count is in-person only"};
+    var byName={}; if(typeof NAMES!=="undefined")for(var k in NAMES)byName[NAMES[k]]=k;
+    var mt=document.getElementById("model");
+    if(mt&&typeof SNAPSHOTS!=="undefined"){
+      var cs=SNAPSHOTS[SNAPSHOTS.length-1].states;
+      [].slice.call(mt.querySelectorAll("tr")).forEach(function(tr){
+        var td=tr.querySelectorAll("td"); if(td.length<11)return;
+        var nm=(td[0].firstChild&&td[0].firstChild.nodeType===3?td[0].firstChild.nodeValue:td[0].textContent).trim();
+        var ab=byName[nm]; if(!ab)return;
+        td[9].innerHTML='<span title="These states don\'t register voters by party, and no one modeled the 2022 early vote by party">no party data</span>';
+        td[9].style.color="var(--muted)"; td[9].style.fontSize="12px";
+        if(V22[ab]&&cs[ab]){ td[10].innerHTML=(cs[ab][0]/V22[ab]*100).toFixed(1)+'%<span class="chg">of '+n(V22[ab])+(PART[ab]?' · '+PART[ab]:'')+'</span>'; }
+      });
+      var note=mt.closest("section")&&mt.closest("section").querySelector(".note");
+      if(note)note.insertAdjacentHTML("beforeend",' <b>% of 2022 volume</b> compares today\'s ballots with each state\'s total early vote before Election Day 2022, from the <a href="https://rpubs.com/ElectProject/early_vote_2022" rel="noopener">US Elections Project</a>. These states don\'t register by party, so there is no 2022 party margin to compare against.');
+    }
+  }catch(e){}
   show((location.hash||"").slice(1),false);
   window.addEventListener("hashchange",function(){show((location.hash||"").slice(1),false)});
   }catch(err){ if(window.console)console.warn("tabs",err); }
