@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Where and When to Vote 2026 | Common Sense Gay</title>
+<meta name="description" content="Early voting dates for the November 3, 2026 general election in every state, plus the official place to find your polling location.">
+<link rel="canonical" href="https://commonsensegay.com/vote/">
+<meta property="og:title" content="Where and when to vote, 2026">
+<meta property="og:description" content="Early voting dates for every state and the official polling place lookup. Election Day is Tuesday, November 3.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://commonsensegay.com/vote/">
+<meta property="og:image" content="https://commonsensegay.com/assets/og-vote.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://commonsensegay.com/assets/og-vote.jpg">
+<meta name="theme-color" content="#0d1f3a">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/votebar.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Archivo+Narrow:wght@600;700&display=swap">
+<style>
+:root{
+  --navy:#0d1f3a; --night:#081528; --cream:#efe3c4; --paper:#f6eedb;
+  --sun:#f0a02a; --burnt:#d97a26; --red:#b8362e; --mist:#a9b6cb;
+  --ink:#16202e; --ink-soft:#57524a; --rule:#d9c9a2; --green:#1d7a46;
+  --display:"Anton",Impact,"Arial Narrow",sans-serif;
+  --body:"Archivo",system-ui,sans-serif;
+  --narrow:"Archivo Narrow","Arial Narrow",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--navy)}
+a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+@media (max-width:600px){.wrap{padding:0 16px}}
+.bar{background:var(--night)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;padding-bottom:16px}
+.mark{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--narrow);font-weight:700;font-size:20px;color:var(--cream)}
+.mark img{width:44px;height:44px}
+.nav{display:flex;gap:26px;font-family:var(--narrow);font-weight:600;font-size:17px}
+.nav a{text-decoration:none;color:var(--mist)}
+.nav a:hover,.nav a[aria-current]{color:var(--cream)}
+@media (max-width:700px){.nav a:not(.keep){display:none}}
+
+.top{background:var(--navy);color:var(--cream);padding:56px 0 64px;border-bottom:6px solid var(--red)}
+h1{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(46px,7vw,92px);line-height:1;margin:0 0 18px;letter-spacing:.01em}
+.lede{font-size:clamp(18px,2vw,21px);color:#d8dfeb;max-width:58ch;margin:0}
+.eday{display:inline-flex;align-items:baseline;gap:12px;margin-top:28px;padding:12px 18px;border:2px solid var(--sun);border-radius:4px}
+.eday b{font-family:var(--display);font-weight:400;font-size:30px;color:var(--sun);line-height:1}
+.eday span{font-family:var(--narrow);font-weight:600;font-size:18px}
+
+section{padding:56px 0}
+h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(32px,4.5vw,48px);line-height:1;margin:0 0 14px;color:var(--navy)}
+.sub{color:var(--ink-soft);max-width:62ch;margin:0 0 26px}
+
+/* state lookup */
+.pick{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:22px}
+.pick label{font-family:var(--narrow);font-weight:700;font-size:19px;color:var(--navy)}
+.pick select{font:inherit;font-size:18px;padding:10px 14px;border:2px solid var(--navy);border-radius:4px;background:#fff;color:var(--ink);min-width:260px}
+.card{background:#fff;border:2px solid var(--navy);border-radius:6px;padding:26px 28px;display:grid;grid-template-columns:1fr auto;gap:18px 32px;align-items:center}
+@media (max-width:760px){.card{grid-template-columns:1fr;padding:22px}}
+.card h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:40px;line-height:1;margin:0 0 10px;color:var(--navy)}
+.card .win{font-size:20px;margin:0 0 6px}
+.card .win b{font-family:var(--narrow)}
+.card .note{color:var(--ink-soft);font-size:16px;margin:6px 0 0}
+.chip{display:inline-block;font-family:var(--narrow);font-weight:700;font-size:15px;padding:3px 10px;border-radius:999px;vertical-align:3px;white-space:nowrap}
+.chip.open{background:#dff1e6;color:var(--green)}
+.chip.soon{background:#fde9c7;color:#8a4b00}
+.chip.closed,.chip.none,.chip.varies{background:#ece6d6;color:#5f5a4e}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--narrow);font-weight:700;font-size:18px;text-decoration:none;padding:14px 22px;border-radius:4px;background:var(--red);color:#fff;white-space:nowrap}
+.btn:hover{background:#9f2c25}
+.btn.alt{background:transparent;color:var(--navy);border:2px solid var(--navy)}
+.card .acts{display:flex;flex-direction:column;gap:10px}
+
+/* table */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.filters button{font-family:var(--narrow);font-weight:700;font-size:16px;padding:8px 14px;border-radius:999px;border:2px solid var(--navy);background:transparent;color:var(--navy);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--navy);color:var(--cream)}
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:2px solid var(--navy)}
+.tbl th{font-family:var(--narrow);font-weight:700;font-size:16px;text-align:left;padding:12px 14px;background:var(--navy);color:var(--cream)}
+.tbl td{padding:12px 14px;border-top:1px solid var(--rule);vertical-align:top;font-size:16px}
+.tbl td:first-child{font-weight:700;white-space:nowrap}
+.tbl td small{display:block;color:var(--ink-soft);font-size:14px;margin-top:2px}
+.tbl tr.hl td{background:#fff6e3}
+.tbl a{font-weight:700}
+@media (max-width:640px){
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl tr{border-top:1px solid var(--rule);padding:10px 14px}
+  .tbl td{border:0;padding:2px 0}
+}
+.fine{font-size:15px;color:var(--ink-soft);max-width:70ch}
+.fine p{margin:0 0 10px}
+
+.cta{background:var(--navy);color:var(--cream);padding:44px 0}
+.cta .wrap{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.cta p{margin:0;font-size:19px;max-width:52ch}
+.cta b{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:30px;display:block;color:var(--sun);margin-bottom:4px}
+.cta .btn{background:var(--sun);color:var(--night)}
+.cta .btn:hover{background:#ffb646}
+footer{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;border-top:6px solid var(--red)}
+</style>
+</head>
+<body>
+
+<div class="votebar" id="votebar" role="region" aria-label="Early voting dates" hidden>
+  <div class="vb-in"><span class="vb-star" aria-hidden="true">★</span><span class="vb-msg" aria-live="polite"></span><a class="vb-go" href="https://www.nass.org/can-i-vote/find-your-polling-place" rel="noopener">Find your polling place</a><a class="vb-all" href="#all">All states</a></div>
+</div>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="/"><img src="/assets/logo.png" alt="" width="44" height="44">Common Sense Gay</a>
+    <nav class="nav" aria-label="Main">
+      <a class="keep" href="/vote/" aria-current="page">Where to vote</a>
+      <a href="/early-vote/">Early vote tracker</a>
+      <a href="/#follow">Follow</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="top">
+  <div class="wrap">
+    <h1>Where and when to vote</h1>
+    <p class="lede">Early voting dates for the November 3, 2026 general election in every state, and the official place to look up exactly where you vote.</p>
+    <div class="eday"><b id="eday-n">20 days</b><span>until Election Day, Tuesday, November 3</span></div>
+  </div>
+</div>
+
+<section aria-labelledby="mine">
+  <div class="wrap">
+    <h2 id="mine">Your state</h2>
+    <p class="sub">Pick your state for its early voting window and a link to the official lookup. Locations are set by your county, so always confirm there before you go.</p>
+    <div class="pick">
+      <label for="state">State</label>
+      <select id="state"></select>
+    </div>
+    <div class="card" id="card" aria-live="polite"></div>
+  </div>
+</section>
+
+<section aria-labelledby="all" style="padding-top:0">
+  <div class="wrap">
+    <h2 id="all">Every state</h2>
+    <p class="sub">First and last day of in-person early voting for the general election.</p>
+    <div class="filters" role="group" aria-label="Filter states">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="open" aria-pressed="false">Open now</button>
+      <button type="button" data-f="soon" aria-pressed="false">Opening soon</button>
+      <button type="button" data-f="none" aria-pressed="false">No regular early voting</button>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>State</th><th>Early voting</th><th>Status</th><th>Where to vote</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap fine">
+    <p><b>Check before you go.</b> Hours, locations, ID rules and mail ballot deadlines vary by state and county, and your state or county election office has the final word. Dates can change; this page is checked against the sources below.</p>
+    <p>Sources: early voting dates from <a href="https://ballotpedia.org/Early_voting_dates,_2026" rel="noopener">Ballotpedia</a>. Polling place lookup from the <a href="https://www.nass.org/can-i-vote/find-your-polling-place" rel="noopener">National Association of Secretaries of State</a>, which links to each state's official site. Texas lookup from <a href="https://www.votetexas.gov/voting/where.html" rel="noopener">VoteTexas.gov</a>; Texas early voting locations appear in the state's My Voter Portal two days before voting starts.</p>
+  </div>
+</section>
+
+<div class="cta">
+  <div class="wrap">
+    <p><b>Watch the numbers come in</b>Who's already voted, by party, state by state, updated every morning.</p>
+    <a class="btn" href="/early-vote/">Open the early vote tracker</a>
+  </div>
+</div>
+</main>
+
+<footer><div class="wrap">© 2026 Common Sense Gay. This page is for information only and is not affiliated with any election office.</div></footer>
+
+<script src="/assets/voting.js"></script>
+<script>
+CSGVoteData.then(function(data){
+  var V=CSGVote, t=V.todayCT();
+  var ed=Math.round((V.day(data.election)-t)/864e5);
+  document.getElementById("eday-n").textContent=ed>1?ed+" days":ed===1?"1 day":ed===0?"Today":"Over";
+  var sel=document.getElementById("state"), card=document.getElementById("card");
+  var poll=data.sources.polling;
+  function win(s){ return s.start&&s.end? V.fmt(s.start,true)+" to "+V.fmt(s.end,true) : s.end? "Until "+V.fmt(s.end,true) : "None"; }
+  function linkFor(s){ return s.link||poll; }
+  function linkText(s){ return s.link?"Find where to vote in "+s.name:"Find your polling place"; }
+  sel.innerHTML=data.states.map(function(s){return '<option value="'+s.ab+'">'+s.name+'</option>'}).join("");
+  var saved=null; try{saved=localStorage.getItem("csgState")}catch(e){}
+  var hash=(location.hash||"").replace("#","").toUpperCase();
+  sel.value=data.states.some(function(s){return s.ab===hash})?hash:(saved||"TX");
+  function draw(){
+    var s=data.states.find(function(x){return x.ab===sel.value}), st=V.status(s,t);
+    card.innerHTML='<div><h3>'+s.name+' <span class="chip '+st.k+'">'+st.label+'</span></h3>'+
+      '<p class="win">Early voting: <b>'+win(s)+'</b></p>'+
+      '<p class="win">Election Day: <b>Tuesday, Nov 3</b></p>'+
+      (s.note?'<p class="note">'+s.note+'</p>':'')+'</div>'+
+      '<div class="acts"><a class="btn" href="'+linkFor(s)+'" rel="noopener">'+linkText(s)+'</a></div>';
+    try{localStorage.setItem("csgState",s.ab)}catch(e){}
+  }
+  sel.addEventListener("change",draw); draw();
+  var tb=document.getElementById("rows"), filter="all";
+  function rows(){
+    tb.innerHTML=data.states.filter(function(s){var k=V.status(s,t).k; return filter==="all"||(filter==="none"?(k==="none"||k==="varies"):k===filter)}).map(function(s){
+      var st=V.status(s,t);
+      return '<tr'+(s.ab===sel.value?' class="hl"':'')+'><td>'+s.name+'</td><td>'+win(s)+(s.note?'<small>'+s.note+'</small>':'')+'</td><td><span class="chip '+st.k+'">'+st.label+'</span></td><td><a href="'+linkFor(s)+'" rel="noopener">'+(s.link?s.linkText:"Look up")+'</a></td></tr>';
+    }).join("")||'<tr><td colspan="4">No states match this filter today.</td></tr>';
+  }
+  sel.addEventListener("change",rows);
+  document.querySelectorAll(".filters button").forEach(function(b){b.addEventListener("click",function(){
+    filter=b.dataset.f; document.querySelectorAll(".filters button").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")}); rows();
+  })});
+  rows();
+});
+</script>
+</body>
+</html>

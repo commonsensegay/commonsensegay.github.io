@@ -1,0 +1,338 @@
+{
+ "election": "2026-11-03",
+ "updated": "2026-10-14",
+ "sources": {
+  "dates": "https://ballotpedia.org/Early_voting_dates,_2026",
+  "polling": "https://www.nass.org/can-i-vote/find-your-polling-place"
+ },
+ "featured": [
+  "TX"
+ ],
+ "states": [
+  {
+   "ab": "AL",
+   "name": "Alabama",
+   "start": null,
+   "end": null,
+   "note": "No early voting without an excuse"
+  },
+  {
+   "ab": "AK",
+   "name": "Alaska",
+   "start": "2026-10-19",
+   "end": "2026-11-03"
+  },
+  {
+   "ab": "AZ",
+   "name": "Arizona",
+   "start": "2026-10-07",
+   "end": "2026-10-30"
+  },
+  {
+   "ab": "AR",
+   "name": "Arkansas",
+   "start": "2026-10-19",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "CA",
+   "name": "California",
+   "start": "2026-10-24",
+   "end": "2026-11-03",
+   "note": "Vote centers open by Oct 24; county election offices take in-person ballots from Oct 5"
+  },
+  {
+   "ab": "CO",
+   "name": "Colorado",
+   "start": "2026-10-19",
+   "end": "2026-11-03",
+   "note": "Mail ballots go to every voter; in-person voting also available"
+  },
+  {
+   "ab": "CT",
+   "name": "Connecticut",
+   "start": "2026-10-19",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "DE",
+   "name": "Delaware",
+   "start": "2026-10-22",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "DC",
+   "name": "District of Columbia",
+   "start": "2026-10-26",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "FL",
+   "name": "Florida",
+   "start": "2026-10-24",
+   "end": "2026-10-31",
+   "note": "Some counties open as early as Oct 19"
+  },
+  {
+   "ab": "GA",
+   "name": "Georgia",
+   "start": "2026-10-13",
+   "end": "2026-10-30"
+  },
+  {
+   "ab": "HI",
+   "name": "Hawaii",
+   "start": "2026-10-20",
+   "end": "2026-11-03",
+   "note": "Mail ballots go to every voter; in-person voting also available"
+  },
+  {
+   "ab": "ID",
+   "name": "Idaho",
+   "start": "2026-10-13",
+   "end": "2026-10-30",
+   "note": "Only in counties that offer it"
+  },
+  {
+   "ab": "IL",
+   "name": "Illinois",
+   "start": "2026-09-24",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "IN",
+   "name": "Indiana",
+   "start": "2026-10-06",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "IA",
+   "name": "Iowa",
+   "start": "2026-10-14",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "KS",
+   "name": "Kansas",
+   "start": "2026-10-14",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "KY",
+   "name": "Kentucky",
+   "start": "2026-10-29",
+   "end": "2026-10-31",
+   "note": "Some voters qualify for excuse-based early voting before this"
+  },
+  {
+   "ab": "LA",
+   "name": "Louisiana",
+   "start": "2026-10-20",
+   "end": "2026-10-27"
+  },
+  {
+   "ab": "ME",
+   "name": "Maine",
+   "start": "2026-10-04",
+   "end": "2026-10-29"
+  },
+  {
+   "ab": "MD",
+   "name": "Maryland",
+   "start": "2026-10-22",
+   "end": "2026-10-29"
+  },
+  {
+   "ab": "MA",
+   "name": "Massachusetts",
+   "start": "2026-10-17",
+   "end": "2026-10-30"
+  },
+  {
+   "ab": "MI",
+   "name": "Michigan",
+   "start": "2026-10-24",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "MN",
+   "name": "Minnesota",
+   "start": "2026-09-18",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "MS",
+   "name": "Mississippi",
+   "start": null,
+   "end": null,
+   "note": "No early voting without an excuse"
+  },
+  {
+   "ab": "MO",
+   "name": "Missouri",
+   "start": "2026-10-20",
+   "end": "2026-11-02",
+   "note": "Some voters qualify for excuse-based early voting before this"
+  },
+  {
+   "ab": "MT",
+   "name": "Montana",
+   "start": "2026-10-05",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "NE",
+   "name": "Nebraska",
+   "start": "2026-10-05",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "NV",
+   "name": "Nevada",
+   "start": "2026-10-17",
+   "end": "2026-10-30",
+   "note": "Mail ballots go to every voter; in-person voting also available"
+  },
+  {
+   "ab": "NH",
+   "name": "New Hampshire",
+   "start": null,
+   "end": null,
+   "note": "No early voting without an excuse"
+  },
+  {
+   "ab": "NJ",
+   "name": "New Jersey",
+   "start": "2026-10-24",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "NM",
+   "name": "New Mexico",
+   "start": "2026-10-06",
+   "end": "2026-10-31"
+  },
+  {
+   "ab": "NY",
+   "name": "New York",
+   "start": "2026-10-24",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "NC",
+   "name": "North Carolina",
+   "start": "2026-10-15",
+   "end": "2026-10-31"
+  },
+  {
+   "ab": "ND",
+   "name": "North Dakota",
+   "start": null,
+   "end": null,
+   "note": "Set by each county"
+  },
+  {
+   "ab": "OH",
+   "name": "Ohio",
+   "start": "2026-10-06",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "OK",
+   "name": "Oklahoma",
+   "start": "2026-10-28",
+   "end": "2026-10-31"
+  },
+  {
+   "ab": "OR",
+   "name": "Oregon",
+   "start": null,
+   "end": null,
+   "note": "All-mail state; in-person help available through Election Day"
+  },
+  {
+   "ab": "PA",
+   "name": "Pennsylvania",
+   "start": null,
+   "end": "2026-10-27",
+   "note": "No fixed early voting; request and return a mail ballot in person at your county office until Oct 27"
+  },
+  {
+   "ab": "RI",
+   "name": "Rhode Island",
+   "start": "2026-10-14",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "SC",
+   "name": "South Carolina",
+   "start": "2026-10-19",
+   "end": "2026-10-31"
+  },
+  {
+   "ab": "SD",
+   "name": "South Dakota",
+   "start": "2026-09-18",
+   "end": "2026-11-02"
+  },
+  {
+   "ab": "TN",
+   "name": "Tennessee",
+   "start": "2026-10-14",
+   "end": "2026-10-29"
+  },
+  {
+   "ab": "TX",
+   "name": "Texas",
+   "start": "2026-10-19",
+   "end": "2026-10-30",
+   "link": "https://www.votetexas.gov/voting/where.html",
+   "linkText": "VoteTexas.gov"
+  },
+  {
+   "ab": "UT",
+   "name": "Utah",
+   "start": "2026-10-20",
+   "end": "2026-10-30",
+   "note": "Mail ballots go to every voter; in-person voting also available"
+  },
+  {
+   "ab": "VT",
+   "name": "Vermont",
+   "start": "2026-09-19",
+   "end": "2026-11-02",
+   "note": "Mail ballots go to every voter"
+  },
+  {
+   "ab": "VA",
+   "name": "Virginia",
+   "start": "2026-09-18",
+   "end": "2026-10-31"
+  },
+  {
+   "ab": "WA",
+   "name": "Washington",
+   "start": "2026-10-16",
+   "end": "2026-11-03",
+   "note": "Mail ballots go to every voter; in-person voting also available"
+  },
+  {
+   "ab": "WV",
+   "name": "West Virginia",
+   "start": "2026-10-21",
+   "end": "2026-10-31"
+  },
+  {
+   "ab": "WI",
+   "name": "Wisconsin",
+   "start": "2026-10-20",
+   "end": "2026-11-01"
+  },
+  {
+   "ab": "WY",
+   "name": "Wyoming",
+   "start": "2026-10-06",
+   "end": "2026-11-02"
+  }
+ ]
+}

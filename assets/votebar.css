@@ -1,0 +1,19 @@
+.votebar{background:#b8362e;color:#fff6e3;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-size:17px;position:relative;z-index:30}
+.votebar[hidden]{display:none}
+.votebar .vb-in{max-width:1120px;margin:0 auto;padding:9px 24px;display:flex;align-items:center;gap:14px;min-height:44px}
+.votebar .vb-star{color:#ffd27a;font-size:15px;flex:none}
+.votebar .vb-msg{flex:1;min-width:0;font-weight:600;transition:opacity .28s ease}
+.votebar .vb-msg b{font-weight:700;color:#fff}
+.votebar .vb-msg.out{opacity:0}
+.votebar a{color:#fff;font-weight:700;white-space:nowrap}
+.votebar .vb-go{background:#fff6e3;color:#8f2420;text-decoration:none;padding:5px 12px;border-radius:3px}
+.votebar .vb-go:hover{background:#fff}
+.votebar .vb-all{text-decoration:underline;text-underline-offset:3px}
+.votebar a:focus-visible{outline:3px solid #ffd27a;outline-offset:2px}
+@media (max-width:700px){
+  .votebar .vb-in{flex-wrap:wrap;gap:6px 12px;padding:8px 16px}
+  .votebar .vb-msg{flex-basis:calc(100% - 30px);font-size:16px}
+  .votebar .vb-go{font-size:15px}
+  .votebar .vb-all{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.votebar .vb-msg{transition:none}}
