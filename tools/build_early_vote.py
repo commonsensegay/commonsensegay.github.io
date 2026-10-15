@@ -32,7 +32,7 @@ TABS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "tracker_ta
 TOP = """<div class="votebar" id="votebar" role="region" aria-label="Early voting dates" hidden>
   <div class="vb-in"><span class="vb-star" aria-hidden="true">&#9733;</span><span class="vb-msg" aria-live="polite"></span><a class="vb-go" href="https://www.nass.org/can-i-vote/find-your-polling-place" rel="noopener">Find your polling place</a><a class="vb-all" href="/vote/">All states</a></div>
 </div>
-<div class="csg-top"><div class="in"><a href="/">Common Sense Gay</a><nav aria-label="Main"><a href="/vote/">Where to vote</a><a class="hide-sm" href="/#follow">Follow</a></nav></div></div>
+<div class="csg-top"><div class="in"><a class="home" href="/"><img src="/assets/logo.png" alt="" width="32" height="32">Common Sense Gay</a><nav aria-label="Main"><a href="/vote/">Where to vote</a><a class="hide-sm" href="/#follow">Follow</a></nav></div></div>
 """
 out = f"""<!doctype html>
 <html lang="en">

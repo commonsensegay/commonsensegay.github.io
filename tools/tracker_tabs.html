@@ -28,6 +28,20 @@ body > .csg-top{margin:0 -16px 24px}
 #csg-summary ol{margin:0;padding-left:20px}
 #csg-summary li{margin:3px 0}
 
+
+/* compact header: keep the look, lose the height */
+body > .wrap > header.brand{gap:18px;align-items:center}
+body .logo{width:92px;height:92px}
+body .kicker{font-size:12px;margin-bottom:2px}
+body h1{font-size:clamp(28px,4.2vw,40px)}
+body header.brand .sub{font-size:15px;line-height:1.55;margin-top:6px;max-width:72ch}
+body header.brand .stamp{margin-top:6px}
+body header.brand .follow{margin-top:6px}
+body .sky{height:58px;margin-top:-22px}
+body .csg-tabs{margin-top:-22px}
+@media (max-width:600px){body .logo{width:72px;height:72px}body .sky{height:44px;margin-top:-14px}body .csg-tabs{margin-top:-14px}}
+.csg-top .in a.home{display:flex;align-items:center;gap:10px}
+.csg-top .in a.home img{width:32px;height:32px}
 /* breathing room */
 body .wrap{gap:40px}
 body section{padding:28px 30px 30px}
