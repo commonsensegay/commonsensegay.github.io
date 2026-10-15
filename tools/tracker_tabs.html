@@ -31,14 +31,25 @@ body > .csg-top{margin:0 -16px 24px}
 
 /* clean header replaces the original brand header and sunset strip */
 body > .wrap > header.brand, body .sky{display:none!important}
-.csg-head{padding:34px 0 6px}
+.csg-head{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:0;background:radial-gradient(ellipse 90% 80% at 50% 100%,#1d3d6e 0%,#0d1f3a 55%,#081528 100%);overflow:hidden}
+.csg-head .hin{max-width:980px;margin:0 auto;padding:40px 16px 8px;position:relative;z-index:2}
+.csg-hz{position:relative;height:130px}
+.csg-hz .sun{position:absolute;left:50%;bottom:-150px;width:250px;height:250px;margin-left:-125px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#ffc457 0%,#f0a02a 55%,#d97a26 100%);animation:csgrise 1.4s cubic-bezier(.2,.7,.2,1) .1s both}
+.csg-hz .stripes{position:absolute;left:0;right:0;bottom:16px}
+.csg-hz .stripes i{display:block;height:14px;background:#b8362e;margin-top:11px}
+.csg-hz .ground{position:absolute;left:0;right:0;bottom:0;height:16px;background:#0c1e38}
+.csg-hz .st{position:absolute;color:#f4e7c9;font-size:18px;line-height:1}
+@keyframes csgrise{from{transform:translateY(90px)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.csg-hz .sun{animation:none}}
+body > .csg-top{margin-bottom:0}
+.csg-head + .csg-tabs{margin-top:-24px}
 .csg-head .pill{display:inline-flex;align-items:center;gap:10px;background:#b8362e;color:#fff6e3;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:16px;padding:6px 15px 6px 12px;border-radius:999px;margin:0 0 16px}
 .csg-head .pill i{width:10px;height:10px;border-radius:50%;background:#ffd27a;box-shadow:0 0 0 4px rgba(255,210,122,.3)}
 .csg-head h1{font-family:"Anton",Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(44px,7vw,84px);line-height:1;letter-spacing:.01em;margin:0 0 14px;color:#f4e7c9;text-shadow:none}
 .csg-head p.lede{font-size:clamp(18px,2vw,21px);line-height:1.55;color:#d8dfeb;margin:0;max-width:52ch}
 .csg-top .in a.home{display:flex;align-items:center;gap:10px}
 .csg-top .in a.home img{width:32px;height:32px}
-@media (max-width:600px){.csg-head{padding:22px 0 0}.csg-head .pill{font-size:14px;padding:5px 12px 5px 10px}}
+@media (max-width:600px){.csg-head .hin{padding:26px 16px 14px}.csg-hz{height:96px}.csg-hz .st{font-size:14px;top:2px!important}.csg-hz .st:nth-child(2),.csg-hz .st:nth-child(5){display:none}.csg-hz .sun{width:180px;height:180px;margin-left:-90px;bottom:-110px}.csg-hz .stripes i{height:10px;margin-top:8px}.csg-head .pill{font-size:14px;padding:5px 12px 5px 10px}}
 /* breathing room */
 body .wrap{gap:40px}
 body section{padding:28px 30px 30px}
@@ -221,6 +232,7 @@ body .vrow{font-family:var(--body);font-size:14px}
   head.innerHTML='<p class="pill"><i aria-hidden="true"></i>Updated every morning'+(lastPull?' · '+lastPull.replace(/^([A-Za-z]+ \d+), \d{4},/,"$1,"):'')+'</p>'
     +'<h1>Early vote tracker 2026</h1>'
     +'<p class="lede">Who has already voted in the November 3 midterm, by the party they\'re registered with. Not how they voted, just who showed up.</p>';
+  head.innerHTML='<div class="hin">'+head.innerHTML+'</div><div class="csg-hz" aria-hidden="true"><span class="st" style="left:7%;top:6px">★</span><span class="st" style="left:18%;top:20px">★</span><span class="st" style="left:29%;top:8px">★</span><span class="st" style="right:29%;top:8px">★</span><span class="st" style="right:18%;top:20px">★</span><span class="st" style="right:7%;top:6px">★</span><div class="sun"></div><div class="stripes"><i></i><i></i><i></i></div><div class="ground"></div></div>';
   var anchor=secs[0]; anchor.parentNode.insertBefore(head,map[tabs[0].id][0]); anchor.parentNode.insertBefore(nav,map[tabs[0].id][0]);
   var allSecs=[].slice.call(wrap.querySelectorAll(":scope > [data-tab]"));
   function show(id,push){
