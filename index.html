@@ -119,6 +119,22 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 @media (prefers-reduced-motion:reduce){.horizon .sun{animation:none}}
 @media (max-width:600px){.horizon{height:150px}.horizon .sun{width:300px;height:300px;margin-left:-150px;bottom:-130px}.horizon .stripes i{height:12px;margin-top:10px}}
 
+/* gay republicans exist */
+.exist{background:var(--red);color:#fff6e3;padding:80px 0}
+.ex-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:48px;align-items:center}
+@media (max-width:860px){.ex-grid{grid-template-columns:1fr;gap:28px}}
+.ex-k{font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:16px;color:#ffd27a;margin:0 0 14px}
+.exist h2{color:#fff;font-size:clamp(46px,6.4vw,84px);margin:0 0 22px}
+.exist h2 span{display:block;color:#ffd27a;font-size:.5em;line-height:1.1;margin-top:10px}
+.ex-body{font-size:clamp(18px,2vw,21px);line-height:1.6;max-width:60ch;margin:0 0 14px}
+.ex-body b{color:#fff}
+.ex-src{font-size:15px;color:#ffe3c9;margin:0}
+.ex-src a{color:#fff;font-weight:700}
+.ex-stat{background:var(--night);border-radius:8px;padding:30px 28px;text-align:center;border:3px solid #ffd27a}
+.ex-stat b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(110px,14vw,170px);line-height:.9;color:var(--sun)}
+.ex-stat span{display:block;font-family:var(--narrow);font-weight:700;font-size:26px;text-transform:uppercase;letter-spacing:.06em;color:var(--cream);margin-top:6px}
+.ex-stat small{display:block;font-size:16px;color:var(--mist);margin-top:8px}
+
 /* daily take */
 .take{background:var(--night);padding:64px 0;border-top:6px solid var(--red)}
 .tk-k{font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:16px;color:var(--sun);margin:0 0 16px;display:flex;justify-content:space-between;gap:12px}
@@ -366,6 +382,20 @@ footer small{color:#7d8ca5;font-size:14px}
     <p class="tk-k">The Daily Take <a href="/blog/">All posts →</a></p>
     <a class="tk-card" id="tk-latest" href="/blog/"><span class="tk-d" id="tk-date"></span><h2 id="take-title"></h2><p id="tk-sum"></p><span class="tk-go">Read today's take →</span></a>
     <ul class="tk-more" id="tk-more"></ul>
+  </div>
+</section>
+
+<section class="exist" aria-labelledby="exist-title">
+  <div class="wrap">
+    <div class="ex-grid">
+      <div>
+        <p class="ex-k">★ Proof we exist ★</p>
+        <h2 id="exist-title">Gay Republicans exist.<span>We're not scared. We're not in the closet.</span></h2>
+        <p class="ex-body">In 2022 the Respect for Marriage Act needed 60 votes to get through the Senate. It passed 61 to 36, and <b>12 of those yes votes were Republicans.</b> Without Republicans it doesn't become law. And it's gays like me who helped make that happen: showing up, making the case and having a seat at the table.</p>
+        <p class="ex-src">Senate vote, November 29, 2022. <a href="https://www.cbsnews.com/amp/news/respect-for-marriage-act-senate-vote-marriage-equality-bill" rel="noopener">CBS News</a></p>
+      </div>
+      <div class="ex-stat" aria-hidden="true"><b>12</b><span>Republican senators</span><small>The votes that got marriage protection past the filibuster</small></div>
+    </div>
   </div>
 </section>
 
