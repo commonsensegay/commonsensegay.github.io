@@ -28,6 +28,12 @@ grab(r'<script src="https://cdnjs[^>]*brands\.min\.js"[^>]*></script>')
 grab(r"<style>.*?</style>")
 
 URL = "https://commonsensegay.com/early-vote/"
+TABS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "tracker_tabs.html"), encoding="utf-8").read()
+TOP = """<div class="votebar" id="votebar" role="region" aria-label="Early voting dates" hidden>
+  <div class="vb-in"><span class="vb-star" aria-hidden="true">&#9733;</span><span class="vb-msg" aria-live="polite"></span><a class="vb-go" href="https://www.nass.org/can-i-vote/find-your-polling-place" rel="noopener">Find your polling place</a><a class="vb-all" href="/vote/">All states</a></div>
+</div>
+<div class="csg-top"><div class="in"><a href="/">Common Sense Gay</a><nav aria-label="Main"><a href="/vote/">Where to vote</a><a class="hide-sm" href="/#follow">Follow</a></nav></div></div>
+"""
 out = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -53,10 +59,13 @@ out = f"""<!doctype html>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>body{{margin:0}}img{{max-width:100%}}[hidden]{{display:none!important}}</style>
+<link rel="stylesheet" href="/assets/votebar.css">
 {chr(10).join(head)}
 </head>
 <body>
-{body.strip()}
+{TOP}{body.strip()}
+{TABS}
+<script src="/assets/voting.js"></script>
 </body>
 </html>
 """

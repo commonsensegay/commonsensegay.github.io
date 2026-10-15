@@ -1,0 +1,120 @@
+<style id="csg-tabs-css">
+body > .votebar{margin:-28px -16px 0}
+body > .csg-top{margin:0 -16px 24px}
+.csg-top{background:#081528;border-bottom:1px solid #27456f}
+.csg-top .in{max-width:980px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:17px}
+.csg-top a{color:#f4e7c9;text-decoration:none}
+.csg-top a:hover{color:#f5a21f}
+.csg-top nav{display:flex;gap:20px;font-weight:600}
+.csg-top nav a{color:#a8b6cc}
+@media (max-width:560px){.csg-top nav a.hide-sm{display:none}}
+.csg-tabs{position:sticky;top:0;z-index:15;margin:0 -16px;padding:10px 16px;background:rgba(12,30,56,.96);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid #27456f}
+.csg-tabs .row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.csg-tabs .row::-webkit-scrollbar{display:none}
+.csg-tabs button{flex:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:16px;letter-spacing:.02em;padding:9px 16px;border-radius:999px;border:2px solid #27456f;background:transparent;color:#a8b6cc;cursor:pointer;white-space:nowrap}
+.csg-tabs button:hover{color:#f4e7c9;border-color:#a8b6cc}
+.csg-tabs button[aria-selected="true"]{background:#f5a21f;border-color:#f5a21f;color:#0c1e38}
+.csg-tabs button:focus-visible{outline:3px solid #f4e7c9;outline-offset:2px}
+.csg-hidden{display:none!important}
+#csg-summary .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:4px 0 6px}
+#csg-summary .k{background:var(--surface);padding:14px 16px}
+#csg-summary .k .t{font-family:var(--display);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+#csg-summary .k .v{font-family:var(--mono);font-weight:600;font-size:24px;font-variant-numeric:tabular-nums}
+#csg-summary .k .d{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.6}
+#csg-summary .up{color:var(--up)}
+#csg-summary td.l{text-align:left;font-family:var(--body)}
+#csg-summary .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+#csg-summary h3{font-family:var(--display);font-size:14px;text-transform:uppercase;letter-spacing:.09em;margin:0 0 6px;color:#0c1e38}
+#csg-summary ol{margin:0;padding-left:20px}
+#csg-summary li{margin:3px 0}
+</style>
+<script id="csg-tabs-js">
+(function(){
+  try{
+  var wrap=document.querySelector(".wrap"); if(!wrap)return;
+  var secs=[].slice.call(wrap.querySelectorAll(":scope > section"));
+  var title=function(s){var h=s.querySelector("h2");return h?h.textContent.trim().toLowerCase():""};
+  var TABS=[
+    {id:"summary",label:"Summary",match:["today's brief"]},
+    {id:"overall",label:"Overall",match:["overall","hard counts: party","trend"]},
+    {id:"states",label:"By state",match:["state by state","totals only"]},
+    {id:"inperson",label:"In person vs mail",match:["in person or mail"]},
+    {id:"vs2022",label:"vs 2022",match:["against 2022"]},
+    {id:"registration",label:"Voter registration",match:["voter registration"]},
+    {id:"sources",label:"Sources",match:["cross-check"]}
+  ];
+  var n=function(x){return Number(x).toLocaleString("en-US")};
+  var pc=function(x){return x.toFixed(1)+"%"};
+  var sg=function(x,d){d=d===undefined?1:d;var v=Number(x.toFixed(d));return (v>0?"+":v<0?"−":"±")+Math.abs(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d})};
+  var fd=function(s){return new Date(s+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})};
+  // ---- Summary section built from the page's own data
+  var sum=null;
+  if(typeof SNAPSHOTS!=="undefined"&&SNAPSHOTS.length){
+    var reg=(typeof PARTY_REG!=="undefined")?PARTY_REG:new Set();
+    var NM=(typeof NAMES!=="undefined")?NAMES:{};
+    var calc=function(sn){var o={all:0,ip:0,r:0,d:0,o:0,st:0};for(var ab in sn.states){var a=sn.states[ab];o.all+=a[0];o.ip+=a[4];if(a[0]>0)o.st++;if(reg.has(ab)&&a[1]+a[2]>0){o.r+=a[1];o.d+=a[2];o.o+=a[3];}}o.h=o.r+o.d+o.o;o.dp=o.h?o.d/o.h*100:0;o.rp=o.h?o.r/o.h*100:0;o.op=o.h?o.o/o.h*100:0;o.m=o.dp-o.rp;return o};
+    var cur=SNAPSHOTS[SNAPSHOTS.length-1], prev=SNAPSHOTS.length>1?SNAPSHOTS[SNAPSHOTS.length-2]:null, first=SNAPSHOTS[0];
+    var C=calc(cur), P=prev?calc(prev):null, F=calc(first);
+    var card=function(t,v,dy,ds){return '<div class="k"><div class="t">'+t+'</div><div class="v">'+v+'</div><div class="d">'+(P?dy+" vs "+fd(prev.date)+"<br>":"")+ds+" since "+fd(first.date)+'</div></div>'};
+    var mtxt=function(m){return (m>=0?"D +":"R +")+Math.abs(m).toFixed(1)};
+    var toward=function(x){return Math.abs(x)<0.05?"no change":Math.abs(x).toFixed(1)+" pts toward "+(x>0?"D":"R")};
+    var grid=card("Ballots returned, all states",n(C.all),P?sg(C.all-P.all,0):"",sg(C.all-F.all,0))
+      +card("With a party on record",n(C.h),P?sg(C.h-P.h,0):"",sg(C.h-F.h,0))
+      +card("Democratic share",pc(C.dp),P?sg(C.dp-P.dp)+" pts":"",sg(C.dp-F.dp)+" pts")
+      +card("Republican share",pc(C.rp),P?sg(C.rp-P.rp)+" pts":"",sg(C.rp-F.rp)+" pts")
+      +card("Margin",mtxt(C.m),P?toward(C.m-P.m):"",toward(C.m-F.m))
+      +card("In-person ballots",n(C.ip),P?sg(C.ip-P.ip,0):"",sg(C.ip-F.ip,0))
+      +card("States reporting",C.st,P?sg(C.st-P.st,0):"",sg(C.st-F.st,0))
+      +'<div class="k"><div class="t">Days tracked</div><div class="v">'+(Math.round((Date.parse(cur.date)-Date.parse(first.date))/864e5)+1)+'</div><div class="d">'+SNAPSHOTS.length+' daily pulls since '+fd(first.date)+'</div></div>';
+    // movers since each state's first appearance with party data
+    var mv=[];
+    for(var ab in cur.states){
+      var a=cur.states[ab]; if(!(reg.has(ab)&&a[1]+a[2]>0))continue;
+      var f=null; for(var i=0;i<SNAPSHOTS.length;i++){var b=SNAPSHOTS[i].states[ab]; if(b&&b[1]+b[2]>0){f={s:SNAPSHOTS[i],a:b};break;}}
+      if(!f||f.s===cur)continue;
+      var mf=(f.a[2]-f.a[1])/(f.a[1]+f.a[2]+f.a[3])*100, mc=(a[2]-a[1])/(a[1]+a[2]+a[3])*100;
+      mv.push({ab:ab,shift:mc-mf,grow:a[0]-f.a[0],since:f.s.date,now:mc});
+    }
+    var li=function(x,t){return '<li><b>'+(NM[x.ab]||x.ab)+'</b> '+t+'</li>'};
+    var towardR=mv.filter(function(x){return x.shift<-0.05}).sort(function(a,b){return a.shift-b.shift}).slice(0,5).map(function(x){return li(x,Math.abs(x.shift).toFixed(1)+" pts toward R, now "+mtxt(x.now))}).join("")||"<li>None yet</li>";
+    var towardD=mv.filter(function(x){return x.shift>0.05}).sort(function(a,b){return b.shift-a.shift}).slice(0,5).map(function(x){return li(x,x.shift.toFixed(1)+" pts toward D, now "+mtxt(x.now))}).join("")||"<li>None yet</li>";
+    var growth=mv.slice().sort(function(a,b){return b.grow-a.grow}).slice(0,5).map(function(x){return li(x,"+"+n(x.grow)+" ballots")}).join("")||"<li>None yet</li>";
+    sum=document.createElement("section"); sum.id="csg-summary";
+    sum.innerHTML='<h2>Summary</h2><p class="sub">Where things stand after the '+fd(cur.date)+' pull, what changed since yesterday, and how far it has moved since tracking started on '+fd(first.date)+'. Shares and margin use party-registration states only. More states start reporting as early voting opens, so some of the long-run change comes from new states joining, not just voters moving.</p>'
+      +'<div class="grid">'+grid+'</div>'
+      +'<p class="stamp">Party registration shows who returned a ballot, not how they voted.</p>'
+      +'<div class="cols"><div class="bcard"><h3>Moved most toward Republicans</h3><ol>'+towardR+'</ol></div>'
+      +'<div class="bcard"><h3 class="blue">Moved most toward Democrats</h3><ol>'+towardD+'</ol></div>'
+      +'<div class="bcard"><h3 class="navy">Most new ballots</h3><ol>'+growth+'</ol></div></div>'
+      +'<p class="note">Movers compare each state today with the first pull where it reported party data.</p>';
+  }
+  // ---- assign sections to tabs
+  var map={}; TABS.forEach(function(t){map[t.id]=[]});
+  secs.forEach(function(s){
+    var h=title(s), hit=null;
+    TABS.forEach(function(t){ if(!hit&&t.match.some(function(m){return h.indexOf(m)===0||h.indexOf(m)>-1})) hit=t.id; });
+    if(!hit)hit="overall"; s.setAttribute("data-tab",hit); map[hit].push(s);
+  });
+  if(sum&&secs.length){ var firstSum=map.summary[0]||secs[0]; firstSum.parentNode.insertBefore(sum,firstSum); sum.setAttribute("data-tab","summary"); map.summary.unshift(sum); }
+  var tabs=TABS.filter(function(t){return map[t.id].length});
+  var nav=document.createElement("div"); nav.className="csg-tabs";
+  nav.innerHTML='<div class="row" role="tablist" aria-label="Tracker sections">'+tabs.map(function(t){return '<button role="tab" type="button" id="tab-'+t.id+'" aria-controls="panel-'+t.id+'" data-t="'+t.id+'">'+t.label+'</button>'}).join("")+'</div>';
+  var anchor=secs[0]; anchor.parentNode.insertBefore(nav,map[tabs[0].id][0]);
+  var allSecs=[].slice.call(wrap.querySelectorAll(":scope > section[data-tab]"));
+  function show(id,push){
+    if(!map[id]||!map[id].length)id=tabs[0].id;
+    allSecs.forEach(function(s){ s.classList.toggle("csg-hidden",s.getAttribute("data-tab")!==id); s.setAttribute("role","tabpanel"); });
+    nav.querySelectorAll("button").forEach(function(b){var on=b.dataset.t===id;b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1;});
+    if(push){ try{history.replaceState(null,"","#"+id)}catch(e){} var top=nav.getBoundingClientRect().top+window.scrollY-4; if(window.scrollY>top)window.scrollTo(0,top); }
+    window.dispatchEvent(new Event("resize"));
+  }
+  nav.addEventListener("click",function(e){var b=e.target.closest("button");if(b)show(b.dataset.t,true)});
+  nav.addEventListener("keydown",function(e){
+    if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;
+    var bs=[].slice.call(nav.querySelectorAll("button")),i=bs.indexOf(document.activeElement);if(i<0)return;
+    var j=(i+(e.key==="ArrowRight"?1:-1)+bs.length)%bs.length; bs[j].focus(); show(bs[j].dataset.t,true); e.preventDefault();
+  });
+  show((location.hash||"").slice(1),false);
+  }catch(err){ if(window.console)console.warn("tabs",err); }
+})();
+</script>
