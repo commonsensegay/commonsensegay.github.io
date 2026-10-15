@@ -1,6 +1,7 @@
 ---
 title: Why I built this site, and why you need to vote early
 date: 2026-10-15
+time: 00:20
 summary: My research kept disappearing into 60-second videos, so now the receipts have a home. First up: early voting, because that's how we won in 2024.
 ---
 Let's be honest. A 60-second video can only hold so many receipts. I spend hours pulling the public records, the official data and the vote counts, and then most of it gets cut so the video fits. So I built this site to hold the full story. Every day you'll find my take for the day here, plus the tools I use myself.

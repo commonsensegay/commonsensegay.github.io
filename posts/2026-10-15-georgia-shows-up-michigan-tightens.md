@@ -1,6 +1,7 @@
 ---
 title: Georgia showed up, Michigan is a coin flip, and the gap is closing
 date: 2026-10-15
+time: 12:59
 summary: Georgia went from 5,538 early votes to almost 381,000 in one pull. Michigan's early vote gap is down to about half a point. Here's what the numbers actually say.
 ---
 Let's be honest. One day of early vote numbers doesn't call an election. But today's pull had two stories I couldn't ignore, and both move in the same direction.

@@ -56,7 +56,7 @@ def parse(path):
     return {
         "slug": dm.group(2), "date": date, "title": meta["title"], "summary": summary,
         "html": body_html, "minutes": max(1, round(words / 230)),
-        "url": f"/blog/{dm.group(2)}/",
+        "url": f"/blog/{dm.group(2)}/", "time": meta.get("time", "00:00"),
     }
 
 
@@ -201,7 +201,7 @@ def main():
     os.makedirs(POSTS, exist_ok=True)
     files = sorted(f for f in os.listdir(POSTS) if f.endswith(".md"))
     posts = [parse(os.path.join(POSTS, f)) for f in files]
-    posts.sort(key=lambda p: (p["date"], p["slug"]), reverse=True)
+    posts.sort(key=lambda p: (p["date"], p["time"], p["slug"]), reverse=True)
     slugs = [p["slug"] for p in posts]
     if len(set(slugs)) != len(slugs):
         sys.exit("two posts share a slug")
