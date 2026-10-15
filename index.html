@@ -260,8 +260,8 @@ footer small{color:#7d8ca5;font-size:14px}
       <div class="row"><span class="num" id="hc-total">80K+</span><span class="lbl">followers and counting</span></div>
       <p class="hc-plats" id="hc-plats"></p>
       <hr>
-      <div class="row"><span class="num" id="hc-days">399</span><span class="lbl">days since Charlie Kirk was assassinated</span></div>
-      <p class="note">I started Common Sense Gay right after September 10, 2025, and I haven't stopped since.</p>
+      <div class="row"><span class="num" id="hc-days">398</span><span class="lbl">days of receipts</span></div>
+      <p class="note">I posted my first TikTok on September 11, 2025, to get my voice out there after what happened to Charlie Kirk. I haven't stopped since.</p>
     </aside>
     <img class="badge" src="/assets/logo.png" alt="Common Sense Gay logo: a cartoon portrait in front of a flag, a star and a Texas longhorn" width="300" height="300">
   </div>
@@ -415,7 +415,7 @@ footer small{color:#7d8ca5;font-size:14px}
 
 (function(){
   var p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
-  var d=Math.round((Date.parse(p+"T00:00:00Z")-Date.parse("2025-09-10T00:00:00Z"))/864e5);
+  var d=Math.round((Date.parse(p+"T00:00:00Z")-Date.parse("2025-09-11T00:00:00Z"))/864e5);
   if(d>0)document.getElementById("hc-days").textContent=d.toLocaleString("en-US");
 })();
 function initDock(){
