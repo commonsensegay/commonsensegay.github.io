@@ -57,9 +57,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 /* hero */
 .hero{position:relative;overflow:hidden;min-height:min(860px,100svh);display:flex;flex-direction:column;
   background:radial-gradient(ellipse 90% 70% at 50% 100%,#1d3d6e 0%,var(--navy) 55%,var(--night) 100%)}
-.hero .wrap{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:1.25fr .75fr;grid-template-areas:"text card" "text badge";grid-template-rows:auto 1fr;gap:28px 40px;align-items:start;padding-top:110px;padding-bottom:40px}
+.hero .wrap{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:1.25fr .75fr;grid-template-areas:"text card" "text badge";grid-template-rows:auto 1fr;gap:28px 40px;align-items:start;padding-top:96px;padding-bottom:40px}
 .hero-text{grid-area:text;align-self:center}
-.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(56px,9.5vw,136px);line-height:1.1;letter-spacing:.015em;margin:0 0 32px;text-transform:uppercase;color:var(--cream);text-wrap:balance}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(56px,8.2vw,116px);line-height:1.08;letter-spacing:.015em;margin:0 0 32px;text-transform:uppercase;color:var(--cream);text-wrap:balance}
 .hero h1 .vs{display:block;font-family:var(--narrow);font-weight:700;font-size:max(.28em,22px);letter-spacing:.04em;color:var(--sun);margin:.3em 0 .26em;line-height:1;text-transform:none}
 .lede{font-size:clamp(19px,2vw,22px);max-width:34ch;color:#d8dfeb;margin:0 0 32px}
 .lede strong{color:var(--cream);font-weight:700}
@@ -435,14 +435,7 @@ function initDock(){
   var d=document.getElementById("dock"); if(!d)return;
   try{ if(sessionStorage.getItem("dockHidden")==="1")return; }catch(e){}
   d.hidden=false;
-  var hero=document.querySelector(".hero"), follow=document.getElementById("follow"), foot=document.querySelector("footer");
-  var ticking=false;
-  var upd=function(){ ticking=false;
-    var hb=hero.getBoundingClientRect().bottom, fr=follow.getBoundingClientRect(), vh=window.innerHeight;
-    var inFollow=fr.top<vh*0.8 && fr.bottom>vh*0.2;
-    d.classList.toggle("on", hb<60 && !inFollow); };
-  window.addEventListener("scroll",function(){ if(!ticking){ticking=true;requestAnimationFrame(upd);} },{passive:true});
-  window.addEventListener("resize",upd); upd();
+  setTimeout(function(){ d.classList.add("on"); },60);
   document.getElementById("dock-x").addEventListener("click",function(){ d.classList.remove("on"); setTimeout(function(){d.hidden=true},450); try{sessionStorage.setItem("dockHidden","1")}catch(e){} });
 }
 (function(){
