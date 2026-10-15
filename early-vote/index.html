@@ -674,6 +674,18 @@ body .vrow{font-family:var(--body);font-size:14px}
 #csg-volunteer .gv-steps{background:#fffaf0;border:2px solid #e6d9b8;border-radius:8px;padding:20px 24px;margin-bottom:14px}
 #csg-volunteer .gv-steps h3{margin:0 0 8px;color:#0c1e38}
 #csg-volunteer .gv-steps li{font-size:17px;line-height:1.6;margin-bottom:6px}
+.csg-dd{background:#0c1e38;color:#f4e7c9;border-radius:8px;padding:20px 22px;margin:0 0 20px}
+.csg-dd .dd-h{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:#f5a21f;margin:0 0 12px}
+.csg-dd .dd-g{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:760px){.csg-dd .dd-g{grid-template-columns:1fr 1fr}.csg-dd{padding:16px 14px}.csg-dd .dd-c{padding:10px;min-width:0}.csg-dd .dd-v{font-size:22px}.csg-dd .dd-s,.csg-dd .dd-k{font-size:13px}}
+.csg-dd .dd-c{background:rgba(244,231,201,.06);border:1px solid #27456f;border-radius:6px;padding:12px 14px}
+.csg-dd .dd-c.r{border-top:4px solid #e0473c}.csg-dd .dd-c.d{border-top:4px solid #4f86d9}
+.csg-dd .dd-k{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:14px;color:#a8b6cc}
+.csg-dd .dd-v{font-family:"Anton",Impact,sans-serif;font-size:clamp(26px,3vw,34px);line-height:1.1;color:#fff6e3;margin:4px 0}
+.csg-dd .dd-c.r .dd-v{color:#ff7a6e}.csg-dd .dd-c.d .dd-v{color:#8fb6f0}
+.csg-dd .dd-s{font-size:14px;color:#c9d3e3}
+.csg-dd .dd-t{margin:14px 0 0;font-size:16px;line-height:1.55;color:#dfe5ef}
+.csg-dd .dd-t b{color:#fff}
 .csg-swipe{display:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:600;font-size:14px;color:#5f5a4e;margin:0 0 6px}
 @media (max-width:820px){.csg-swipe{display:block}}
 </style>
@@ -780,6 +792,19 @@ body .vrow{font-family:var(--body);font-size:14px}
     bottom=document.createElement("div"); bottom.className="csg-bottom"; bottom.setAttribute("data-tab","summary");
     bottom.innerHTML='<p class="lab">The bottom line, as of '+fd(cur.date)+'</p>'
       +'<p class="big">About <b>'+millions+' million</b> Americans have already voted. In the '+C.stp+' states that track party, registered Democrats cast <span class="dm">'+per(C.dp)+'</span> of every 100 ballots and registered Republicans cast <b>'+per(C.rp)+'</b>. '+lead+', '+trend+' when tracking started on '+fd(first.date)+'. '+who+'</p>'
+      +(P?(function(){
+        var dAll=C.all-P.all, dr=C.r-P.r, dd=C.d-P.d, dO=C.o-P.o, dh=dr+dd+dO;
+        if(dAll<=0||dh<=0)return "";
+        var gr=P.r?dr/P.r*100:0, gd=P.d?dd/P.d*100:0, nm=(dd-dr)/dh*100;
+        var cell=function(k,v,sub,cls){return '<div class="dd-c'+(cls?' '+cls:'')+'"><div class="dd-k">'+k+'</div><div class="dd-v">'+v+'</div><div class="dd-s">'+sub+'</div></div>'};
+        return '<div class="csg-dd"><p class="dd-h">Added since '+fd(prev.date)+'</p><div class="dd-g">'
+          +cell("All ballots, every state","+"+n(dAll),n(P.all)+" → "+n(C.all))
+          +cell("Republican ballots","+"+n(dr),"up "+Math.round(gr)+"% in one day","r")
+          +cell("Democratic ballots","+"+n(dd),"up "+Math.round(gd)+"% in one day","d")
+          +cell("Other / no party","+"+n(dO),"party-tracking states")
+          +'</div><p class="dd-t">'+(nm<P.m-0.5?'<b>Today\'s new ballots were less Democratic than the running total.</b> The '+n(dh)+' new party-tracked ballots split D '+Math.round(dd/dh*100)+' to R '+Math.round(dr/dh*100)+', a D +'+nm.toFixed(1)+' margin, against a D +'+P.m.toFixed(1)+' lead going in. That is why the lead fell '+Math.abs(C.m-P.m).toFixed(1)+' points.':nm>P.m+0.5?'Today\'s new party-tracked ballots ran more Democratic (D +'+nm.toFixed(1)+') than the running total (D +'+P.m.toFixed(1)+').':'Today\'s new ballots split about the same as the running total.')
+          +(gr>gd+2?' Republican ballots grew faster than Democratic ballots, '+Math.round(gr)+'% to '+Math.round(gd)+'%.':'')+'</p></div>';
+      })():'')
       +'<ul>'
       +'<li class="gotv"><b>Republicans, vote early.</b> We\'ve long saved our vote for Election Day, which is why Democrats lead right now. If you don\'t trust mail ballots, vote early in person. We\'ll swamp Election Day, but we can\'t afford to miss a single vote, so if you can vote early, do it, and bring your friends and family. <a href="/vote/">Find your early voting dates</a> <a href="#volunteer" onclick="document.getElementById(\'tab-volunteer\').click();return false">Start texting for a win</a></li>'
       +(gainTxt?'<li>'+gainTxt+'</li>':'')
