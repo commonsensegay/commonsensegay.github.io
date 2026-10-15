@@ -78,6 +78,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 .statcard .hc-plats{display:flex;flex-wrap:wrap;gap:4px 14px;margin:10px 0 0;font-family:var(--narrow);font-weight:600;font-size:15px;color:var(--mist)}
 .statcard .hc-plats b{color:var(--cream)}
 .statcard hr{border:0;border-top:1px solid rgba(169,182,203,.25);margin:16px 0}
+.since{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid rgba(169,182,203,.25)}
+.since li{display:grid;grid-template-columns:5.5em 1fr auto;gap:10px;padding:7px 0;border-bottom:1px solid rgba(169,182,203,.12);font-size:15px;color:#c9d3e3}
+.since li b{font-family:var(--narrow);font-weight:700;color:var(--cream)}
+.since li span:last-child{font-family:var(--narrow);font-weight:700;color:var(--sun);text-align:right;font-variant-numeric:tabular-nums}
 .statcard .note{margin:8px 0 0;font-size:15px;line-height:1.45;color:#c9d3e3}
 @media (max-width:820px){
   .hero .wrap{grid-template-columns:1fr;grid-template-areas:"badge" "text" "card";grid-template-rows:auto;padding-top:96px}
@@ -262,6 +266,7 @@ footer small{color:#7d8ca5;font-size:14px}
       <hr>
       <div class="row"><span class="num" id="hc-days">398</span><span class="lbl">days of receipts</span></div>
       <p class="note">I posted my first TikTok on September 11, 2025, to get my voice out there after what happened to Charlie Kirk. I haven't stopped since.</p>
+      <ul class="since" id="hc-since" aria-label="When each platform started"></ul>
     </aside>
     <img class="badge" src="/assets/logo.png" alt="Common Sense Gay logo: a cartoon portrait in front of a flag, a star and a Texas longhorn" width="300" height="300">
   </div>
@@ -417,6 +422,14 @@ footer small{color:#7d8ca5;font-size:14px}
   var p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
   var d=Math.round((Date.parse(p+"T00:00:00Z")-Date.parse("2025-09-11T00:00:00Z"))/864e5);
   if(d>0)document.getElementById("hc-days").textContent=d.toLocaleString("en-US");
+  // First post on each platform. Add a date here (YYYY-MM-DD) to show it.
+  var STARTS=[["TikTok","2025-09-11"],["YouTube","2025-10-06"],["Facebook",null],["Instagram",null],["X",null]];
+  var today=Date.parse(p+"T00:00:00Z");
+  document.getElementById("hc-since").innerHTML=STARTS.filter(function(x){return x[1]}).map(function(x){
+    var n=Math.round((today-Date.parse(x[1]+"T00:00:00Z"))/864e5);
+    var nice=new Date(x[1]+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"});
+    return "<li><b>"+x[0]+"</b><span>since "+nice+"</span><span>"+n.toLocaleString("en-US")+" days</span></li>";
+  }).join("");
 })();
 function initDock(){
   var d=document.getElementById("dock"); if(!d)return;
