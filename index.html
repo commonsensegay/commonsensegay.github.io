@@ -161,6 +161,17 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .also{font-family:var(--narrow);font-weight:600;font-size:17px;color:var(--mist);margin:0 0 12px}
 .paper .btn.fb{background:#1b4fa0;color:#fff}
 .paper .btn.fb:hover{background:#1f5bb8}
+
+.tally{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 22px;margin:0 0 36px}
+.tally .big{font-family:var(--display);font-size:clamp(64px,9vw,112px);line-height:1;color:var(--sun);font-variant-numeric:tabular-nums}
+.tally .what{color:#d8dfeb;max-width:40ch;font-size:19px}
+.tally small{display:block;color:#7d8ca5;font-size:14px;margin-top:6px}
+.cnt{font-style:normal;font-family:var(--display);font-size:30px;line-height:1.1;color:var(--cream);margin:2px 0 2px}
+.cnt:empty{display:none}
+.cnt .g,.fbcount .g{display:block;font-family:var(--narrow);font-weight:600;font-size:15px;color:#7fd3a0;letter-spacing:.01em}
+.fbcount{display:block;font-family:var(--display);font-size:22px;color:var(--sun);margin-bottom:6px}
+.fbcount:empty{display:none}
+.fbcount .g{display:inline;margin-left:10px}
 /* sign-off */
 footer{background:var(--night);border-top:6px solid var(--red);padding:48px 0 56px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px}
@@ -271,11 +282,14 @@ footer small{color:#7d8ca5;font-size:14px}
 <section class="follow" id="follow" aria-labelledby="follow-title">
   <div class="wrap">
     <h2 id="follow-title">Follow along</h2>
-    <p class="intro">Same handle everywhere: @commonsensegay.</p>
+    <div class="tally" aria-live="polite">
+      <span class="big" id="fl-total">53K+</span>
+      <span class="what">followers and counting. Same handle everywhere: @commonsensegay.<small id="fl-asof">Counted from each public profile, updated daily.</small></span>
+    </div>
     <div class="fbfeat">
       <div class="fbicon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4.2h-3c-2.8 0-4.4 1.8-4.4 4.6V11H7v3.7h2.6V22h3.8v-7.3h3l.5-3.7h-3.5V9.1c0-.7.3-1.1 1-1.1z"/></svg></div>
       <div>
-        <h3>Facebook is where the channel gets paid</h3>
+        <span class="fbcount" data-p="facebook"></span><h3>Facebook is where the channel gets paid</h3>
         <p>Follow, watch and share there. It's the single easiest way to keep the investigations coming, and it costs you nothing.</p>
       </div>
       <a class="btn primary" href="https://www.facebook.com/Commonsensegay/" rel="noopener">Follow on Facebook</a>
@@ -284,16 +298,16 @@ footer small{color:#7d8ca5;font-size:14px}
     <div class="plats">
       <a class="plat" href="https://www.tiktok.com/@commonsensegay" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 4.9 5.7V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z"/></svg>
-        <b>TikTok</b><span>Stitches and rapid-fire receipts</span></a>
+        <b>TikTok</b><em class="cnt" data-p="tiktok"></em><span>Stitches and rapid-fire receipts</span></a>
       <a class="plat" href="https://www.instagram.com/commonsensegay" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        <b>Instagram</b><span>Reels and community polls</span></a>
+        <b>Instagram</b><em class="cnt" data-p="instagram"></em><span>Reels and community polls</span></a>
       <a class="plat" href="https://www.youtube.com/@commonsensegay" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .4-3.8 31 31 0 0 0-.4-3.8zM10 15V9l5.2 3z"/></svg>
-        <b>YouTube</b><span>Long-form investigations</span></a>
+        <b>YouTube</b><em class="cnt" data-p="youtube"></em><span>Long-form investigations</span></a>
       <a class="plat" href="https://x.com/commonsensegay" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>
-        <b>X</b><span>Quick takes and threads</span></a>
+        <b>X</b><em class="cnt" data-p="x"></em><span>Quick takes and threads</span></a>
     </div>
     <div class="lcr">
       <p><b>Log Cabin Republicans of Dallas</b>A Republican home for gay conservatives and our allies in Dallas, and a seat at the table.</p>
@@ -329,6 +343,42 @@ footer small{color:#7d8ca5;font-size:14px}
       var c=d.margin_change;
       set("ev-chg",c===0?"No change":Math.abs(c)+" pts toward "+(c>0?"Democrats":"Republicans"));
     }
+  }).catch(function(){});
+})();
+
+(function(){
+  var short=function(n){return n>=1e6?(n/1e6).toFixed(1).replace(/\.0$/,"")+"M":(n>=1e4||(n>=1e3&&n%100===0))?(n/1e3).toFixed(1).replace(/\.0$/,"")+"K":Number(n).toLocaleString("en-US")};
+  fetch("/data/followers.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||!d.history||!d.history.length)return;
+    var h=d.history, cur=h[h.length-1], keys=["tiktok","facebook","instagram","youtube","x"];
+    var t0=new Date(cur.date+"T12:00:00"), base=null;
+    for(var i=h.length-2;i>=0;i--){ if((t0-new Date(h[i].date+"T12:00:00"))/864e5>=7){base=h[i];break;} }
+    if(!base&&h.length>1)base=h[0];
+    var total=0;
+    keys.forEach(function(k){
+      var v=cur[k]; if(typeof v!=="number")return; total+=v;
+      var g="";
+      if(base&&typeof base[k]==="number"&&v-base[k]>0){
+        var days=Math.round((t0-new Date(base.date+"T12:00:00"))/864e5);
+        g='<span class="g">+'+short(v-base[k])+(days>=7?" this week":" in "+days+" day"+(days>1?"s":""))+"</span>";
+      }
+      document.querySelectorAll('[data-p="'+k+'"]').forEach(function(el){
+        el.innerHTML=short(v)+(el.classList.contains("fbcount")?" followers":"")+g;
+      });
+    });
+    var el=document.getElementById("fl-total"), target=Math.floor(total/1000);
+    var asof=new Date(cur.date+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
+    document.getElementById("fl-asof").textContent="Counted from each public profile, last updated "+asof+".";
+    var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var show=function(n){el.textContent=n+"K+"};
+    if(reduce||!("IntersectionObserver" in window)){show(target);return;}
+    show(target);
+    var io=new IntersectionObserver(function(es){
+      if(!es[0].isIntersecting)return; io.disconnect();
+      var s=performance.now(),dur=1400;
+      (function step(t){var p=Math.min(1,(t-s)/dur),e=1-Math.pow(1-p,3);show(Math.round(target*e));if(p<1)requestAnimationFrame(step);})(s);
+    },{threshold:.6});
+    io.observe(el);
   }).catch(function(){});
 })();
 </script>
