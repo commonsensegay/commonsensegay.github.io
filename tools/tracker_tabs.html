@@ -99,6 +99,27 @@ body .vrow{font-family:var(--body);font-size:14px}
 .csg-gloss dt{font-weight:700;color:#0c1e38}
 .csg-gloss dd{margin:0;color:#3d3a33}
 @media (max-width:600px){.csg-gloss dl{grid-template-columns:1fr}.csg-gloss dd{margin-bottom:6px}.csg-bottom{padding:22px 20px}.csg-intro{padding:18px 18px}}
+.csg-tabs button[data-t="volunteer"]{background:#b8362e;border-color:#b8362e;color:#fff6e3}
+.csg-tabs button[data-t="volunteer"]:hover{background:#d2433a;border-color:#d2433a;color:#fff}
+.csg-tabs button[data-t="volunteer"][aria-selected="true"]{background:#fff6e3;border-color:#b8362e;color:#b8362e}
+#csg-volunteer .gv-hero{background:#b8362e;color:#fff6e3;border-radius:8px;padding:28px 30px;margin-bottom:22px}
+#csg-volunteer .gv-hero h2{color:#fff;margin:4px 0 12px;font-size:clamp(26px,3.4vw,38px);line-height:1.15}
+#csg-volunteer .gv-hero p{font-size:18px;line-height:1.6;margin:0 0 10px;max-width:760px}
+#csg-volunteer .gv-hero b{color:#fff}
+#csg-volunteer .gv-hero h2::before,#csg-volunteer .gv-hero h2::after{display:none}
+#csg-volunteer .gv-lab{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:#ffd27a!important}
+#csg-volunteer .gv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:22px}
+@media (max-width:900px){#csg-volunteer .gv-grid{grid-template-columns:1fr}}
+#csg-volunteer .gv-card{background:#fffaf0;border:2px solid #e6d9b8;border-top:6px solid #b8362e;border-radius:8px;padding:20px 22px;display:flex;flex-direction:column}
+#csg-volunteer .gv-card h3{margin:2px 0 4px;font-size:24px;color:#0c1e38}
+#csg-volunteer .gv-card p{font-size:16px;line-height:1.55;margin:0 0 12px;color:#3d3a33}
+#csg-volunteer .gv-tag{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#b8362e!important;margin:0!important}
+#csg-volunteer .gv-who{font-weight:600;color:#5f5a4e!important;font-size:15px!important}
+#csg-volunteer .gv-btn{margin-top:auto;align-self:flex-start;background:#b8362e;color:#fff;text-decoration:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:17px;padding:10px 18px;border-radius:999px}
+#csg-volunteer .gv-btn:hover{background:#0c1e38}
+#csg-volunteer .gv-steps{background:#fffaf0;border:2px solid #e6d9b8;border-radius:8px;padding:20px 24px;margin-bottom:14px}
+#csg-volunteer .gv-steps h3{margin:0 0 8px;color:#0c1e38}
+#csg-volunteer .gv-steps li{font-size:17px;line-height:1.6;margin-bottom:6px}
 .csg-swipe{display:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:600;font-size:14px;color:#5f5a4e;margin:0 0 6px}
 @media (max-width:820px){.csg-swipe{display:block}}
 </style>
@@ -110,6 +131,7 @@ body .vrow{font-family:var(--body);font-size:14px}
   var title=function(s){var h=s.querySelector("h2");return h?h.textContent.trim().toLowerCase():""};
   var TABS=[
     {id:"summary",label:"Summary",match:["today's brief"]},
+    {id:"volunteer",label:"★ Get out the vote",match:["__volunteer__"]},
     {id:"overall",label:"Overall",match:["overall","hard counts: party","trend"]},
     {id:"states",label:"By state",match:["state by state","totals only"]},
     {id:"inperson",label:"In person vs mail",match:["in person or mail"]},
@@ -205,7 +227,7 @@ body .vrow{font-family:var(--body);font-size:14px}
     bottom.innerHTML='<p class="lab">The bottom line, as of '+fd(cur.date)+'</p>'
       +'<p class="big">About <b>'+millions+' million</b> Americans have already voted. In the '+C.stp+' states that track party, registered Democrats cast <span class="dm">'+per(C.dp)+'</span> of every 100 ballots and registered Republicans cast <b>'+per(C.rp)+'</b>. '+lead+', '+trend+' when tracking started on '+fd(first.date)+'. '+who+'</p>'
       +'<ul>'
-      +'<li class="gotv"><b>Republicans, vote early.</b> We\'ve long saved our vote for Election Day, which is why Democrats lead right now. If you don\'t trust mail ballots, vote early in person. We\'ll swamp Election Day, but we can\'t afford to miss a single vote, so if you can vote early, do it, and bring your friends and family. <a href="/vote/">Find your early voting dates</a></li>'
+      +'<li class="gotv"><b>Republicans, vote early.</b> We\'ve long saved our vote for Election Day, which is why Democrats lead right now. If you don\'t trust mail ballots, vote early in person. We\'ll swamp Election Day, but we can\'t afford to miss a single vote, so if you can vote early, do it, and bring your friends and family. <a href="/vote/">Find your early voting dates</a> <a href="#volunteer" onclick="document.getElementById(\'tab-volunteer\').click();return false">Volunteer to text voters</a></li>'
       +(gainTxt?'<li>'+gainTxt+'</li>':'')
       +(fwTxt?'<li>'+fwTxt+'</li>':'')
       +'<li><b>This is who voted, not how they voted.</b> A registered Democrat can vote Republican and the reverse. Party registration is the best early signal states publish.</li>'
@@ -225,6 +247,20 @@ body .vrow{font-family:var(--body);font-size:14px}
     TABS.forEach(function(t){ if(!hit&&t.match.some(function(m){return h.indexOf(m)===0||h.indexOf(m)>-1})) hit=t.id; });
     if(!hit)hit="overall"; s.setAttribute("data-tab",hit); map[hit].push(s);
   });
+  // ---- Get out the vote: Republican volunteer programs
+  var vol=document.createElement("section"); vol.id="csg-volunteer"; vol.setAttribute("data-tab","volunteer");
+  var prog=function(tag,name,who,what,href,btn){return '<div class="gv-card"><p class="gv-tag">'+tag+'</p><h3>'+name+'</h3><p class="gv-who">'+who+'</p><p>'+what+'</p><a class="gv-btn" href="'+href+'" target="_blank" rel="noopener">'+btn+' →</a></div>'};
+  vol.innerHTML='<div class="gv-hero"><p class="gv-lab">Get out the vote</p><h2>This is how Democrats have been winning elections. It\'s our turn.</h2>'
+    +'<p>Democrats don\'t just wait for Election Day. For years they\'ve run volunteer armies that text, call and knock on doors to bank their voters early, then chase every ballot until it\'s in. That\'s the lead you see on the Summary tab.</p>'
+    +'<p><b>We can do the same thing from our phones.</b> Pick one of these, give it an hour this week, and get the people you know to the polls early.</p></div>'
+    +'<div class="gv-grid">'
+    +prog("Texas","Abbott Impact","Texas Republicans · free app","Match your phone contacts to the Texas voter file, see which of your friends and family have already voted during early voting, and send them a reminder if they haven\'t. Early voting in Texas runs Oct 19 to Oct 30.","https://abbottimpact.org/app","Get the app")
+    +prog("Swing states","Early Vote Action","Scott Presler\'s PAC · free app","Text, call, write letters, send postcards and knock doors to turn out Republican voters in the key swing states. You can do most of it from home, wherever you live.","https://earlyvoteaction.com/app/","Get the app")
+    +prog("Every state","Protect the Vote","Republican National Committee","Not texting, but just as important: sign up to be a poll watcher, work the polls as an election worker, or help as a lawyer or law student. The RNC trains you.","https://protectthevote.com/#join","Volunteer")
+    +'</div>'
+    +'<div class="gv-steps"><h3>The one-hour plan</h3><ol><li><b>Vote early yourself.</b> <a href="/vote/">Find your early voting dates</a>.</li><li><b>Text five people</b> you know and ask when they\'re voting. A plan to vote is the best predictor someone actually does.</li><li><b>Pick one program above</b> and do one shift of texts or calls.</li></ol></div>'
+    +'<p class="note">Know of another Republican volunteer or text-banking program that\'s open to the public? Send it my way and I\'ll check it out and add it. Links go to each group\'s own site; Common Sense Gay isn\'t paid by any of them.</p>';
+  if(secs.length){ secs[0].parentNode.insertBefore(vol,secs[0]); map.volunteer.push(vol); }
   if(sum&&secs.length){ var firstSum=map.summary[0]||secs[0]; firstSum.parentNode.insertBefore(sum,firstSum); sum.setAttribute("data-tab","summary"); map.summary.unshift(sum); }
   Object.keys(INTRO).forEach(function(id){ if(!map[id]||!map[id].length)return; var d=document.createElement("div"); d.className="csg-intro"; d.setAttribute("data-tab",id); d.innerHTML=INTRO[id]; map[id][0].parentNode.insertBefore(d,map[id][0]); map[id].unshift(d); });
   if(bottom&&map.summary.length){ map.summary[0].parentNode.insertBefore(bottom,map.summary[0]); map.summary.unshift(bottom); }
@@ -237,7 +273,7 @@ body .vrow{font-family:var(--body);font-size:14px}
     +'<h1>Early vote tracker 2026</h1>'
     +'<p class="lede">Who has already voted in the November 3 midterm, by the party they\'re registered with. Not how they voted, just who showed up.</p>';
   head.innerHTML='<div class="hin">'+head.innerHTML+'</div><div class="csg-hz" aria-hidden="true"><span class="st" style="left:7%;top:6px">★</span><span class="st" style="left:18%;top:20px">★</span><span class="st" style="left:29%;top:8px">★</span><span class="st" style="right:29%;top:8px">★</span><span class="st" style="right:18%;top:20px">★</span><span class="st" style="right:7%;top:6px">★</span><div class="sun"></div><div class="stripes"><i></i><i></i><i></i></div><div class="ground"></div></div>';
-  var anchor=secs[0]; anchor.parentNode.insertBefore(head,map[tabs[0].id][0]); anchor.parentNode.insertBefore(nav,map[tabs[0].id][0]);
+  var firstEl=wrap.querySelector(":scope > [data-tab]"); firstEl.parentNode.insertBefore(head,firstEl); firstEl.parentNode.insertBefore(nav,firstEl);
   var allSecs=[].slice.call(wrap.querySelectorAll(":scope > [data-tab]"));
   function show(id,push){
     if(!map[id]||!map[id].length)id=tabs[0].id;
