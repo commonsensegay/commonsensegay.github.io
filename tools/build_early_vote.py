@@ -38,6 +38,15 @@ TOP = """<div class="votebar" id="votebar" role="region" aria-label="Early votin
 out = f"""<!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LYH4ZTMX31"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LYH4ZTMX31');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Who has already voted in the 2026 midterm, by party, in every state. Updated every morning and measured against 2022 and 2024.">
