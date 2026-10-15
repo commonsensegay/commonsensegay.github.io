@@ -677,10 +677,25 @@ body .vrow{font-family:var(--body);font-size:14px}
     var towardR=mv.filter(function(x){return x.shift<-0.05}).sort(function(a,b){return a.shift-b.shift}).slice(0,5).map(function(x){return li(x,Math.abs(x.shift).toFixed(1)+" pts toward R, now "+mtxt(x.now))}).join("")||"<li>None yet</li>";
     var towardD=mv.filter(function(x){return x.shift>0.05}).sort(function(a,b){return b.shift-a.shift}).slice(0,5).map(function(x){return li(x,x.shift.toFixed(1)+" pts toward D, now "+mtxt(x.now))}).join("")||"<li>None yet</li>";
     var growth=mv.slice().sort(function(a,b){return b.grow-a.grow}).slice(0,5).map(function(x){return li(x,"+"+n(x.grow)+" ballots")}).join("")||"<li>None yet</li>";
+    var surpriseHTML="";
+    try{
+      var Y=(typeof Y22!=="undefined")?Y22:{}, redder=[], modeled=[];
+      for(var ab2 in cur.states){
+        var v=cur.states[ab2], tot=v[1]+v[2]+v[3];
+        if(Y[ab2]&&reg.has(ab2)&&tot>=5000){ var y=Y[ab2], m22=(y[0]-y[1])/y[2]*100, mn=(v[2]-v[1])/tot*100; if(mn-m22<0.5) redder.push({ab:ab2,mn:mn,m22:m22,sh:mn-m22}); }
+        if(!reg.has(ab2)&&v[1]+v[2]>0&&v[0]>=50000) modeled.push({ab:ab2,m:(v[2]-v[1])/v[0]*100,n:v[0]});
+      }
+      redder.sort(function(a,b){return a.sh-b.sh}); modeled.sort(function(a,b){return Math.abs(a.m)-Math.abs(b.m)});
+      var rl=redder.slice(0,5).map(function(x){return '<li><b>'+(NM[x.ab]||x.ab)+'</b> '+mtxt(x.mn)+' now vs '+mtxt(x.m22)+' at the 2022 finish</li>'}).join("")||'<li>None yet. Every state with enough ballots is running bluer than its 2022 finish, which is normal this early.</li>';
+      var ml=modeled.slice(0,6).map(function(x){return '<li><b>'+(NM[x.ab]||x.ab)+'</b> about '+mtxt(x.m)+' <span style="color:var(--muted)">('+n(x.n)+' ballots)</span></li>'}).join("");
+      surpriseHTML='<div class="cols" style="margin:6px 0 14px"><div class="bcard"><h3>Surprises: running redder than 2022</h3><ol>'+rl+'</ol><p class="note" style="margin-top:8px">Most states look bluer than their 2022 finish this early because mail ballots come in first. A state that is already redder than 2022 stands out.</p></div>'
+        +(ml?'<div class="bcard"><h3 class="navy">Swing states we can only estimate</h3><ol>'+ml+'</ol><p class="note" style="margin-top:8px">These states don\'t register voters by party, so these are Election Data Guy\'s model estimates, closest races first. '+(modeled.length?(NM[modeled[0].ab]||modeled[0].ab)+' is the closest right now.':'')+'</p></div>':'')+'</div>';
+    }catch(e){}
     sum=document.createElement("section"); sum.id="csg-summary";
     sum.innerHTML='<h2>By the numbers</h2><p class="sub">Where things stand after the '+fd(cur.date)+' pull, what changed since yesterday, and how far it has moved since tracking started on '+fd(first.date)+'. Shares and margin use party-registration states only. More states start reporting as early voting opens, so some of the long-run change comes from new states joining, not just voters moving.</p>'
       +'<div class="grid">'+grid+'</div>'
       +'<p class="stamp">Party registration shows who returned a ballot, not how they voted.</p>'
+      +surpriseHTML
       +'<div class="cols"><div class="bcard"><h3>Moved most toward Republicans</h3><ol>'+towardR+'</ol></div>'
       +'<div class="bcard"><h3 class="blue">Moved most toward Democrats</h3><ol>'+towardD+'</ol></div>'
       +'<div class="bcard"><h3 class="navy">Most new ballots</h3><ol>'+growth+'</ol></div></div>'
@@ -705,12 +720,20 @@ body .vrow{font-family:var(--body);font-size:14px}
     if(dir>0.5)trend="up from "+fm;
     var who=dir<-0.5?"Republicans are closing the gap.":dir>0.5?"Democrats are widening their lead.":"The race for early ballots has held steady.";
     var lead=C.m>=0?'Democrats lead by <b class="dm">'+Math.abs(C.m).toFixed(1)+' points</b>':'Republicans lead by <b>'+Math.abs(C.m).toFixed(1)+' points</b>';
+    var days=Math.max(1,Math.round((Date.parse(cur.date)-Date.parse(first.date))/864e5));
+    var perDay=(C.m-F.m)/days, fwC=C.d-C.r, fwF=F.d-F.r;
+    var gainTxt=perDay<-0.05?'<b>Republicans are gaining about '+Math.abs(perDay).toFixed(2).replace(/0$/,"")+' points a day.</b> The Democratic lead has dropped '+Math.abs(C.m-F.m).toFixed(1)+' points in '+days+' days, from '+mtxt(F.m)+' to '+mtxt(C.m)+(P?(C.m<P.m?', and moved another '+Math.abs(C.m-P.m).toFixed(1)+' toward Republicans since yesterday.':'.'):'.')
+      :perDay>0.05?'<b>Democrats are gaining about '+perDay.toFixed(2).replace(/0$/,"")+' points a day</b> since '+fd(first.date)+'.':'';
+    var fwTxt=(fwC>=0&&fwF>=0)?'<b>The firewall is growing, the lead is shrinking.</b> Democrats\' raw ballot lead went from '+n(fwF)+' to '+n(fwC)+' since '+fd(first.date)+', about '+(fwC>=fwF?'+':'')+n(Math.round((fwC-fwF)/days))+' a day. It grows because more people are voting, but as a share of all ballots the Democratic edge '+(C.m<F.m?'keeps getting smaller':'is holding')+'.':'';
     bottom=document.createElement("div"); bottom.className="csg-bottom"; bottom.setAttribute("data-tab","summary");
     bottom.innerHTML='<p class="lab">The bottom line, as of '+fd(cur.date)+'</p>'
       +'<p class="big">About <b>'+millions+' million</b> Americans have already voted. In the '+C.stp+' states that track party, registered Democrats cast <span class="dm">'+per(C.dp)+'</span> of every 100 ballots and registered Republicans cast <b>'+per(C.rp)+'</b>. '+lead+', '+trend+' when tracking started on '+fd(first.date)+'. '+who+'</p>'
-      +'<ul><li><b>This is who voted, not how they voted.</b> A registered Democrat can vote Republican and the reverse. Party registration is the best early signal states publish.</li>'
-      +'<li><b>Democrats usually lead early.</b> They vote by mail more. In 2022, early voting finished at about <b>D +8.7</b>. A Democratic lead that ends smaller than that is good news for Republicans.</li>'
-      +'<li><b>It moves every day.</b> More states open in-person voting through Nov 3, and in-person voters lean Republican.</li></ul>'
+      +'<ul>'
+      +'<li><b>Republicans historically wait for Election Day.</b> They vote early far less than Democrats, so a big Democratic lead at this stage is normal, not a warning sign.</li>'
+      +(gainTxt?'<li>'+gainTxt+'</li>':'')
+      +(fwTxt?'<li>'+fwTxt+'</li>':'')
+      +'<li><b>This is who voted, not how they voted.</b> A registered Democrat can vote Republican and the reverse. Party registration is the best early signal states publish.</li>'
+      +'<li><b>The 2022 yardstick.</b> Early voting finished 2022 at about <b>D +8.7</b>. A Democratic lead that ends smaller than that is good news for Republicans.</li></ul>'
       +'<details class="csg-gloss"><summary>What the terms mean</summary><dl>'
       +'<dt>Hard count</dt><dd>A real number from a state that records each voter\'s party. Nothing estimated.</dd>'
       +'<dt>Modeled</dt><dd>An estimate for states that don\'t register voters by party, based on Election Data Guy\'s model.</dd>'
