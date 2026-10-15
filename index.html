@@ -56,8 +56,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 .nav a.gotv-link{background:#b8362e;color:#fff6e3;padding:4px 12px;border-radius:999px;margin:-4px 0}
 .nav a.gotv-link:hover{background:#d2433a;color:#fff}
 .nav a{white-space:nowrap}
+.nav a.ev-link{background:#f5a21f;color:#0c1e38;padding:4px 12px;border-radius:999px;margin:-4px 0;text-transform:capitalize}
+.nav a.ev-link:hover{background:#ffb84a;color:#0c1e38}
+@media (max-width:480px){.mark{font-size:16px;line-height:1.15;gap:8px}.mark img{width:38px;height:38px}.nav .ev-long{display:none}.nav{gap:8px}.nav a.ev-link,.nav a.gotv-link{padding:4px 10px}}
 @media (max-width:700px){.nav a:not(.keep){display:none}.nav{gap:14px}}
-@media (max-width:480px){.nav a.keep:not(.gotv-link){display:none}}
+@media (max-width:480px){.nav a.keep:not(.gotv-link):not(.ev-link){display:none}}
 
 /* hero */
 .hero{position:relative;overflow:hidden;min-height:min(860px,100svh);display:flex;flex-direction:column;
@@ -259,8 +262,8 @@ footer small{color:#7d8ca5;font-size:14px}
     <a class="mark" href="/"><img src="/assets/logo.png" alt="" width="44" height="44">Common Sense Gay</a>
     <nav class="nav" aria-label="Main">
       <a class="keep" href="/vote/">Where to vote</a>
+      <a class="keep ev-link" href="/early-vote/"><span class="ev-long">Early vote </span>tracker</a>
       <a class="keep gotv-link" href="/early-vote/#volunteer">Volunteer</a>
-      <a href="/early-vote/">Early vote tracker</a>
       <a href="#about">What I cover</a>
       <a href="#follow">Follow</a>
     </nav>
