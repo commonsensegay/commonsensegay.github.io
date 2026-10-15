@@ -174,6 +174,35 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .fbcount{display:block;font-family:var(--display);font-size:22px;color:var(--sun);margin-bottom:6px}
 .fbcount:empty{display:none}
 .fbcount .g{display:inline;margin-left:10px}
+
+/* sticky follower dock */
+.dock{position:fixed;left:50%;bottom:18px;z-index:20;display:flex;align-items:center;gap:18px;padding:10px 12px 10px 20px;
+  background:rgba(8,21,40,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:2px solid var(--sun);border-radius:999px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);transform:translate(-50%,140%);transition:transform .45s cubic-bezier(.2,.7,.2,1);max-width:calc(100vw - 24px)}
+.dock.on{transform:translate(-50%,0)}
+.dock[hidden]{display:none}
+.dock a{text-decoration:none}
+.dock-total{display:flex;align-items:baseline;gap:6px;color:var(--cream)}
+.dock-total .n{font-family:var(--display);font-size:30px;line-height:1;color:var(--sun)}
+.dock-total .l{font-family:var(--narrow);font-weight:600;font-size:16px;color:var(--mist)}
+.dock-plats{display:flex;gap:14px;padding-left:18px;border-left:1px solid rgba(169,182,203,.25)}
+.dock-plats a{display:flex;align-items:center;gap:5px;color:var(--cream);font-family:var(--narrow);font-weight:700;font-size:16px}
+.dock-plats a:hover{color:var(--sun)}
+.dock-plats svg{width:16px;height:16px;color:var(--sun)}
+.dock-fb{display:inline-flex;align-items:center;gap:8px;background:var(--sun);color:var(--night);font-family:var(--narrow);font-weight:700;font-size:16px;padding:10px 16px;border-radius:999px;white-space:nowrap}
+.dock-fb:hover{background:#ffb646}
+.dock-fb svg{width:16px;height:16px}
+.dock-x{background:none;border:0;color:var(--mist);font-size:22px;line-height:1;cursor:pointer;padding:4px 6px;border-radius:50%}
+.dock-x:hover{color:var(--cream)}
+@media (max-width:900px){.dock-plats{display:none}}
+@media (max-width:520px){
+  .dock{left:8px;right:8px;bottom:8px;transform:translateY(140%);max-width:none;justify-content:space-between;gap:10px;padding:8px 8px 8px 16px}
+  .dock.on{transform:none}
+  .dock-total .n{font-size:26px}
+  .dock-fb{padding:9px 12px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.dock{transition:none}}
+footer{padding-bottom:110px}
 /* sign-off */
 footer{background:var(--night);border-top:6px solid var(--red);padding:48px 0 56px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px}
@@ -319,6 +348,13 @@ footer small{color:#7d8ca5;font-size:14px}
 </section>
 </main>
 
+<aside class="dock" id="dock" aria-label="Follower count" hidden>
+  <a class="dock-total" href="#follow"><span class="n" id="dock-total">80K+</span><span class="l">followers</span></a>
+  <div class="dock-plats" id="dock-plats"></div>
+  <a class="dock-fb" href="https://www.facebook.com/Commonsensegay/" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4.2h-3c-2.8 0-4.4 1.8-4.4 4.6V11H7v3.7h2.6V22h3.8v-7.3h3l.5-3.7h-3.5V9.1c0-.7.3-1.1 1-1.1z"/></svg><span>Follow on Facebook</span></a>
+  <button class="dock-x" id="dock-x" type="button" aria-label="Hide follower bar">&times;</button>
+</aside>
+
 <footer>
   <div class="wrap">
     <p class="signoff">I'm your Common Sense Gay.</p>
@@ -348,6 +384,21 @@ footer small{color:#7d8ca5;font-size:14px}
   }).catch(function(){});
 })();
 
+
+function initDock(){
+  var d=document.getElementById("dock"); if(!d)return;
+  try{ if(sessionStorage.getItem("dockHidden")==="1")return; }catch(e){}
+  d.hidden=false;
+  var hero=document.querySelector(".hero"), follow=document.getElementById("follow"), foot=document.querySelector("footer");
+  var ticking=false;
+  var upd=function(){ ticking=false;
+    var hb=hero.getBoundingClientRect().bottom, fr=follow.getBoundingClientRect(), vh=window.innerHeight;
+    var inFollow=fr.top<vh*0.8 && fr.bottom>vh*0.2;
+    d.classList.toggle("on", hb<60 && !inFollow); };
+  window.addEventListener("scroll",function(){ if(!ticking){ticking=true;requestAnimationFrame(upd);} },{passive:true});
+  window.addEventListener("resize",upd); upd();
+  document.getElementById("dock-x").addEventListener("click",function(){ d.classList.remove("on"); setTimeout(function(){d.hidden=true},450); try{sessionStorage.setItem("dockHidden","1")}catch(e){} });
+}
 (function(){
   var short=function(n){return n>=1e6?(n/1e6).toFixed(1).replace(/\.0$/,"")+"M":(n>=1e4||(n>=1e3&&n%100===0))?(n/1e3).toFixed(1).replace(/\.0$/,"")+"K":Number(n).toLocaleString("en-US")};
   fetch("/data/followers.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(d){
@@ -356,12 +407,12 @@ footer small{color:#7d8ca5;font-size:14px}
     var t0=new Date(cur.date+"T12:00:00"), base=null;
     for(var i=h.length-2;i>=0;i--){ if((t0-new Date(h[i].date+"T12:00:00"))/864e5>=7){base=h[i];break;} }
     if(!base&&h.length>1)base=h[0];
-    var total=0, parts=[], names={tiktok:"TikTok",facebook:"Facebook",instagram:"Instagram",youtube:"YouTube",x:"X"};
+    var total=0, dockItems=[], parts=[], names={tiktok:"TikTok",facebook:"Facebook",instagram:"Instagram",youtube:"YouTube",x:"X"};
     keys.forEach(function(k){
       var v=null,vd=null;
       for(var j=h.length-1;j>=0;j--){ if(typeof h[j][k]==="number"){v=h[j][k];vd=h[j].date;break;} }
       if(v===null)return; total+=v;
-      parts.push('<span><b>'+short(v)+'</b> '+names[k]+'</span>');
+      parts.push('<span><b>'+short(v)+'</b> '+names[k]+'</span>'); dockItems.push([k,v]);
       var g="";
       if(vd===cur.date&&base&&typeof base[k]==="number"&&v-base[k]>0){
         var days=Math.round((t0-new Date(base.date+"T12:00:00"))/864e5);
@@ -372,6 +423,10 @@ footer small{color:#7d8ca5;font-size:14px}
       });
     });
     document.getElementById("fl-brk").innerHTML=parts.join("");
+    var ICONS={"facebook": "<path d=\"M14 8h3V4.2h-3c-2.8 0-4.4 1.8-4.4 4.6V11H7v3.7h2.6V22h3.8v-7.3h3l.5-3.7h-3.5V9.1c0-.7.3-1.1 1-1.1z\"/>", "tiktok": "<path d=\"M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 4.9 5.7V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z\"/>", "instagram": "<path d=\"M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm5 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm4.5-3.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z\"/>", "youtube": "<path d=\"M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .4-3.8 31 31 0 0 0-.4-3.8zM10 15V9l5.2 3z\"/>", "x": "<path d=\"M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z\"/>"}, URLS={facebook:"https://www.facebook.com/Commonsensegay/",tiktok:"https://www.tiktok.com/@commonsensegay",instagram:"https://www.instagram.com/commonsensegay",youtube:"https://www.youtube.com/@commonsensegay",x:"https://x.com/commonsensegay"};
+    document.getElementById("dock-plats").innerHTML=dockItems.map(function(it){return '<a href="'+URLS[it[0]]+'" rel="noopener" aria-label="'+names[it[0]]+' '+short(it[1])+'"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'+ICONS[it[0]]+'</svg>'+short(it[1])+'</a>'}).join("");
+    document.getElementById("dock-total").textContent=Math.floor(total/1000)+"K+";
+    initDock();
     var el=document.getElementById("fl-total"), target=Math.floor(total/1000);
     var asof=new Date(cur.date+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
     document.getElementById("fl-asof").textContent="Counted from each public profile, last updated "+asof+".";
