@@ -57,7 +57,8 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 /* hero */
 .hero{position:relative;overflow:hidden;min-height:min(860px,100svh);display:flex;flex-direction:column;
   background:radial-gradient(ellipse 90% 70% at 50% 100%,#1d3d6e 0%,var(--navy) 55%,var(--night) 100%)}
-.hero .wrap{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding-top:110px;padding-bottom:40px}
+.hero .wrap{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:1.25fr .75fr;grid-template-areas:"text card" "text badge";grid-template-rows:auto 1fr;gap:28px 40px;align-items:start;padding-top:110px;padding-bottom:40px}
+.hero-text{grid-area:text;align-self:center}
 .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(56px,9.5vw,136px);line-height:1.1;letter-spacing:.015em;margin:0 0 32px;text-transform:uppercase;color:var(--cream);text-wrap:balance}
 .hero h1 .vs{display:block;font-family:var(--narrow);font-weight:700;font-size:max(.28em,22px);letter-spacing:.04em;color:var(--sun);margin:.3em 0 .26em;line-height:1;text-transform:none}
 .lede{font-size:clamp(19px,2vw,22px);max-width:34ch;color:#d8dfeb;margin:0 0 32px}
@@ -69,10 +70,19 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 .btn.primary:hover{background:#ffb646}
 .btn.ghost{border-color:rgba(239,227,196,.45);color:var(--cream)}
 .btn.ghost:hover{border-color:var(--cream)}
-.badge{justify-self:end;width:min(360px,100%);filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.badge{grid-area:badge;justify-self:center;align-self:center;width:min(300px,100%);filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.statcard{grid-area:card;justify-self:end;width:min(380px,100%);background:rgba(8,21,40,.72);border:2px solid rgba(240,160,42,.55);border-radius:6px;padding:20px 22px;backdrop-filter:blur(4px)}
+.statcard .row{display:flex;align-items:baseline;gap:12px}
+.statcard .num{font-family:var(--display);font-size:56px;line-height:1;color:var(--sun);font-variant-numeric:tabular-nums}
+.statcard .lbl{font-family:var(--narrow);font-weight:700;font-size:19px;color:var(--cream);line-height:1.15}
+.statcard .hc-plats{display:flex;flex-wrap:wrap;gap:4px 14px;margin:10px 0 0;font-family:var(--narrow);font-weight:600;font-size:15px;color:var(--mist)}
+.statcard .hc-plats b{color:var(--cream)}
+.statcard hr{border:0;border-top:1px solid rgba(169,182,203,.25);margin:16px 0}
+.statcard .note{margin:8px 0 0;font-size:15px;line-height:1.45;color:#c9d3e3}
 @media (max-width:820px){
-  .hero .wrap{grid-template-columns:1fr;padding-top:96px}
-  .badge{justify-self:start;width:150px;order:-1}
+  .hero .wrap{grid-template-columns:1fr;grid-template-areas:"badge" "text" "card";grid-template-rows:auto;padding-top:96px}
+  .badge{justify-self:start;width:150px}
+  .statcard{justify-self:stretch;width:auto}
 }
 
 /* horizon: the one animated moment */
@@ -236,7 +246,7 @@ footer small{color:#7d8ca5;font-size:14px}
 <main>
 <section class="hero" aria-labelledby="hero-title" style="padding:0">
   <div class="wrap">
-    <div>
+    <div class="hero-text">
       <h1 id="hero-title">Common sense<span class="vs">over</span>nonsense</h1>
       <p class="lede"><strong>I investigate the stories everyone else skims.</strong> Public records, official data and the receipts to back it up.</p>
       <div class="ctas">
@@ -246,7 +256,14 @@ footer small{color:#7d8ca5;font-size:14px}
         <a class="btn ghost" href="https://www.tiktok.com/@commonsensegay" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 4.9 5.7V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z"/></svg>Follow on TikTok</a>
       </div>
     </div>
-    <img class="badge" src="/assets/logo.png" alt="Common Sense Gay logo: a cartoon portrait in front of a flag, a star and a Texas longhorn" width="360" height="360">
+    <aside class="statcard" aria-label="By the numbers">
+      <div class="row"><span class="num" id="hc-total">80K+</span><span class="lbl">followers and counting</span></div>
+      <p class="hc-plats" id="hc-plats"></p>
+      <hr>
+      <div class="row"><span class="num" id="hc-days">399</span><span class="lbl">days since Charlie Kirk was assassinated</span></div>
+      <p class="note">I started Common Sense Gay right after September 10, 2025, and I haven't stopped since.</p>
+    </aside>
+    <img class="badge" src="/assets/logo.png" alt="Common Sense Gay logo: a cartoon portrait in front of a flag, a star and a Texas longhorn" width="300" height="300">
   </div>
   <div class="horizon" aria-hidden="true">
     <div class="stars">
@@ -395,6 +412,12 @@ footer small{color:#7d8ca5;font-size:14px}
 })();
 
 
+
+(function(){
+  var p=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+  var d=Math.round((Date.parse(p+"T00:00:00Z")-Date.parse("2025-09-10T00:00:00Z"))/864e5);
+  if(d>0)document.getElementById("hc-days").textContent=d.toLocaleString("en-US");
+})();
 function initDock(){
   var d=document.getElementById("dock"); if(!d)return;
   try{ if(sessionStorage.getItem("dockHidden")==="1")return; }catch(e){}
@@ -433,6 +456,8 @@ function initDock(){
       });
     });
     document.getElementById("fl-brk").innerHTML=parts.join("");
+    document.getElementById("hc-plats").innerHTML=dockItems.map(function(it){return "<span><b>"+short(it[1])+"</b> "+names[it[0]]+"</span>"}).join("");
+    document.getElementById("hc-total").textContent=Math.floor(total/1000)+"K+";
     var ICONS={"facebook": "<path d=\"M14 8h3V4.2h-3c-2.8 0-4.4 1.8-4.4 4.6V11H7v3.7h2.6V22h3.8v-7.3h3l.5-3.7h-3.5V9.1c0-.7.3-1.1 1-1.1z\"/>", "tiktok": "<path d=\"M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.8 5.8 0 1 0 4.9 5.7V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z\"/>", "instagram": "<path d=\"M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm5 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm4.5-3.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z\"/>", "youtube": "<path d=\"M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .4-3.8 31 31 0 0 0-.4-3.8zM10 15V9l5.2 3z\"/>", "x": "<path d=\"M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z\"/>"}, URLS={facebook:"https://www.facebook.com/Commonsensegay/",tiktok:"https://www.tiktok.com/@commonsensegay",instagram:"https://www.instagram.com/commonsensegay",youtube:"https://www.youtube.com/@commonsensegay",x:"https://x.com/commonsensegay"};
     document.getElementById("dock-plats").innerHTML=dockItems.map(function(it){return '<a href="'+URLS[it[0]]+'" rel="noopener" aria-label="'+names[it[0]]+' '+short(it[1])+'"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'+ICONS[it[0]]+'</svg>'+short(it[1])+'</a>'}).join("");
     document.getElementById("dock-total").textContent=Math.floor(total/1000)+"K+";
