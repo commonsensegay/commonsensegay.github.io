@@ -159,7 +159,7 @@ main{{padding:48px 0 64px}}
 .cta p{{margin:0;font-size:19px;max-width:52ch}}
 .cta strong{{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:30px;display:block;color:var(--sun);margin-bottom:4px}}
 .cta .acts{{display:flex;gap:10px;flex-wrap:wrap}}
-.sub{{background:#fff6e3;border-top:2px solid var(--rule);padding:44px 0}}.sub h2{{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(30px,4vw,44px);color:var(--navy);margin:0 0 10px;line-height:1.05}}.sub p{{margin:0 0 18px;color:var(--ink-soft)}}.btn.sub-btn{{background:var(--red);color:#fff;font-size:19px;padding:13px 24px}}
+.sub{{background:#fff6e3;border-top:2px solid var(--rule);padding:44px 0}}.sub h2{{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(30px,4vw,44px);color:var(--navy);margin:0 0 10px;line-height:1.05}}.sub p{{margin:0 0 18px;color:var(--ink-soft)}}.sub-embed{{display:block;width:100%;max-width:560px;height:330px;border:3px solid var(--sun);border-radius:10px;background:#0c1e38}}.sub-alt{{margin:10px 0 0;font-size:15px}}.btn.sub-btn{{background:var(--red);color:#fff;font-size:19px;padding:13px 24px}}
 footer{{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;border-top:6px solid var(--red)}}
 </style>
 </head>
@@ -180,7 +180,7 @@ footer{{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;bord
 </header>
 """
 
-FOOT = """<section class="sub"><div class="wrap narrow"><p class="kick" style="color:var(--red)">Out &amp; Right, the newsletter</p><h2>Get the daily take in your inbox</h2><p>Out of the closet, right of center. The research the headlines skip, with the receipts, delivered free by email.</p><a class="btn sub-btn" href="https://commonsensegay.substack.com/subscribe" rel="noopener">Subscribe free on Substack</a></div></section>
+FOOT = """<section class="sub"><div class="wrap narrow"><p class="kick" style="color:var(--red)">Out &amp; Right, the newsletter</p><h2>Get the daily take in your inbox</h2><p>Out of the closet, right of center. The research the headlines skip, with the receipts, delivered free by email.</p><iframe class="sub-embed" src="https://commonsensegay.substack.com/embed" title="Subscribe to Out &amp; Right" loading="lazy" frameborder="0" scrolling="no"></iframe><p class="sub-alt"><a href="https://commonsensegay.substack.com/subscribe" rel="noopener">Or subscribe on Substack</a></p></div></section>
 <section class="cta">
   <div class="wrap">
     <p><strong>Follow along</strong>New takes every day. Facebook is home base, TikTok is where the receipts go viral.</p>
