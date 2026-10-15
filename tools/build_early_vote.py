@@ -47,6 +47,7 @@ out = f"""<!doctype html>
 
   gtag('config', 'G-LYH4ZTMX31');
 </script>
+<script src="/assets/track.js" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Who has already voted in the 2026 midterm, by party, in every state. Updated every morning and measured against 2022 and 2024.">

@@ -77,6 +77,7 @@ HEAD = """<!doctype html>
 
   gtag('config', 'G-LYH4ZTMX31');
 </script>
+<script src="/assets/track.js" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
