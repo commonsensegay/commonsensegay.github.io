@@ -35,14 +35,14 @@ CHART_PATCHES = [
     ('const X=i=>pl+(W-pl-pr)*i/(T.length-1),Y=v=>pt+(Hh-pt-pb)*(hi-v)/(hi-lo);',
      'const X=i=>pl+(W-pl-pr)*i/(T.length-1),Y=v=>pt+(Hh-pt-pb)*(hi-v)/(hi-lo);'
      'const fv=T.map(t=>t.f);let flo=Math.min(...fv),fhi=Math.max(...fv);const fsp=(fhi-flo)||1;fhi+=fsp*0.1;flo-=fsp*0.1;'
-     'const YF=v=>pt+(Hh-pt-pb)*(v-flo)/(fhi-flo);const fk=v=>Math.abs(v)>=1e6?(v/1e6).toFixed(2)+"M":Math.round(v/1e3)+"K";'
+     'const YF=v=>pt+(Hh-pt-pb)*(fhi-v)/(fhi-flo);const fk=v=>Math.abs(v)>=1e6?(v/1e6).toFixed(2)+"M":Math.round(v/1e3)+"K";'
      'const fline=`<polyline fill="none" stroke="#0c1e38" stroke-width="2.5" stroke-dasharray="6 4" points="${T.map((t,i)=>X(i).toFixed(1)+","+YF(t.f).toFixed(1)).join(" ")}"/>`+T.map((t,i)=>`<rect x="${X(i)-3.5}" y="${YF(t.f)-3.5}" width="7" height="7" fill="#0c1e38"/>`).join("");'
      'const faxis=Array.from({length:5},(_,k)=>flo+(fhi-flo)*k/4).map(v=>`<text x="${W-pr+8}" y="${YF(v)+4}" text-anchor="start" fill="#0c1e38">${fk(v)}</text>`).join("")+`<text x="${W-4}" y="${pt-14}" text-anchor="end" fill="#0c1e38" font-weight="700">Dem lead, ballots</text><text x="${pl}" y="${pt-14}" text-anchor="start" fill="var(--muted)" font-weight="700">Dem lead, points</text>`;'),
     ('segs+dots+lbl+`<g id="cursor"', 'segs+fline+faxis+dots+lbl+`<g id="cursor"'),
     ('<span><b style="background:var(--dem);opacity:.6"></b>Democrats gaining (line falling)</span></div>',
-     '<span><b style="background:var(--dem);opacity:.6"></b>Democrats gaining (line falling)</span><span><b style="background:#0c1e38;height:3px;vertical-align:3px"></b>Dem lead in raw ballots, right axis (dashed)</span></div>'),
+     '<span><b style="background:var(--dem);opacity:.6"></b>Democrats gaining (line falling)</span><span><b style="background:#0c1e38;height:3px;vertical-align:3px"></b>Dem lead in raw ballots (dashed, right axis: higher = bigger Dem lead)</span></div>'),
     ('Hover or tap a point for the shares that day.</p>',
-     'Hover or tap a point for the shares that day. The dashed line is the same lead counted in raw ballots (the firewall), on the right-hand axis. Both axes run the same way: up is better for Republicans. When the solid line climbs while the dashed line drops, the Democratic lead is shrinking as a share but still growing in raw ballots because more people are voting.</p>'),
+     'Hover or tap a point for the shares that day. The dashed line is the Democratic lead in raw ballots (the firewall), on the right-hand axis, where higher means a bigger Democratic lead. It keeps rising because more people vote every day, even while the lead as a share of ballots, the solid line, keeps shrinking.</p>'),
 ]
 for _old, _new in CHART_PATCHES:
     if _old in body:
