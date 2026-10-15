@@ -423,7 +423,7 @@ footer small{color:#7d8ca5;font-size:14px}
   var d=Math.round((Date.parse(p+"T00:00:00Z")-Date.parse("2025-09-11T00:00:00Z"))/864e5);
   if(d>0)document.getElementById("hc-days").textContent=d.toLocaleString("en-US");
   // First post on each platform. Add a date here (YYYY-MM-DD) to show it.
-  var STARTS=[["TikTok","2025-09-11"],["YouTube","2025-10-06"],["Facebook",null],["Instagram",null],["X",null]];
+  var STARTS=[["TikTok","2025-09-11"],["YouTube","2025-10-06"],["Facebook","2026-07-18"],["Instagram",null],["X",null]];
   var today=Date.parse(p+"T00:00:00Z");
   document.getElementById("hc-since").innerHTML=STARTS.filter(function(x){return x[1]}).map(function(x){
     var n=Math.round((today-Date.parse(x[1]+"T00:00:00Z"))/864e5);
