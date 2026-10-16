@@ -144,6 +144,10 @@ body .vrow{font-family:var(--body);font-size:14px}
 .csg-dd .dd-sw{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:#f5a21f;color:#0c1e38;border-radius:999px;padding:1px 7px;vertical-align:2px}
 .csg-dd .dd-est{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;border:1px solid #a8b6cc;color:#a8b6cc;border-radius:999px;padding:0 6px;vertical-align:2px}
 .csg-dd .dd-n{margin:10px 0 0;font-size:13px;color:#a8b6cc}
+.csg-spot{border-top:6px solid #f5a21f;margin:0}
+.csg-spot .sp-h{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.15;color:#fff6e3;margin:0 0 14px}
+.csg-spot .sp-chart{margin-top:16px;background:rgba(244,231,201,.06);border:1px solid #27456f;border-radius:6px;padding:12px 14px}
+.csg-spot .sp-chart .dd-mh{color:#f5a21f}
 .csg-swipe{display:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:600;font-size:14px;color:#5f5a4e;margin:0 0 6px}
 @media (max-width:820px){.csg-swipe{display:block}}
 </style>
@@ -320,6 +324,51 @@ body .vrow{font-family:var(--body);font-size:14px}
   if(secs.length){ secs[0].parentNode.insertBefore(vol,secs[0]); map.volunteer.push(vol); }
   if(sum&&secs.length){ var firstSum=map.summary[0]||secs[0]; firstSum.parentNode.insertBefore(sum,firstSum); sum.setAttribute("data-tab","summary"); map.summary.unshift(sum); }
   Object.keys(INTRO).forEach(function(id){ if(!map[id]||!map[id].length)return; var d=document.createElement("div"); d.className="csg-intro"; d.setAttribute("data-tab",id); d.innerHTML=INTRO[id]; map[id][0].parentNode.insertBefore(d,map[id][0]); map[id].unshift(d); });
+  // ---- State spotlight card(s) at the top of the By state tab
+  try{
+    var SPOT=["MI"];
+    if(typeof SNAPSHOTS!=="undefined"&&SNAPSHOTS.length&&map.states&&map.states.length){
+      var NMs=(typeof NAMES!=="undefined")?NAMES:{MI:"Michigan"};
+      var V22s={MI:1525312};
+      SPOT.forEach(function(ab){
+        var ser=[]; SNAPSHOTS.forEach(function(sn){var a=sn.states[ab]; if(a&&a[1]+a[2]>0&&a[0]>0){var t=a[0]; ser.push({date:sn.date,t:t,r:a[1],d:a[2],rp:a[1]/t*100,dp:a[2]/t*100,m:(a[2]-a[1])/t*100,gap:a[2]-a[1]});}});
+        if(ser.length<2)return;
+        var c=ser[ser.length-1], p=ser[ser.length-2], f=ser[0], nm=NMs[ab]||ab;
+        var lead=function(x){return Math.abs(x.m)<0.05?"Even":(x.m>0?"D +":"R +")+Math.abs(x.m).toFixed(1)};
+        var shift=c.m-f.m, dshift=c.m-p.m;
+        var mv=function(x){return Math.abs(x)<0.05?"no change":Math.abs(x).toFixed(1)+" pts toward "+(x<0?"R":"D")};
+        var head=Math.abs(shift)<0.05?nm+"'s early vote hasn't moved since "+fd(f.date):(shift<0?"The Democratic edge in "+nm+" is shrinking":"The Democratic edge in "+nm+" is growing");
+        var said=(shift<0&&c.m>0)?"From "+lead(f)+" on "+fd(f.date)+" to <b>"+lead(c)+"</b> today, while the number of ballots grew from "+n(f.t)+" to "+n(c.t)+". The more Michiganders vote, the closer it gets."
+          :(c.m<=0?"Republicans now lead the estimated early vote, <b>"+lead(c)+"</b>, up from "+lead(f)+" on "+fd(f.date)+"."
+          :"From "+lead(f)+" on "+fd(f.date)+" to <b>"+lead(c)+"</b> today, on "+n(c.t)+" ballots.");
+        // sparkline of the margin
+        var W=(window.innerWidth<600?340:640),H=(window.innerWidth<600?170:150),pl=44,pr=16,pt=14,pb=26,ms=ser.map(function(x){return x.m}),hi=Math.max(1,Math.max.apply(null,ms)),lo=Math.min(-1,Math.min.apply(null,ms));
+        var X=function(i){return pl+(ser.length===1?0:i*(W-pl-pr)/(ser.length-1))}, Yy=function(v){return pt+(hi-v)*(H-pt-pb)/(hi-lo)};
+        var pts=ser.map(function(x,i){return X(i).toFixed(1)+","+Yy(x.m).toFixed(1)}).join(" ");
+        var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+nm+' estimated Democratic margin by day, from '+lead(f)+' to '+lead(c)+'" style="width:100%;height:auto;display:block">'
+          +'<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Yy(0)+'" y2="'+Yy(0)+'" stroke="#a8b6cc" stroke-dasharray="4 4"/>'
+          +'<text x="'+(pl-6)+'" y="'+(Yy(0)+4)+'" fill="#a8b6cc" font-size="12" text-anchor="end">Even</text>'
+          +'<text x="'+(pl-6)+'" y="'+(Yy(hi)+10)+'" fill="#8fb6f0" font-size="12" text-anchor="end">D +'+hi.toFixed(0)+'</text>'
+          +'<polyline points="'+pts+'" fill="none" stroke="#f5a21f" stroke-width="3" stroke-linejoin="round"/>'
+          +ser.map(function(x,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Yy(x.m).toFixed(1)+'" r="'+(i===ser.length-1?5:3)+'" fill="'+(i===ser.length-1?"#fff6e3":"#f5a21f")+'"><title>'+fd(x.date)+": "+lead(x)+" ("+n(x.t)+" ballots)</title></circle>"}).join("")
+          +'<text x="'+X(0)+'" y="'+(H-6)+'" fill="#a8b6cc" font-size="12">'+fd(f.date)+'</text>'
+          +'<text x="'+X(ser.length-1)+'" y="'+(H-6)+'" fill="#a8b6cc" font-size="12" text-anchor="end">'+fd(c.date)+'</text></svg>';
+        var vs22=V22s[ab]?'<div class="dd-c"><div class="dd-k">Ballots in</div><div class="dd-v">'+n(c.t)+'</div><div class="dd-s">'+Math.round(c.t/V22s[ab]*100)+'% of the 2022 early vote</div></div>':'<div class="dd-c"><div class="dd-k">Ballots in</div><div class="dd-v">'+n(c.t)+'</div><div class="dd-s">'+sg(c.t-p.t,0)+' since '+fd(p.date)+'</div></div>';
+        var el=document.createElement("div"); el.className="csg-dd csg-spot"; el.id="spotlight-"+ab.toLowerCase(); el.setAttribute("data-tab","states");
+        el.innerHTML='<p class="dd-h">★ State spotlight: '+nm+' <span class="dd-est">est.</span></p>'
+          +'<h3 class="sp-h">'+head+'</h3>'
+          +'<div class="dd-g">'
+          +'<div class="dd-c d"><div class="dd-k">Democrats</div><div class="dd-v">'+c.dp.toFixed(1)+'%</div><div class="dd-s">'+n(c.d)+' ballots</div></div>'
+          +'<div class="dd-c r"><div class="dd-k">Republicans</div><div class="dd-v">'+c.rp.toFixed(1)+'%</div><div class="dd-s">'+n(c.r)+' ballots</div></div>'
+          +'<div class="dd-c"><div class="dd-k">Margin</div><div class="dd-v">'+lead(c)+'</div><div class="dd-s">'+mv(dshift)+' since '+fd(p.date)+'<br>'+mv(shift)+' since '+fd(f.date)+'</div></div>'
+          +vs22+'</div>'
+          +'<p class="dd-t">'+said+'</p>'
+          +'<div class="sp-chart"><p class="dd-mh">Estimated margin, day by day</p>'+svg+'</div>'
+          +'<p class="dd-n">'+nm+' doesn\'t register voters by party, so the split is Election Data Guy\'s estimate, not a state count. It shows who returned a ballot, not how they voted.</p>';
+        map.states[0].parentNode.insertBefore(el,map.states[0].nextSibling); map.states.splice(1,0,el);
+      });
+    }
+  }catch(e){ if(window.console)console.warn("spotlight",e); }
   if(bottom&&map.summary.length){ map.summary[0].parentNode.insertBefore(bottom,map.summary[0]); map.summary.unshift(bottom); }
   var tabs=TABS.filter(function(t){return map[t.id].length});
   var nav=document.createElement("div"); nav.className="csg-tabs";
