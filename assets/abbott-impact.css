@@ -1,0 +1,47 @@
+/* Abbott Impact feature (homepage section and /abbott-impact/ page) */
+.ai{background:var(--night);color:var(--cream);padding:84px 0;border-top:6px solid var(--sun);border-bottom:6px solid var(--red);position:relative;overflow:hidden}
+.ai::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 85% 20%,rgba(240,160,42,.16),transparent 70%);pointer-events:none}
+.ai .wrap{position:relative}
+.ai-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+@media (max-width:900px){.ai-grid{grid-template-columns:1fr;gap:40px}}
+.ai-k{font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:16px;color:var(--sun);margin:0 0 12px}
+.ai h2,.ai h1{font-family:var(--display);font-weight:400;text-transform:uppercase;color:var(--cream);font-size:clamp(54px,7.4vw,104px);line-height:.95;margin:0 0 10px;letter-spacing:.01em}
+.ai-sub{font-family:var(--narrow);font-weight:700;font-size:clamp(22px,2.8vw,32px);line-height:1.15;color:var(--sun);margin:0 0 20px}
+.ai-body{font-size:19px;color:#d8dfeb;max-width:56ch;margin:0 0 26px}
+.ai-body b{color:var(--cream)}
+.ai-ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.ai-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--narrow);font-weight:700;font-size:19px;text-decoration:none;padding:15px 24px;border-radius:4px;border:2px solid transparent;white-space:nowrap}
+.ai-btn.go{background:var(--sun);color:var(--night)}
+.ai-btn.go:hover{background:#ffb646}
+.ai-btn.store{border-color:rgba(239,227,196,.45);color:var(--cream);font-size:17px;padding:12px 18px}
+.ai-btn.store:hover{border-color:var(--cream)}
+.ai-btn svg{width:20px;height:20px;flex:0 0 auto}
+.ai-more{display:inline-block;margin-top:18px;font-family:var(--narrow);font-weight:700;font-size:18px;color:var(--sun)}
+.ai-fine{margin:22px 0 0;font-size:14px;color:var(--mist);max-width:60ch}
+
+/* phone card */
+.ai-phone{justify-self:center;width:min(340px,100%);background:#0f2442;border:3px solid var(--sun);border-radius:34px;padding:22px 18px 26px;box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.ai-phone .notch{width:90px;height:8px;border-radius:8px;background:#27456f;margin:0 auto 18px}
+.ai-phone .ph-h{font-family:var(--narrow);font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);margin:0 0 10px}
+.ai-phone ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ai-phone li{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--navy);border:1px solid #27456f;border-radius:10px;padding:10px 12px;font-family:var(--narrow);font-weight:700;font-size:17px}
+.ai-phone li span{font-weight:600;font-size:13px;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.ai-phone .no{background:#5a2321;color:#ffb3ab}
+.ai-phone .yes{background:#1d4a33;color:#9fe0b9}
+.ai-phone .ph-btn{margin-top:14px;text-align:center;background:var(--sun);color:var(--night);font-family:var(--narrow);font-weight:700;font-size:17px;padding:11px;border-radius:10px}
+.ai-phone .ph-n{margin:10px 0 0;text-align:center;font-size:13px;color:var(--mist)}
+
+/* four tools */
+.ai-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;background:rgba(169,182,203,.18);border:2px solid rgba(169,182,203,.18);border-radius:6px;overflow:hidden}
+@media (max-width:900px){.ai-tools{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.ai-tools{grid-template-columns:1fr}}
+.ai-tool{background:var(--night);padding:24px 22px 26px}
+.ai-tool b{display:block;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:34px;line-height:1;color:var(--sun);margin-bottom:10px}
+.ai-tool p{margin:0;font-size:16px;color:#d8dfeb}
+
+/* steps */
+.ai-steps{list-style:none;counter-reset:s;margin:44px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:760px){.ai-steps{grid-template-columns:1fr}}
+.ai-steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start;font-size:17px;color:#d8dfeb}
+.ai-steps li::before{content:counter(s);flex:0 0 auto;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--red);color:#fff;font-family:var(--display);font-size:24px}
+.ai-steps b{display:block;color:var(--cream);font-family:var(--narrow);font-size:20px}
