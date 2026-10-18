@@ -74,6 +74,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 @media (max-width:480px){.mark{font-size:16px;line-height:1.15;gap:8px}.mark img{width:38px;height:38px}.nav .ev-long{display:none}.nav .ev-short{display:inline}.nav{gap:8px}.nav a.ev-link,.nav a.gotv-link{padding:4px 10px}}
 @media (max-width:700px){.nav a:not(.keep){display:none}.nav{gap:14px}}
 @media (max-width:480px){.nav a.keep:not(.gotv-link):not(.ev-link){display:none}}
+@media (max-width:400px){.mark{font-size:14px;gap:6px}.mark img{width:34px;height:34px}.nav{gap:6px}.nav a.ev-link,.nav a.gotv-link{padding:4px 8px;font-size:15px}}
 
 /* hero */
 .hero{position:relative;overflow:hidden;min-height:min(860px,100svh);display:flex;flex-direction:column;
@@ -328,7 +329,7 @@ footer small{color:#7d8ca5;font-size:14px}
     <a class="mark" href="/"><img src="/assets/logo.png" alt="" width="44" height="44">Common Sense Gay</a>
     <nav class="nav" aria-label="Main">
       <a class="keep gv-nav" href="/vote/"><span class="gv-star" aria-hidden="true">★</span> Get out the vote</a>
-      <a class="keep ev-link" href="/early-vote/"><span class="ev-long">Early vote </span>tracker</a>
+      <a class="keep ev-link" href="/early-vote/"><span class="ev-long">Early vote tracker</span><span class="ev-short">Vote tracker</span></a>
       <a class="keep gotv-link" href="/early-vote/#volunteer"><span class="ev-long">Start texting for a win</span><span class="ev-short">Text to win</span></a>
       <a href="#abbott-impact">Abbott Impact</a>
       <a href="/blog/">Blog</a>
