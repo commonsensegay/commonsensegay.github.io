@@ -732,6 +732,15 @@ body .vrow{font-family:var(--body);font-size:14px}
 .csg-spot .sp-chart .dd-mh{color:#f5a21f}
 .csg-swipe{display:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:600;font-size:14px;color:#5f5a4e;margin:0 0 6px}
 @media (max-width:820px){.csg-swipe{display:block}}
+.csg-edg{display:grid;grid-template-columns:auto 1fr auto;gap:14px 18px;align-items:center;background:#0c1e38;color:#f4e7c9;border:2px solid #f5a21f;border-radius:8px;padding:18px 20px;margin:0}
+.csg-edg .e-ic{width:46px;height:46px;border-radius:50%;background:#f5a21f;color:#0c1e38;display:grid;place-items:center}
+.csg-edg .e-ic svg{width:22px;height:22px}
+.csg-edg .e-k{margin:0 0 2px;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#f5a21f}
+.csg-edg .e-h{margin:0 0 4px;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:22px;line-height:1.15;color:#fff6e3}
+.csg-edg .e-b{margin:0;font-size:14px;line-height:1.5;color:#c9d3e3}
+.csg-edg a.e-go{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:#f5a21f;color:#0c1e38!important;text-decoration:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:16px;padding:11px 16px;border-radius:4px}
+.csg-edg a.e-go svg{width:16px;height:16px}
+@media (max-width:700px){.csg-edg{grid-template-columns:auto 1fr}.csg-edg a.e-go{grid-column:1/-1;justify-content:center}}
 </style>
 <script id="csg-tabs-js">
 (function(){
@@ -952,6 +961,11 @@ body .vrow{font-family:var(--body);font-size:14px}
     }
   }catch(e){ if(window.console)console.warn("spotlight",e); }
   if(bottom&&map.summary.length){ map.summary[0].parentNode.insertBefore(bottom,map.summary[0]); map.summary.unshift(bottom); }
+  // ---- Follow Election Data Guy card (Summary and Sources tabs)
+  try{ var edg=function(tab){ var el=document.createElement("div"); el.className="csg-edg"; el.setAttribute("data-tab",tab);
+    el.innerHTML='<div class="e-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div><div><p class="e-k">Where I get my numbers</p><p class="e-h">Follow Election Data Guy on X</p><p class="e-b">I\'ve followed him since 2024, and he\'s where I get my early vote insights. He tracks returned ballots in every state that reports them and models the states that don\'t register by party. Independent, no spin, just the numbers. If you like this tracker, follow the source.</p></div><a class="e-go" href="https://x.com/E_DataGuy" rel="noopener" target="_blank" data-edg="'+tab+'"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Follow @E_DataGuy</a>';
+    var list=map[tab]; if(list&&list.length){ var last=list[list.length-1]; last.parentNode.insertBefore(el,last.nextSibling); list.push(el); } };
+    edg("summary"); edg("sources"); }catch(e){ if(window.console)console.warn("edg",e); }
   var tabs=TABS.filter(function(t){return map[t.id].length});
   var nav=document.createElement("div"); nav.className="csg-tabs";
   nav.innerHTML='<div class="row" role="tablist" aria-label="Tracker sections">'+tabs.map(function(t){return '<button role="tab" type="button" id="tab-'+t.id+'" aria-controls="panel-'+t.id+'" data-t="'+t.id+'">'+t.label+'</button>'}).join("")+'</div>';

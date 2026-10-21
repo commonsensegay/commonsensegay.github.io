@@ -37,6 +37,8 @@
     var ai=a.tagName==="A"?aiDest(a,href):null;
     if(ai)send("abbott_impact_click",{destination:ai,link_location:loc,page_path:location.pathname,outbound:/^https?:/.test(href)});
     if(a.tagName==="A"&&/^https?:/.test(href)){
+      if(/(x|twitter)\.com\/e_dataguy/.test(href)){send("edg_follow_click",{link_location:a.getAttribute("data-edg")||loc,page_path:location.pathname});return;}
+      if(href.indexOf("electiondataguy.com")>-1){send("edg_site_click",{link_location:loc,page_path:location.pathname});return;}
       if(href.indexOf("facebook.com/sharer")>-1||href.indexOf("x.com/intent")>-1){
         send("share",{method:href.indexOf("facebook")>-1?"facebook":"x",content_type:"blog_post",item_id:location.pathname});return;
       }
