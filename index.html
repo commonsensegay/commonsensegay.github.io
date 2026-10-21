@@ -217,6 +217,16 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .paper .btn.edg-go:hover{background:#ffb646}
 .btn.edg-go svg{width:18px;height:18px}
 
+.edgbar{background:var(--night);border-top:1px solid #27456f;border-bottom:1px solid #27456f}
+.edgbar-in{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px}
+.edgbar p{margin:0;color:#c9d3e3;font-size:16px}
+.edgbar p b{color:#fff6e3;font-family:var(--narrow);font-size:19px}
+.edgbar-k{display:block;font-family:var(--narrow);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);margin-bottom:2px}
+.edgbar-go{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:var(--sun);color:var(--night);text-decoration:none;font-family:var(--narrow);font-weight:700;font-size:17px;padding:10px 16px;border-radius:4px}
+.edgbar-go:hover{background:#ffb646}
+.edgbar-go svg{width:16px;height:16px}
+@media (max-width:600px){.edgbar-go{width:100%;justify-content:center}}
+
 /* creed */
 .creed{background:var(--navy);position:relative}
 .creed ol{list-style:none;margin:0;padding:0}
@@ -348,6 +358,7 @@ footer small{color:#7d8ca5;font-size:14px}
 </header>
 
 <main>
+<aside class="edgbar" aria-label="Follow Election Data Guy"><div class="wrap edgbar-in"><p><span class="edgbar-k">Where I get my early vote numbers</span><b>Election Data Guy</b>. Independent, no spin. I've followed him since 2024.</p><a class="edgbar-go" href="https://x.com/E_DataGuy" rel="noopener" target="_blank" data-edg="homepage_top"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Follow @E_DataGuy</a></div></aside>
 <section class="hero" aria-labelledby="hero-title" style="padding:0">
   <div class="wrap">
     <div class="hero-text">
