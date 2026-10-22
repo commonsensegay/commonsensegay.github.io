@@ -336,20 +336,24 @@ body .vrow{font-family:var(--body);font-size:14px}
   Object.keys(INTRO).forEach(function(id){ if(!map[id]||!map[id].length)return; var d=document.createElement("div"); d.className="csg-intro"; d.setAttribute("data-tab",id); d.innerHTML=INTRO[id]; map[id][0].parentNode.insertBefore(d,map[id][0]); map[id].unshift(d); });
   // ---- State spotlight card(s) at the top of the By state tab
   try{
-    var SPOT=["MI"];
+    var SPOT=["TX","MI"], spAfter=null, spPos=1, DEMO={MI:"Michiganders",TX:"Texans"};
     if(typeof SNAPSHOTS!=="undefined"&&SNAPSHOTS.length&&map.states&&map.states.length){
-      var NMs=(typeof NAMES!=="undefined")?NAMES:{MI:"Michigan"};
-      var V22s={MI:1525312};
+      var NMs=(typeof NAMES!=="undefined")?NAMES:{MI:"Michigan",TX:"Texas"};
+      var V22s={MI:1525312,TX:5497027};
       SPOT.forEach(function(ab){
         var ser=[]; SNAPSHOTS.forEach(function(sn){var a=sn.states[ab]; if(a&&a[1]+a[2]>0&&a[0]>0){var t=a[0]; ser.push({date:sn.date,t:t,r:a[1],d:a[2],rp:a[1]/t*100,dp:a[2]/t*100,m:(a[2]-a[1])/t*100,gap:a[2]-a[1]});}});
-        if(ser.length<2)return;
-        var c=ser[ser.length-1], p=ser[ser.length-2], f=ser[0], nm=NMs[ab]||ab;
+        if(!ser.length)return;
+        var one=ser.length<2, c=ser[ser.length-1], p=one?c:ser[ser.length-2], f=ser[0], nm=NMs[ab]||ab;
         var lead=function(x){return Math.abs(x.m)<0.05?"Even":(x.m>0?"D +":"R +")+Math.abs(x.m).toFixed(1)};
         var shift=c.m-f.m, dshift=c.m-p.m;
         var mv=function(x){return Math.abs(x)<0.05?"no change":Math.abs(x).toFixed(1)+" pts toward "+(x<0?"R":"D")};
-        var head=Math.abs(shift)<0.05?nm+"'s early vote hasn't moved since "+fd(f.date):(shift<0?"The Democratic edge in "+nm+" is shrinking":"The Democratic edge in "+nm+" is growing");
-        var said=(shift<0&&c.m>0)?"From "+lead(f)+" on "+fd(f.date)+" to <b>"+lead(c)+"</b> today, while the number of ballots grew from "+n(f.t)+" to "+n(c.t)+". The more Michiganders vote, the closer it gets."
-          :(c.m<=0?"Republicans now lead the estimated early vote, <b>"+lead(c)+"</b>, up from "+lead(f)+" on "+fd(f.date)+"."
+        var head=one?(c.m<=0?"Republicans lead "+nm+"'s early vote":"Democrats lead "+nm+"'s early vote")
+          :Math.abs(shift)<0.05?nm+"'s early vote hasn't moved since "+fd(f.date)
+          :c.m<0?(shift<0?"The Republican lead in "+nm+" is growing":"The Republican lead in "+nm+" is shrinking")
+          :(shift<0?"The Democratic edge in "+nm+" is shrinking":"The Democratic edge in "+nm+" is growing");
+        var said=one?"First day in the tracker: <b>"+lead(c)+"</b> on "+n(c.t)+" ballots. The day-by-day line starts building with tomorrow's pull."
+          :(shift<0&&c.m>0)?"From "+lead(f)+" on "+fd(f.date)+" to <b>"+lead(c)+"</b> today, while the number of ballots grew from "+n(f.t)+" to "+n(c.t)+". The more "+(DEMO[ab]||"people")+" vote, the closer it gets."
+          :(c.m<=0?"Republicans lead the estimated early vote, <b>"+lead(c)+"</b>, "+(shift<=0?"up from ":"down from ")+lead(f)+" on "+fd(f.date)+", on "+n(c.t)+" ballots."
           :"From "+lead(f)+" on "+fd(f.date)+" to <b>"+lead(c)+"</b> today, on "+n(c.t)+" ballots.");
         // sparkline of the margin
         var W=(window.innerWidth<600?340:640),H=(window.innerWidth<600?170:150),pl=44,pr=16,pt=14,pb=26,ms=ser.map(function(x){return x.m}),hi=Math.max(1,Math.max.apply(null,ms)),lo=Math.min(-1,Math.min.apply(null,ms));
@@ -359,7 +363,7 @@ body .vrow{font-family:var(--body);font-size:14px}
           +'<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Yy(0)+'" y2="'+Yy(0)+'" stroke="#a8b6cc" stroke-dasharray="4 4"/>'
           +'<text x="'+(pl-6)+'" y="'+(Yy(0)+4)+'" fill="#a8b6cc" font-size="12" text-anchor="end">Even</text>'
           +'<text x="'+(pl-6)+'" y="'+(Yy(hi)+10)+'" fill="#8fb6f0" font-size="12" text-anchor="end">D +'+hi.toFixed(0)+'</text>'
-          +'<polyline points="'+pts+'" fill="none" stroke="#f5a21f" stroke-width="3" stroke-linejoin="round"/>'
+          +(lo<=-2?'<text x="'+(pl-6)+'" y="'+(Yy(lo)-2)+'" fill="#ff8f85" font-size="12" text-anchor="end">R +'+Math.abs(lo).toFixed(0)+'</text>':'')+'<polyline points="'+pts+'" fill="none" stroke="#f5a21f" stroke-width="3" stroke-linejoin="round"/>'
           +ser.map(function(x,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Yy(x.m).toFixed(1)+'" r="'+(i===ser.length-1?5:3)+'" fill="'+(i===ser.length-1?"#fff6e3":"#f5a21f")+'"><title>'+fd(x.date)+": "+lead(x)+" ("+n(x.t)+" ballots)</title></circle>"}).join("")
           +'<text x="'+X(0)+'" y="'+(H-6)+'" fill="#a8b6cc" font-size="12">'+fd(f.date)+'</text>'
           +'<text x="'+X(ser.length-1)+'" y="'+(H-6)+'" fill="#a8b6cc" font-size="12" text-anchor="end">'+fd(c.date)+'</text></svg>';
@@ -370,12 +374,12 @@ body .vrow{font-family:var(--body);font-size:14px}
           +'<div class="dd-g">'
           +'<div class="dd-c d"><div class="dd-k">Democrats</div><div class="dd-v">'+c.dp.toFixed(1)+'%</div><div class="dd-s">'+n(c.d)+' ballots</div></div>'
           +'<div class="dd-c r"><div class="dd-k">Republicans</div><div class="dd-v">'+c.rp.toFixed(1)+'%</div><div class="dd-s">'+n(c.r)+' ballots</div></div>'
-          +'<div class="dd-c"><div class="dd-k">Margin</div><div class="dd-v">'+lead(c)+'</div><div class="dd-s">'+mv(dshift)+' since '+fd(p.date)+'<br>'+mv(shift)+' since '+fd(f.date)+'</div></div>'
+          +'<div class="dd-c"><div class="dd-k">Margin</div><div class="dd-v">'+lead(c)+'</div><div class="dd-s">'+(one?'first day tracked':mv(dshift)+' since '+fd(p.date)+'<br>'+mv(shift)+' since '+fd(f.date))+'</div></div>'
           +vs22+'</div>'
           +'<p class="dd-t">'+said+'</p>'
-          +'<div class="sp-chart"><p class="dd-mh">Estimated margin, day by day</p>'+svg+'</div>'
+          +(one?'':'<div class="sp-chart"><p class="dd-mh">Estimated margin, day by day</p>'+svg+'</div>')
           +'<p class="dd-n">'+nm+' doesn\'t register voters by party, so the split is Election Data Guy\'s estimate, not a state count. It shows who returned a ballot, not how they voted.</p>';
-        map.states[0].parentNode.insertBefore(el,map.states[0].nextSibling); map.states.splice(1,0,el);
+        var after=spAfter||map.states[0]; after.parentNode.insertBefore(el,after.nextSibling); map.states.splice(spPos,0,el); spAfter=el; spPos++;
       });
     }
   }catch(e){ if(window.console)console.warn("spotlight",e); }
