@@ -733,6 +733,12 @@ body .vrow{font-family:var(--body);font-size:14px}
 .csg-spot .sp-h{font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.15;color:#fff6e3;margin:0 0 14px}
 .csg-spot .sp-chart{margin-top:16px;background:rgba(244,231,201,.06);border:1px solid #27456f;border-radius:6px;padding:12px 14px}
 .csg-spot .sp-chart .dd-mh{color:#f5a21f}
+.csg-spot .sp-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.csg-spot .sp-two{grid-template-columns:1fr}}
+.csg-spot .sp-two .sp-chart{margin-top:16px}
+.csg-spot .sp-edg{margin:10px 0 0;font-size:16px;color:#fff6e3}
+.csg-spot .sp-edg a{color:#f5a21f;font-weight:700}
+.csg-spot .sp-cap{font-size:14px;color:#a8b6cc;margin:8px 0 0}
 .csg-swipe{display:none;font-family:"Archivo Narrow","Arial Narrow",sans-serif;font-weight:600;font-size:14px;color:#5f5a4e;margin:0 0 6px}
 @media (max-width:820px){.csg-swipe{display:block}}
 .csg-edg{display:grid;grid-template-columns:auto 1fr auto;gap:14px 18px;align-items:center;background:#0c1e38;color:#f4e7c9;border:2px solid #f5a21f;border-radius:8px;padding:18px 20px;margin:0}
@@ -952,6 +958,34 @@ body .vrow{font-family:var(--body);font-size:14px}
           +ser.map(function(x,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Yy(x.m).toFixed(1)+'" r="'+(i===ser.length-1?5:3)+'" fill="'+(i===ser.length-1?"#fff6e3":"#f5a21f")+'"><title>'+fd(x.date)+": "+lead(x)+" ("+n(x.t)+" ballots)</title></circle>"}).join("")
           +'<text x="'+X(0)+'" y="'+(H-6)+'" fill="#a8b6cc" font-size="12">'+fd(f.date)+'</text>'
           +'<text x="'+X(ser.length-1)+'" y="'+(H-6)+'" fill="#a8b6cc" font-size="12" text-anchor="end">'+fd(c.date)+'</text></svg>';
+        // daily charts: vote share (R and D) and ballots in
+        var sm=window.innerWidth<600, CW=sm?340:300, CH=sm?180:170, cl=40, cr=sm?62:58, ct=14, cb=26, N=ser.length;
+        var cX=function(i){return N===1?(cl+(CW-cr))/2:cl+i*(CW-cl-cr)/(N-1)};
+        var all=[];ser.forEach(function(x){all.push(x.rp,x.dp)});
+        var sLo=Math.max(0,Math.floor((Math.min.apply(null,all)-2)/10)*10), sHi=Math.min(100,Math.ceil((Math.max.apply(null,all)+2)/10)*10);
+        var sY=function(v){return ct+(sHi-v)*(CH-ct-cb)/(sHi-sLo)};
+        var line=function(k,col,lab){var q=ser.map(function(x,i){return cX(i).toFixed(1)+","+sY(x[k]).toFixed(1)}).join(" ");
+          return (N>1?'<polyline points="'+q+'" fill="none" stroke="'+col+'" stroke-width="3" stroke-linejoin="round"/>':'')
+          +ser.map(function(x,i){return '<circle cx="'+cX(i).toFixed(1)+'" cy="'+sY(x[k]).toFixed(1)+'" r="'+(i===N-1?5:3)+'" fill="'+col+'"><title>'+fd(x.date)+": "+lab+" "+x[k].toFixed(1)+"%</title></circle>"}).join("")};
+        var lr=sY(c.rp)+4, ld=sY(c.dp)+4; if(Math.abs(lr-ld)<14){ if(lr<ld){lr-=7;ld+=7}else{lr+=7;ld-=7} }
+        var dates='<text x="'+cl+'" y="'+(CH-6)+'" fill="#a8b6cc" font-size="12">'+fd(f.date)+'</text>'+(N>1?'<text x="'+(CW-cr)+'" y="'+(CH-6)+'" fill="#a8b6cc" font-size="12" text-anchor="end">'+fd(c.date)+'</text>':'');
+        if(N===1)dates='<text x="'+cX(0)+'" y="'+(CH-6)+'" fill="#a8b6cc" font-size="12" text-anchor="middle">'+fd(c.date)+'</text>';
+        var share='<svg viewBox="0 0 '+CW+' '+CH+'" role="img" aria-label="'+nm+' estimated vote share by day. Latest: Republicans '+c.rp.toFixed(1)+'%, Democrats '+c.dp.toFixed(1)+'%" style="width:100%;height:auto;display:block">'
+          +[sLo,(sLo+sHi)/2,sHi].map(function(v){return '<line x1="'+cl+'" x2="'+(CW-cr)+'" y1="'+sY(v)+'" y2="'+sY(v)+'" stroke="#27456f"/><text x="'+(cl-6)+'" y="'+(sY(v)+4)+'" fill="#a8b6cc" font-size="12" text-anchor="end">'+v+'%</text>'}).join("")
+          +line("dp","#5b9bf0","Democrats")+line("rp","#ff6b5e","Republicans")
+          +'<text x="'+(cX(N-1)+9)+'" y="'+lr+'" fill="#ff8f85" font-size="13" font-weight="700">R '+c.rp.toFixed(1)+'%</text>'
+          +'<text x="'+(cX(N-1)+9)+'" y="'+ld+'" fill="#8fb6f0" font-size="13" font-weight="700">D '+c.dp.toFixed(1)+'%</text>'+dates+'</svg>';
+        var tRaw=Math.max.apply(null,ser.map(function(x){return x.t})), tMag=Math.pow(10,Math.floor(Math.log10(tRaw))), tMax=[1,2,2.5,4,5,10].map(function(k){return k*tMag}).filter(function(v){return v>=tRaw*1.08})[0], bY=function(v){return ct+(tMax-v)*(CH-ct-cb)/tMax};
+        var slot=(CW-cl-cr+ (N===1?0:0))/N, bw=Math.max(4,Math.min(46,slot*0.7));
+        var bX=function(i){return N===1?(cl+(CW-cr))/2:cl+slot*(i+0.5)};
+        var kfmt=function(v){return v>=1e6?(v/1e6).toFixed(v>=1e7?0:1)+"M":v>=1e3?Math.round(v/1e3)+"K":String(v)};
+        var bars='<svg viewBox="0 0 '+CW+' '+CH+'" role="img" aria-label="'+nm+' total early ballots by day. Latest: '+n(c.t)+'" style="width:100%;height:auto;display:block">'
+          +[0,tMax/2,tMax].map(function(v){return '<line x1="'+cl+'" x2="'+(CW-cr)+'" y1="'+bY(v)+'" y2="'+bY(v)+'" stroke="#27456f"/><text x="'+(cl-6)+'" y="'+(bY(v)+4)+'" fill="#a8b6cc" font-size="12" text-anchor="end">'+kfmt(v)+'</text>'}).join("")
+          +ser.map(function(x,i){return '<rect x="'+(bX(i)-bw/2).toFixed(1)+'" y="'+bY(x.t).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(bY(0)-bY(x.t)).toFixed(1)+'" rx="2" fill="'+(i===N-1?"#f5a21f":"#8a6a33")+'"><title>'+fd(x.date)+": "+n(x.t)+" ballots"+(i?" (+"+n(x.t-ser[i-1].t)+")":"")+"</title></rect>"}).join("")
+          +'<text x="'+(bX(N-1)+bw/2+6)+'" y="'+(bY(c.t)+12)+'" fill="#fff6e3" font-size="13" font-weight="700">'+kfmt(c.t)+'</text>'
+          +dates.replace(/x="'?([\d.]+)"/,function(m){return m})+'</svg>';
+        var daily='<div class="sp-two"><div class="sp-chart"><p class="dd-mh">Vote share, day by day</p>'+share+'</div><div class="sp-chart"><p class="dd-mh">Total ballots in, day by day</p>'+bars+'</div></div>'
+          +(N===1?'<p class="sp-cap">One day so far. A new point gets added with every daily pull.</p>':'');
         var vs22=V22s[ab]?'<div class="dd-c"><div class="dd-k">Ballots in</div><div class="dd-v">'+n(c.t)+'</div><div class="dd-s">'+Math.round(c.t/V22s[ab]*100)+'% of the 2022 early vote</div></div>':'<div class="dd-c"><div class="dd-k">Ballots in</div><div class="dd-v">'+n(c.t)+'</div><div class="dd-s">'+sg(c.t-p.t,0)+' since '+fd(p.date)+'</div></div>';
         var el=document.createElement("div"); el.className="csg-dd csg-spot"; el.id="spotlight-"+ab.toLowerCase(); el.setAttribute("data-tab","states");
         el.innerHTML='<p class="dd-h">★ State spotlight: '+nm+' <span class="dd-est">est.</span></p>'
@@ -962,8 +996,9 @@ body .vrow{font-family:var(--body);font-size:14px}
           +'<div class="dd-c"><div class="dd-k">Margin</div><div class="dd-v">'+lead(c)+'</div><div class="dd-s">'+(one?'first day tracked':mv(dshift)+' since '+fd(p.date)+'<br>'+mv(shift)+' since '+fd(f.date))+'</div></div>'
           +vs22+'</div>'
           +'<p class="dd-t">'+said+'</p>'
-          +(one?'':'<div class="sp-chart"><p class="dd-mh">Estimated margin, day by day</p>'+svg+'</div>')
-          +'<p class="dd-n">'+nm+' doesn\'t register voters by party, so the split is Election Data Guy\'s estimate, not a state count. It shows who returned a ballot, not how they voted.</p>';
+          +daily
+          +'<p class="dd-n">'+nm+' doesn\'t register voters by party, so the split is Election Data Guy\'s estimate, not a state count. It shows who returned a ballot, not how they voted.</p>'
+          +'<p class="sp-edg">For non-partisan modeling of the early vote, <a href="https://x.com/E_DataGuy" rel="noopener" target="_blank" data-edg="spotlight_'+ab.toLowerCase()+'">follow Election Data Guy on X</a>. He\'s where these estimates come from.</p>';
         var after=spAfter||map.states[0]; after.parentNode.insertBefore(el,after.nextSibling); map.states.splice(spPos,0,el); spAfter=el; spPos++;
       });
     }
