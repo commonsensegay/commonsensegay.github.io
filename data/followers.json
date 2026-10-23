@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22",
+  "updated": "2026-10-23",
   "note": "Counts as shown publicly on each profile. TikTok and Facebook display rounded numbers. Instagram on 2026-10-14 as reported by the account owner. Facebook from 2026-10-19 read from the logged-in page count.",
   "history": [
     {
@@ -73,6 +73,14 @@
       "instagram": 27000,
       "youtube": 202,
       "x": 952
+    },
+    {
+      "date": "2026-10-23",
+      "tiktok": 50400,
+      "facebook": 8700,
+      "instagram": 27000,
+      "youtube": 202,
+      "x": 953
     }
   ],
   "milestones": [
@@ -82,6 +90,13 @@
       "type": "up_10pct_week",
       "value": 8600,
       "note": "Facebook followers are up about 23 percent versus 7 days earlier (7,000 on 2026-10-14 to 8,600)."
+    },
+    {
+      "date": "2026-10-23",
+      "platform": "tiktok",
+      "type": "crossed_50k",
+      "value": 50400,
+      "note": "TikTok passed 50,000 followers (49,800 on 2026-10-22 to 50,400)."
     }
   ]
 }
