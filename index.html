@@ -271,6 +271,11 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .paper .btn.fb:hover{background:#1f5bb8}
 
 .tally{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 22px;margin:0 0 36px}
+.growth{margin:6px 0 40px;background:rgba(244,231,201,.05);border:1px solid #27456f;border-radius:6px;padding:18px 20px 12px}
+.growth figcaption{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:8px}
+.growth figcaption b{font-family:var(--narrow);font-weight:700;font-size:clamp(20px,2.4vw,26px);color:var(--cream)}
+.growth figcaption span{color:var(--mist);font-size:16px}
+.growth svg{width:100%;height:auto;display:block}
 .tally .big{font-family:var(--display);font-size:clamp(64px,9vw,112px);line-height:1;color:var(--sun);font-variant-numeric:tabular-nums}
 .tally .what{color:#d8dfeb;max-width:48ch;font-size:19px}
 .brk{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-size:16px;color:var(--mist)}
@@ -551,6 +556,10 @@ footer small{color:#7d8ca5;font-size:14px}
       <span class="big" id="fl-total">53K+</span>
       <span class="what">followers and counting. Same handle everywhere: @commonsensegay.<span class="brk" id="fl-brk"></span><small id="fl-asof">Counted from each public profile, updated daily.</small></span>
     </div>
+    <figure class="growth" id="fl-growth" hidden>
+      <figcaption><b id="gr-head"></b><span id="gr-sub"></span></figcaption>
+      <div id="gr-chart"></div>
+    </figure>
     <div class="fbfeat">
       <div class="fbicon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4.2h-3c-2.8 0-4.4 1.8-4.4 4.6V11H7v3.7h2.6V22h3.8v-7.3h3l.5-3.7h-3.5V9.1c0-.7.3-1.1 1-1.1z"/></svg></div>
       <div>
@@ -671,6 +680,27 @@ function initDock(){
     document.getElementById("dock-plats").innerHTML=dockItems.map(function(it){return '<a href="'+URLS[it[0]]+'" rel="noopener" aria-label="'+names[it[0]]+' '+short(it[1])+'"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'+ICONS[it[0]]+'</svg>'+short(it[1])+'</a>'}).join("");
     document.getElementById("dock-total").textContent=Math.floor(total/1000)+"K+";
     initDock();
+    try{ // total follower growth chart
+      var last={}, tot=h.map(function(r){var t=0;keys.forEach(function(k){if(typeof r[k]==="number")last[k]=r[k]; if(typeof last[k]==="number")t+=last[k];});return {date:r.date,t:t}});
+      if(tot.length>=2){
+        var fdt=function(x){return new Date(x+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"})};
+        var a0=tot[0], z=tot[tot.length-1], up=z.t-a0.t, N=tot.length;
+        var sm=window.innerWidth<600, W=sm?360:760, H=sm?200:210, L=sm?46:52, R=sm?58:70, T=16, B=28;
+        var lo=Math.floor(Math.min.apply(null,tot.map(function(x){return x.t}))/5000)*5000, hi=Math.ceil((z.t+1)/5000)*5000; if(hi-lo<10000)hi=lo+10000;
+        var X=function(i){return L+i*(W-L-R)/(N-1)}, Y=function(v){return T+(hi-v)*(H-T-B)/(hi-lo)};
+        var pts=tot.map(function(x,i){return X(i).toFixed(1)+","+Y(x.t).toFixed(1)}).join(" ");
+        var grid=[lo,(lo+hi)/2,hi].map(function(v){return '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#27456f"/><text x="'+(L-8)+'" y="'+(Y(v)+4)+'" fill="#a9b6cb" font-size="13" text-anchor="end">'+short(v)+'</text>'}).join("");
+        document.getElementById("gr-chart").innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Total followers across all platforms by day, from '+a0.t.toLocaleString("en-US")+' on '+fdt(a0.date)+' to '+z.t.toLocaleString("en-US")+' on '+fdt(z.date)+'">'+grid
+          +'<polygon points="'+X(0)+','+Y(lo)+' '+pts+' '+X(N-1)+','+Y(lo)+'" fill="rgba(240,160,42,.16)"/>'
+          +'<polyline points="'+pts+'" fill="none" stroke="#f0a02a" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>'
+          +tot.map(function(x,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(x.t).toFixed(1)+'" r="'+(i===N-1?6:3)+'" fill="'+(i===N-1?"#fff6e3":"#f0a02a")+'"><title>'+fdt(x.date)+": "+x.t.toLocaleString("en-US")+" followers</title></circle>"}).join("")
+          +'<text x="'+(X(N-1)+10)+'" y="'+(Y(z.t)+5)+'" fill="#fff6e3" font-size="15" font-weight="700">'+short(z.t)+'</text>'
+          +'<text x="'+L+'" y="'+(H-6)+'" fill="#a9b6cb" font-size="13">'+fdt(a0.date)+'</text><text x="'+(W-R)+'" y="'+(H-6)+'" fill="#a9b6cb" font-size="13" text-anchor="end">'+fdt(z.date)+'</text></svg>';
+        document.getElementById("gr-head").textContent=up>0?"Up "+up.toLocaleString("en-US")+" followers since "+fdt(a0.date):"Total followers since "+fdt(a0.date);
+        document.getElementById("gr-sub").textContent=up>0?"+"+(up/a0.t*100).toFixed(1)+"% across every platform":"";
+        document.getElementById("fl-growth").hidden=false;
+      }
+    }catch(e){}
     var el=document.getElementById("fl-total"), target=Math.floor(total/1000);
     var asof=new Date(cur.date+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric"});
     document.getElementById("fl-asof").textContent="Counted from each public profile, last updated "+asof+".";
