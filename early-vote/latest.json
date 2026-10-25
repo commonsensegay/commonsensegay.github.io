@@ -1,19 +1,19 @@
 {
- "date": "2026-10-24",
- "pulled": "Oct 24, 2026, 10:12 AM CT",
- "all_ballots": 24873843,
+ "date": "2026-10-25",
+ "pulled": "Oct 25, 2026, 1:39 PM CT (backup run)",
+ "all_ballots": 25632584,
  "states_reporting": 47,
  "hard": {
-  "rep": 4021389,
-  "dem": 5983857,
-  "other": 2830024,
-  "total": 12835270,
+  "rep": 4106515,
+  "dem": 6069482,
+  "other": 2875894,
+  "total": 13051891,
   "states": 28,
-  "rep_pct": 31.3,
-  "dem_pct": 46.6,
+  "rep_pct": 31.5,
+  "dem_pct": 46.5,
   "other_pct": 22.0,
-  "margin": 15.3
+  "margin": 15.0
  },
- "prev_date": "2026-10-23",
- "margin_change": -1.2
+ "prev_date": "2026-10-24",
+ "margin_change": -0.2
 }
