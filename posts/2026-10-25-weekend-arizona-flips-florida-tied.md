@@ -25,7 +25,7 @@ Is 0.3 points a landslide? Come on. No. But Arizona is a state Democrats were co
 
 Florida registers by party, so this is another hard count. On Thursday, Democrats led the early vote by 3.3 points. Today it's **D +0.2**, 39.8% to 39.7%, on 2.44 million ballots.
 
-That gap went from about 55,000 ballots to about 2,500 in three days. Florida Republicans historically vote in person and late, which is exactly what's happening. Expect it to flip in the next pull or two.
+That gap went from about 55,000 ballots to about 4,200 in three days. Florida Republicans tend to vote in person and later, and that's exactly what's happening. If the trend holds, it flips soon.
 
 ## Texas: 3.6 million and counting
 
@@ -52,7 +52,6 @@ States with weekend updates are marked with the latest pull. The rest are as of 
 - **Georgia:** D +2.4 (estimate)
 - **Wisconsin:** D +2.9 (estimate)
 - **Nevada:** D +3.8
-- **North Carolina:** D +17.5 (registered Democrats vs. Republicans, with a big unaffiliated share)
 
 Michigan, Georgia and Wisconsin don't register by party either, so those are estimates too.
 
