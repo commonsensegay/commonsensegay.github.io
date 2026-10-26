@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS = os.path.join(ROOT, "posts")
 OUT = os.path.join(ROOT, "blog")
 SITE = "https://commonsensegay.com"
-OG = SITE + "/assets/og-home-v3.jpg"
+OG = SITE + "/assets/og-home-v4.jpg"
 
 
 def parse(path):
