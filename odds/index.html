@@ -89,6 +89,8 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .picker{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .picker button{font-family:var(--narrow);font-weight:700;font-size:16px;padding:7px 13px;border-radius:999px;border:2px solid var(--navy);background:transparent;color:var(--navy);cursor:pointer}
 .picker button[aria-pressed="true"]{background:var(--navy);color:var(--cream)}
+.picker.modes button{border-color:var(--burnt);color:#8a4b00;font-size:15px;padding:6px 12px}
+.picker.modes button[aria-pressed="true"]{background:var(--burnt);color:#fff}
 .panel{background:#fff;border:2px solid var(--navy);border-radius:6px;padding:20px 20px 14px;position:relative}
 .panel h3{font-family:var(--narrow);font-weight:700;font-size:21px;margin:0 0 2px;color:var(--navy)}
 .panel .cap{font-size:15px;color:var(--ink-soft);margin:0 0 10px}
@@ -158,6 +160,7 @@ footer{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;borde
   <div class="wrap">
     <h2 id="chart">Watch it move</h2>
     <div class="picker" id="picker" role="group" aria-label="Pick a race"></div>
+    <div class="picker modes" id="modebar" role="group" aria-label="Time scale" hidden><button type="button" data-m="daily" aria-pressed="true">Daily since Sep 1</button><button type="button" data-m="hourly" aria-pressed="false">Hour by hour since Oct 14</button></div>
     <div class="panel">
       <h3 id="c-title"></h3>
       <p class="cap" id="c-cap"></p>
@@ -172,6 +175,17 @@ footer{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;borde
         <div class="chartbox" id="ev-box"><div class="tip" id="ev-tip"></div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<section aria-labelledby="swings" style="padding-top:0">
+  <div class="wrap">
+    <h2 id="swings">The biggest swings</h2>
+    <p class="sub">The largest 6-hour moves in any race since October 14, hour by hour. Single hours almost never move more than 2 or 3 points, so the real shifts show up over a few hours. Each row shows how much traded, whether a big order landed inside the window, and whether this site's tracker pulled that day's early vote numbers during or just before it. The pull time is when the tracker grabbed the numbers, usually within a few hours of the sources posting them, not the exact moment they went public.</p>
+    <table class="tbl resp">
+      <thead><tr><th>Window (Central)</th><th>Race</th><th>Move</th><th class="num">Traded</th><th>Big orders inside</th><th>Tracker pulled early vote</th></tr></thead>
+      <tbody id="srows"></tbody>
+    </table>
   </div>
 </section>
 
@@ -299,14 +313,16 @@ fetch("/data/kalshi.json",{cache:"no-store"}).then(function(r){return r.json();}
     var x=function(i){return m.l+(n===1?0:i*(W-m.l-m.r)/(n-1));};
     var y=function(v){return m.t+(1-(v-opts.min)/(opts.max-opts.min))*(H-m.t-m.b);};
     opts.ticks.forEach(function(v){svg.appendChild(el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:v===opts.mid?"#b9ab88":"#ebe2cc","stroke-width":1,"stroke-dasharray":v===opts.mid?"4 4":""}));svg.appendChild(el("text",{x:m.l-8,y:y(v)+4,"text-anchor":"end","font-size":12,fill:"#7a7366"},opts.tickFmt(v)));});
-    var step=Math.max(1,Math.round(n/(W<520?4:7)));
-    for(var i=0;i<n;i+=step){svg.appendChild(el("text",{x:x(i),y:H-8,"text-anchor":i===0?"start":"middle","font-size":12,fill:"#7a7366"},mdy(dates[i])));}
+    var xt=opts.xticks;if(!xt){xt=[];var step=Math.max(1,Math.round(n/(W<520?4:7)));for(var i=0;i<n;i+=step)xt.push(i);}
+    var xl=opts.xlabel||function(i){return mdy(dates[i]);};
+    xt.forEach(function(i){svg.appendChild(el("text",{x:x(i),y:H-8,"text-anchor":i===0?"start":"middle","font-size":12,fill:"#7a7366"},xl(i)));});
+    (opts.vlines||[]).forEach(function(vl){if(vl.i<0||vl.i>=n)return;svg.appendChild(el("line",{x1:x(vl.i),x2:x(vl.i),y1:m.t,y2:H-m.b,stroke:"#d97a26","stroke-width":1.5,"stroke-dasharray":"3 3",opacity:.8}));});
     (opts.bands||[]).forEach(function(bd){var i0=dates.indexOf(bd.from);if(i0<0)return;svg.appendChild(el("rect",{x:x(i0),y:m.t,width:Math.max(0,W-m.r-x(i0)),height:H-m.t-m.b,fill:"#f0a02a",opacity:.08}));svg.appendChild(el("text",{x:x(i0)+6,y:m.t+14,"font-size":12,fill:"#8a4b00"},bd.label));});
     opts.lines.forEach(function(L){var d="",started=false;L.vals.forEach(function(v,i){if(v==null)return;d+=(started?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1);started=true;});
       svg.appendChild(el("path",{d:d,fill:"none",stroke:L.color,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
       var li=L.vals.length-1;while(li>=0&&L.vals[li]==null)li--; if(li>=0){svg.appendChild(el("circle",{cx:x(li),cy:y(L.vals[li]),r:4,fill:L.color,stroke:"#fff","stroke-width":2}));svg.appendChild(el("text",{x:x(li)+8,y:y(L.vals[li])+4,"font-size":13,"font-weight":700,fill:"#16202e"},opts.tickFmt(L.vals[li])));}
     });
-    (opts.marks||[]).forEach(function(mk){var i=dates.indexOf(mk.date);if(i<0)return;var cy=y(mk.v),s=Math.max(5,Math.min(11,4+Math.sqrt(mk.usd/2000)));
+    (opts.marks||[]).forEach(function(mk){var i=mk.i!=null?mk.i:dates.indexOf(mk.date);if(i<0||i>=n)return;var cy=y(mk.v),s=Math.max(5,Math.min(11,4+Math.sqrt(mk.usd/2000)));
       var up=mk.side==="d"?-1:1, px=x(i), py=cy+up*(s+5);
       svg.appendChild(el("path",{d:"M"+px+" "+(py-up*s)+"L"+(px-s*.8)+" "+(py+up*s*.5)+"L"+(px+s*.8)+" "+(py+up*s*.5)+"Z",fill:mk.side==="d"?"#2f62b0":"#c23b30",stroke:"#fff","stroke-width":1.5,opacity:.9}));});
     var cross=el("line",{y1:m.t,y2:H-m.b,stroke:"#16202e","stroke-width":1,opacity:0});svg.appendChild(cross);
@@ -318,7 +334,34 @@ fetch("/data/kalshi.json",{cache:"no-store"}).then(function(r){return r.json();}
     box.appendChild(svg);
   }
 
-  var current="TX";
+  var current="TX",mode="daily";
+  var HR=K.hourly,HN=HR?HR.price[races[0].d.ticker].length:0;
+  function ctParts(ts){var f=new Intl.DateTimeFormat("en-US",{timeZone:"America/Chicago",month:"short",day:"numeric",hour:"numeric",hour12:true}).formatToParts(new Date(ts*1000)),o={};f.forEach(function(p){o[p.type]=p.value;});return o;}
+  function hTs(i){return HR.start+i*3600;}
+  function hLabel(i){var o=ctParts(hTs(i)-3600),e=ctParts(hTs(i));return o.month+" "+o.day+", "+o.hour+" "+o.dayPeriod+" to "+e.hour+" "+e.dayPeriod;}
+  function hIndexOfTime(ms){return Math.ceil(ms/36e5)-HR.start/3600;}
+  function ctLocalToMs(str){var a=str.split(/[-T:]/).map(Number);var off=(str<"2026-11-01T02:00")?5:6;return Date.UTC(a[0],a[1]-1,a[2],a[3]+off,a[4]);}
+  var evMarks=[];if(HR&&K.ev_pulls){Object.keys(K.ev_pulls).forEach(function(d){var i=hIndexOfTime(ctLocalToMs(K.ev_pulls[d]));if(i>=0&&i<HN)evMarks.push({i:i,date:d,at:K.ev_pulls[d]});});}
+  function evAt(i){return evMarks.filter(function(e){return e.i===i;})[0];}
+  function drawHourly(r,dl,rl){
+    var pd=HR.price[r.d.ticker],pr=HR.price[r.r.ticker],vol=HR.vol[r.id]||[];
+    var bigs=K.big.filter(function(b){var m=byTicker[b.ticker];return m&&m.race.id===r.id;});
+    var byH={};bigs.forEach(function(b){var i=hIndexOfTime(Date.parse(b.t));if(i>=0&&i<HN)(byH[i]=byH[i]||[]).push({b:b,h:helps(b)});});
+    var marks=[];Object.keys(byH).forEach(function(i){byH[i].forEach(function(o){var v=(o.h.side==="d"?pd:pr)[i];if(v!=null)marks.push({i:+i,v:v/1000,usd:o.b.usd,side:o.h.side});});});
+    var box=document.getElementById("c-box"),W=box.clientWidth||900,xt=[];
+    for(var i=0;i<HN;i++){var o=ctParts(hTs(i)-3600);if(o.hour==="12"&&o.dayPeriod==="AM")xt.push(i);}
+    if(W<520)xt=xt.filter(function(_,k){return k%3===0;});else if(W<900)xt=xt.filter(function(_,k){return k%2===0;});
+    lineChart(box,document.getElementById("c-tip"),{
+      aria:r.label+" hourly market odds",dates:pd.map(function(_,i){return i;}),min:0,max:1,mid:.5,ticks:[0,.25,.5,.75,1],tickFmt:function(v){return Math.round(v*100)+"%";},
+      xticks:xt,xlabel:function(i){var o=ctParts(hTs(i)-3600);return o.month+" "+o.day;},
+      vlines:evMarks,
+      lines:[{color:"#2f62b0",vals:pd.map(function(v){return v==null?null:v/1000;})},{color:"#c23b30",vals:pr.map(function(v){return v==null?null:v/1000;})}],
+      marks:marks,
+      tip:function(i){var s='<b>'+hLabel(i)+'</b><br><span class="d">'+dl+' '+pct(pd[i]/1000)+'</span> · <span class="r">'+rl+' '+pct(pr[i]/1000)+'</span><br>'+fmtInt((vol[i]||0)*1000)+' contracts traded';
+        var e=evAt(i);if(e)s+='<br><span style="color:#f0a02a">Early vote numbers pulled '+mdy(e.date)+', '+new Date(ctLocalToMs(e.at)).toLocaleTimeString("en-US",{timeZone:"America/Chicago",hour:"numeric",minute:"2-digit"})+'</span>';
+        (byH[i]||[]).forEach(function(o){s+='<br>'+money(o.b.usd)+' order '+(o.h.side==="d"?'for <span class="d">'+dl+'</span>':'for <span class="r">'+rl+'</span>');});return s;}
+    });
+  }
   function pick(id,scroll){
     current=id;var r=races.filter(function(x){return x.id===id;})[0];
     picker.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.id===id?"true":"false");});
@@ -331,9 +374,12 @@ fetch("/data/kalshi.json",{cache:"no-store"}).then(function(r){return r.json();}
     var dl=id==="control"?"Democrats":r.d.name, rl=id==="control"?"Republicans":r.r.name;
     document.getElementById("c-title").textContent=r.label+": "+dl+" vs. "+rl;
     var p=prob(r);
-    document.getElementById("c-cap").textContent="Chance of winning on Kalshi, last trade each day since "+mdy(dates[0])+". Now "+dl+" "+pct(p.d)+", "+rl+" "+pct(p.r)+". Blue triangles are big orders that helped "+dl+", red ones helped "+rl+". The bigger the triangle, the more money.";
+    document.getElementById("c-cap").textContent=(mode==="hourly"&&K.hourly?"Chance of winning on Kalshi, last trade each hour since Oct 14 (Central time). Dashed orange lines mark when the early vote tracker pulled that morning's numbers. ":"Chance of winning on Kalshi, last trade each day since "+mdy(dates[0])+". ")+"Now "+dl+" "+pct(p.d)+", "+rl+" "+pct(p.r)+". Blue triangles are big orders that helped "+dl+", red ones helped "+rl+". The bigger the triangle, the more money.";
     document.getElementById("c-legend").innerHTML='<span><i style="background:var(--dem)"></i>'+dl+'</span><span><i style="background:var(--rep)"></i>'+rl+'</span><span><i class="tri"></i>Big order (size = dollars)</span>';
     var evStart={TX:"2026-10-14"}[id];
+    document.getElementById("modebar").hidden=!K.hourly;
+    document.querySelectorAll("#modebar button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.m===mode?"true":"false");});
+    if(mode==="hourly"&&K.hourly){drawHourly(r,dl,rl);}else
     lineChart(document.getElementById("c-box"),document.getElementById("c-tip"),{
       aria:r.label+" market odds over time",dates:dates,min:0,max:1,mid:.5,ticks:[0,.25,.5,.75,1],tickFmt:function(v){return Math.round(v*100)+"%";},
       bands:evStart?[{from:evStart,label:"Early voting"}]:[],
@@ -387,6 +433,33 @@ fetch("/data/kalshi.json",{cache:"no-store"}).then(function(r){return r.json();}
   K.flips.slice().reverse().forEach(function(f){var r=races.filter(function(x){return x.id===f.race;})[0];var who=f.to==="d"?(r.id==="control"?"Democrats":r.d.name):(r.id==="control"?"Republicans":r.r.name);
     var div=document.createElement("div");div.className="flip";div.innerHTML='<span class="when">'+mdy(f.date)+'</span><span><b>'+r.label+'</b>: '+who+' became the favorite, '+pct(f.to==="d"?f.d:f.r)+' to '+pct(f.to==="d"?f.r:f.d)+'.</span>';fl.appendChild(div);});
 
+  document.querySelectorAll("#modebar button").forEach(function(b){b.onclick=function(){mode=b.dataset.m;pick(current);};});
+  // biggest 6-hour swings
+  (function(){
+    if(!HR){document.getElementById("srows").closest("section").hidden=true;return;}
+    var W6=6,all=[];
+    races.forEach(function(r){var c=HR.price[r.d.ticker];if(!c)return;var cand=[];
+      for(var i=W6;i<c.length;i++){if(c[i]==null||c[i-W6]==null)continue;var d=c[i]-c[i-W6];if(Math.abs(d)>=30)cand.push({r:r,a:i-W6,b:i,d:d});}
+      cand.sort(function(x,y){return Math.abs(y.d)-Math.abs(x.d)||x.b-y.b;});var used=[];
+      cand.forEach(function(w){if(used.some(function(u){return w.a<u.b&&u.a<w.b;}))return;used.push(w);all.push(w);});});
+    all.sort(function(x,y){return Math.abs(y.d)-Math.abs(x.d)||y.b-x.b;});
+    var tb=document.getElementById("srows");
+    if(!all.length){tb.innerHTML='<tr><td colspan="6">No race has moved 3 points or more in any 6-hour window yet.</td></tr>';return;}
+    all.slice(0,12).forEach(function(w){var r=w.r,c=HR.price[r.d.ticker],vol=HR.vol[r.id]||[],v=0;for(var i=w.a+1;i<=w.b;i++)v+=vol[i]||0;
+      var dl=r.id==="control"?"Democrats":r.d.name,rl=r.id==="control"?"Republicans":r.r.name;
+      var winner=w.d>0?'<span class="d">'+dl+' +'+Math.round(w.d/10)+'</span>':'<span class="r">'+rl+' +'+Math.round(-w.d/10)+'</span>';
+      var bs=K.big.filter(function(b){var m=byTicker[b.ticker];if(!m||m.race.id!==r.id)return false;var i=hIndexOfTime(Date.parse(b.t));return i>w.a&&i<=w.b;});
+      var bd=0,brr=0;bs.forEach(function(b){var h=helps(b);if(h.side==="d")bd+=b.usd;else brr+=b.usd;});
+      var cov=K.big_scanned_from||{},sf=[cov[r.d.ticker],cov[r.r.ticker]].sort().pop();var scanned=sf&&Date.parse(sf)<=hTs(w.a)*1000;
+      var btxt=!scanned?'<span style="color:var(--ink-muted)">Not scanned</span>':bs.length?(bd?'<span class="d">'+money(bd)+'</span> for '+(r.id==="control"?"Dems":r.d.name.split(" ").slice(-1)[0])+(brr?'<br>':''):'')+(brr?'<span class="r">'+money(brr)+'</span> for '+(r.id==="control"?"GOP":r.r.name.split(" ").slice(-1)[0]):''):'None';
+      var ev=evMarks.filter(function(e){return e.i>w.a-3&&e.i<=w.b;})[0];
+      var evtxt=ev?'Yes, pulled '+new Date(ctLocalToMs(ev.at)).toLocaleTimeString("en-US",{timeZone:"America/Chicago",hour:"numeric",minute:"2-digit"}):'No';
+      var o1=ctParts(hTs(w.a)),o2=ctParts(hTs(w.b));
+      var tr=document.createElement("tr");tr.className="click";tr.tabIndex=0;
+      tr.innerHTML='<td data-l="Window">'+o1.month+' '+o1.day+', '+o1.hour+' '+o1.dayPeriod+' to '+o2.hour+' '+o2.dayPeriod+'</td><td data-l="Race"><b>'+r.label+'</b></td><td data-l="Move"><span class="pair">'+winner+'</span><small>'+pct(c[w.a]/1000)+' to '+pct(c[w.b]/1000)+' for '+dl+'</small></td><td class="num" data-l="Traded">'+fmtInt(v*1000)+'<small>contracts</small></td><td data-l="Big orders">'+btxt+'</td><td data-l="Early vote update">'+evtxt+'</td>';
+      tr.onclick=function(){mode="hourly";pick(r.id,true);};
+      tb.appendChild(tr);});
+  })();
   pick("TX");
   var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){pick(current);},150);});
 }).catch(function(){document.getElementById("rows").innerHTML='<tr><td colspan="7">The odds data could not load. Try refreshing.</td></tr>';});

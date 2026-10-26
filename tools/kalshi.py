@@ -12,7 +12,11 @@ fetched) by the daily scheduled pull. Shape:
   "candles":{TICKER: [["2026-10-25", 0.36, 748939], ...]},   # date = US Eastern trading day, close price, contracts traded
   "big":    [{"t":"2026-10-21T19:52:27Z","ticker":"SENATETX-26-R","side":"no","contracts":184720,"usd":121915,"price":0.34}],
   "taker":  {TICKER: {"2026-10-25":[yes_taker_contracts, no_taker_contracts]}},
-  "book":   {TICKER: {"for":n, "against":n}}                # resting contracts within 3 cents of the price, for and against YES
+  "book":   {TICKER: {"for":n, "against":n}},
+  "scan_from": "2026-10-24T05:00:00Z",                        # start of the trade scan window (big orders, taker)               # resting contracts within 3 cents of the price, for and against YES
+  "hourly": {"start": unix_hour_end, "step": 3600,
+             "price": {TICKER: [640, 650, ...]},             # tenths of a cent, last trade of each hour, carried forward
+             "vol":   {RACE_ID: [12, 30, ...]}}              # thousands of contracts per hour, both sides of the race
 }
 Every section is optional. Existing history is never deleted; same-key entries are replaced.
 It also refreshes the early vote party split for each race state from early-vote/index.html.
@@ -101,6 +105,64 @@ def tx_turnout(path):
     return out
 
 
+def early_vote_pull_times():
+    """{date: "YYYY-MM-DDTHH:MM"} Central, from each SNAPSHOTS entry's pulled string."""
+    out = {}
+    try:
+        html = open(EV_HTML).read()
+    except FileNotFoundError:
+        return out
+    for m in re.finditer(r'\{date:"(\d{4}-\d{2}-\d{2})",\s*pulled:"([^"]+)"', html):
+        date, pulled = m.group(1), m.group(2)
+        t = re.search(r"(\w{3}) (\d{1,2}), (\d{4}),? (\d{1,2}):(\d{2}) ?([AP]M)", pulled)
+        if not t:
+            continue
+        mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].index(t.group(1)) + 1
+        hh = int(t.group(4)) % 12 + (12 if t.group(6) == "PM" else 0)
+        out[date] = "%s-%02d-%02dT%02d:%s" % (t.group(3), mon, int(t.group(2)), hh, t.group(5))
+    return out
+
+
+def merge_hourly(data, new):
+    """Merge {"start", "step", "price": {ticker: [...]}, "vol": {race: [...]}} onto one hourly grid.
+    Newer values replace older ones for the same hour (the last hour of a pull is often partial)."""
+    if not new or not new.get("price"):
+        return 0
+    old = data.get("hourly") or {"start": new["start"], "step": 3600, "price": {}, "vol": {}}
+    start = min(old["start"], new["start"])
+    def end_of(h):
+        lens = [len(v) for v in list(h["price"].values()) + list(h["vol"].values())] or [0]
+        return h["start"] + (max(lens) - 1) * 3600
+    end = max(end_of(old), end_of(new))
+    n = (end - start) // 3600 + 1
+    merged = {"start": start, "step": 3600, "price": {}, "vol": {}}
+    count = 0
+    for kind, blank in (("price", None), ("vol", 0)):
+        keys = set(old[kind]) | set(new[kind])
+        for k in keys:
+            arr = [blank] * n
+            for src in (old, new):
+                vals = src[kind].get(k)
+                if not vals:
+                    continue
+                off = (src["start"] - start) // 3600
+                for i, v in enumerate(vals):
+                    if v is not None:
+                        arr[off + i] = int(v)
+                        if src is new:
+                            count += 1
+            if kind == "price":  # carry forward through gaps
+                first = next((x for x in arr if x is not None), None)
+                last = first
+                for i in range(n):
+                    if arr[i] is None:
+                        arr[i] = last
+                    last = arr[i]
+            merged[kind][k] = arr
+    data["hourly"] = merged
+    return count
+
+
 def compute_flips(daily):
     flips = []
     for r in RACES:
@@ -167,7 +229,18 @@ def main(argv):
         if t in TICKERS:
             data["book"].setdefault(t, {})[pulled_day] = {"for": int(v["for"]), "against": int(v["against"])}
 
+    # which markets have had their trades scanned for big orders, and from when
+    scan_from = dump.get("scan_from")
+    if scan_from:
+        cov = data.setdefault("big_scanned_from", {})
+        for t in dump.get("scanned") or list((dump.get("taker") or {}).keys()):
+            if t in TICKERS and (t not in cov or scan_from < cov[t]):
+                cov[t] = scan_from
+
+    hourly_rows = merge_hourly(data, dump.get("hourly"))
+
     data["ev"] = early_vote_split()
+    data["ev_pulls"] = early_vote_pull_times()
     if tx_path:
         data.setdefault("tx_turnout", {}).update(tx_turnout(tx_path))
     data["races"] = RACES
@@ -178,13 +251,17 @@ def main(argv):
                     "(0.64 = 64 percent implied chance). big = taker orders of 25,000+ contracts filled in the same second "
                     "on the same side. taker = contracts bought aggressively on each side per Central time day. "
                     "book = resting contracts within 3 cents of the price, backing YES (for) and against YES (against).")
-    data = {k: data[k] for k in ["source", "note", "pulled", "races", "daily", "live", "flips", "big", "taker", "book", "ev", "tx_turnout"] if k in data}
+    data["note"] += (" hourly = last trade of each hour on a grid starting at hourly.start (Unix seconds, hour END times), "
+                     "price in tenths of a cent (640 = 64 percent), carried forward through hours with no trade; "
+                     "hourly.vol = thousands of contracts traded per race per hour, both sides combined. "
+                     "ev_pulls = when the early vote tracker captured each day's numbers (Central).")
+    data = {k: data[k] for k in ["source", "note", "pulled", "races", "daily", "live", "flips", "big", "taker", "book", "big_scanned_from", "hourly", "ev", "ev_pulls", "tx_turnout"] if k in data}
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
         json.dump(data, f, separators=(",", ":"))
-    print("kalshi.json: %d candle rows merged, %d big orders, %d flips, pulled %s" %
-          (changed, len(data["big"]), len(data["flips"]), data.get("pulled")))
+    print("kalshi.json: %d candle rows merged, %d hourly points merged, %d big orders, %d flips, pulled %s" %
+          (changed, hourly_rows, len(data["big"]), len(data["flips"]), data.get("pulled")))
     return 0
 
 

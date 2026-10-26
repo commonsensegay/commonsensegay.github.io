@@ -1,11 +1,11 @@
 /* Kalshi pull for the /odds/ page. Run in the browser ON A kalshi.com PAGE
    (the public API at api.elections.kalshi.com answers fetches from kalshi.com,
    but not from the API's own JSON pages or from the cloud shell).
-   Paste the whole file into the javascript tool. It returns a short status line;
-   the dump is kept in window.__kalshiDump and read in chunks with
-   window.__kalshiChunk(i) (each chunk is at most 900 characters; the status
-   line says how many). Join the chunks in order and save them as the dump file
-   for tools/kalshi.py. Read only; it never trades or signs in. */
+   Paste the whole file into the javascript tool. It returns a short status line
+   and replaces the page's content with the dump as plain text, so the page-text
+   tool returns the whole dump in one read (about 25,000 characters). Save that
+   text exactly as the dump file for tools/kalshi.py. Fallback: window.__kalshiChunk(i)
+   returns 900-character pieces to join in order. Read only; it never trades or signs in. */
 (async () => {
   const API = 'https://api.elections.kalshi.com/trade-api/v2';
   const MARKETS = [
@@ -41,7 +41,7 @@
   const offset = new Date().getTime() - new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })).getTime();
   const minTs = Math.floor((startCT.getTime() + offset) / 1000);
 
-  const dump = { pulled: new Date().toISOString().slice(0, 19) + 'Z', live: {}, candles: {}, big: [], taker: {}, book: {} };
+  const dump = { pulled: new Date().toISOString().slice(0, 19) + 'Z', scan_from: new Date(minTs * 1000).toISOString().slice(0, 19) + 'Z', live: {}, candles: {}, big: [], taker: {}, book: {} };
   for (const [series, t] of MARKETS) {
     try {
       const m = (await get(`${API}/markets/${t}`)).market;
@@ -80,8 +80,33 @@
       dump.taker[t] = Object.fromEntries(Object.entries(day).map(([d, v]) => [d, v.map(Math.round)]));
     } catch (e) { errs.push(t + ': ' + (e.message || e)); }
   }
+  // hourly closes for the last 72 hours, so moves between morning pulls are captured hour by hour
+  const RACE = { 'CONTROLS-2026': 'control', 'SENATETX-26': 'TX', 'SENATEOHS-26': 'OH', 'SENATEME-26': 'ME', 'SENATEMI-26': 'MI',
+    'SENATEIA-26': 'IA', 'SENATEAK-26': 'AK', 'SENATENE-26': 'NE', 'SENATENC-26': 'NC', 'SENATEGA-26': 'GA', 'SENATENH-26': 'NH', 'SENATEMN-26': 'MN' };
+  const H0 = Math.floor((now - 72 * 3600) / 3600) * 3600 + 3600, HN = Math.floor((now - H0) / 3600) + 1;
+  dump.hourly = { start: H0, step: 3600, price: {}, vol: {} };
+  for (const [series, t] of MARKETS) {
+    try {
+      const j = await get(`${API}/series/${series}/markets/${t}/candlesticks?start_ts=${H0 - 3600}&end_ts=${now}&period_interval=60`);
+      const c = Array(HN).fill(null), v = Array(HN).fill(0);
+      for (const x of j.candlesticks || []) {
+        const i = Math.round((x.end_period_ts - H0) / 3600); if (i < 0 || i >= HN) continue;
+        const p = x.price && x.price.close_dollars; if (p != null) c[i] = Math.round(parseFloat(p) * 1000);
+        v[i] = parseFloat(x.volume_fp || 0);
+      }
+      dump.hourly.price[t] = c;
+      const race = RACE[t.replace(/-(D|R|DOSB)$/, '')];
+      const acc = dump.hourly.vol[race] || (dump.hourly.vol[race] = Array(HN).fill(0));
+      v.forEach((x, i) => { acc[i] += x; });
+      await sleep(120);
+    } catch (e) { errs.push(t + ' hourly: ' + (e.message || e)); }
+  }
+  for (const k of Object.keys(dump.hourly.vol)) dump.hourly.vol[k] = dump.hourly.vol[k].map(x => Math.round(x / 1000));
   const s = JSON.stringify(dump);
   window.__kalshiDump = s;
   window.__kalshiChunk = i => s.slice(i * 900, (i + 1) * 900);
-  return `kalshi dump ready: ${s.length} chars in ${Math.ceil(s.length / 900)} chunks, ${Object.keys(dump.live).length} markets, ${dump.big.length} big orders, errors: ${errs.length ? errs.slice(0, 6).join(' / ') : 'none'}`;
+  // also put the dump on the page itself so it can be read in one go with the page-text tool
+  document.body.innerHTML = '<main><pre id="kalshi-dump"></pre></main>';
+  document.getElementById('kalshi-dump').textContent = s;
+  return `kalshi dump ready: ${s.length} chars (read it with the page-text tool, or in ${Math.ceil(s.length / 900)} chunks), ${Object.keys(dump.live).length} markets, ${dump.big.length} big orders, errors: ${errs.length ? errs.slice(0, 6).join(' / ') : 'none'}`;
 })()
