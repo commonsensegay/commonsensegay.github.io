@@ -264,6 +264,9 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .tt-box iframe{display:block;border:0!important}
 .tt-box a{color:#0d1f3a}
 .tt-wait{color:#5f5a4e;align-self:center;font-family:var(--narrow);font-size:18px}
+.tt-fallback{align-self:center;text-align:center;padding:40px 24px}
+.tt-fallback p{color:#3d3a33;font-size:18px;margin:0 0 18px}
+.tt-fallback b{display:block;font-family:var(--narrow);font-size:24px;color:#0d1f3a;margin-bottom:6px}
 .tt-note{margin:10px 0 0;font-size:14px;color:var(--mist);text-align:center}
 .lcr{margin-top:56px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:26px 28px;border:2px solid var(--burnt);border-radius:4px}
 .lcr p{margin:0;max-width:56ch;color:#d8dfeb}
@@ -758,6 +761,10 @@ function initDock(){
     box.innerHTML='<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@commonsensegay" data-unique-id="commonsensegay" data-embed-type="creator" style="min-width:288px;"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@commonsensegay?refer=creator_embed">@commonsensegay</a></section></blockquote>';
     var s=document.createElement("script"); s.async=true; s.src="https://www.tiktok.com/embed.js"; document.body.appendChild(s);
     if(typeof gtag==="function")gtag("event","tiktok_feed_view",{page_path:location.pathname});
+    setTimeout(function(){ if(box.querySelector("iframe"))return;
+      box.innerHTML='<div class="tt-fallback"><p><b>@commonsensegay on TikTok</b>Your browser blocked TikTok\'s video feed, so here\'s the direct link.</p><a class="btn primary" href="https://www.tiktok.com/@commonsensegay" rel="noopener" target="_blank" data-tt="feed_fallback">Watch on TikTok</a></div>';
+      if(typeof gtag==="function")gtag("event","tiktok_feed_blocked",{page_path:location.pathname});
+    },9000);
   }
   if(!("IntersectionObserver" in window)){load();return;}
   var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){io.disconnect();load();} },{rootMargin:"400px 0px"});
