@@ -255,6 +255,14 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .plat svg{width:30px;height:30px;color:var(--sun)}
 .plat b{font-family:var(--narrow);font-size:24px;margin-top:26px}
 .plat span{color:var(--mist);font-size:15px}
+.ttfeed{margin-top:56px}
+.tt-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.tt-head h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(30px,4vw,42px);line-height:1;color:var(--cream);margin:0}
+.tt-box{background:#fff;border-radius:6px;min-height:420px;overflow:hidden;display:flex;justify-content:center}
+.tt-box blockquote.tiktok-embed{margin:0 auto!important;width:100%}
+.tt-box a{color:#0d1f3a}
+.tt-wait{color:#5f5a4e;align-self:center;font-family:var(--narrow);font-size:18px}
+.tt-note{margin:10px 0 0;font-size:14px;color:var(--mist)}
 .lcr{margin-top:56px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:26px 28px;border:2px solid var(--burnt);border-radius:4px}
 .lcr p{margin:0;max-width:56ch;color:#d8dfeb}
 .lcr b{color:var(--cream);font-family:var(--narrow);font-size:22px;display:block;margin-bottom:4px}
@@ -583,6 +591,14 @@ footer small{color:#7d8ca5;font-size:14px}
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>
         <b>X</b><em class="cnt" data-p="x"></em><span>Quick takes and threads</span></a>
     </div>
+    <div class="ttfeed" id="tiktok-feed">
+      <div class="tt-head">
+        <h3>Latest on TikTok</h3>
+        <a class="btn ghost" href="https://www.tiktok.com/@commonsensegay" rel="noopener" target="_blank" data-tt="feed_follow">Follow @commonsensegay</a>
+      </div>
+      <div class="tt-box" id="tt-box"><p class="tt-wait">Loading the latest videos…</p></div>
+      <p class="tt-note">Video feed from TikTok. It loads when you scroll here.</p>
+    </div>
     <div class="lcr">
       <p><b>Gay Republican looking for a home? That's us.</b>Everyone assumes gay means Democrat. Log Cabin Republicans has been proving that wrong since the 1970s, and the Dallas chapter is now the third largest in the country. We show up, meet the candidates and have a seat at the table. I'm proud to serve as president of the Dallas chapter.</p>
       <a class="btn ghost" href="https://logcabindallas.com" rel="noopener">Join Log Cabin Dallas</a>
@@ -733,5 +749,18 @@ function initDock(){
 })();
 </script>
 <script src="/assets/voting.js"></script>
+<script>
+(function(){
+  var box=document.getElementById("tt-box"); if(!box)return; var done=false;
+  function load(){ if(done)return; done=true;
+    box.innerHTML='<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@commonsensegay" data-unique-id="commonsensegay" data-embed-type="creator" style="max-width:780px;min-width:288px;"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@commonsensegay?refer=creator_embed">@commonsensegay</a></section></blockquote>';
+    var s=document.createElement("script"); s.async=true; s.src="https://www.tiktok.com/embed.js"; document.body.appendChild(s);
+    if(typeof gtag==="function")gtag("event","tiktok_feed_view",{page_path:location.pathname});
+  }
+  if(!("IntersectionObserver" in window)){load();return;}
+  var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){io.disconnect();load();} },{rootMargin:"400px 0px"});
+  io.observe(box);
+})();
+</script>
 </body>
 </html>
