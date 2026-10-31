@@ -255,14 +255,16 @@ h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size
 .plat svg{width:30px;height:30px;color:var(--sun)}
 .plat b{font-family:var(--narrow);font-size:24px;margin-top:26px}
 .plat span{color:var(--mist);font-size:15px}
-.ttfeed{margin-top:56px}
+.ttfeed{margin:56px auto 0;max-width:780px}
 .tt-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
 .tt-head h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(30px,4vw,42px);line-height:1;color:var(--cream);margin:0}
-.tt-box{background:#fff;border-radius:6px;min-height:420px;overflow:hidden;display:flex;justify-content:center}
-.tt-box blockquote.tiktok-embed{margin:0 auto!important;width:100%}
+.tt-head h3 span{color:var(--sun)}
+.tt-box{background:#fff;border:3px solid var(--sun);border-radius:14px;overflow:hidden;min-height:430px;display:flex;justify-content:center;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.tt-box blockquote.tiktok-embed{margin:0!important;width:100%;max-width:none!important;border:0!important}
+.tt-box iframe{display:block;border:0!important}
 .tt-box a{color:#0d1f3a}
 .tt-wait{color:#5f5a4e;align-self:center;font-family:var(--narrow);font-size:18px}
-.tt-note{margin:10px 0 0;font-size:14px;color:var(--mist)}
+.tt-note{margin:10px 0 0;font-size:14px;color:var(--mist);text-align:center}
 .lcr{margin-top:56px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:26px 28px;border:2px solid var(--burnt);border-radius:4px}
 .lcr p{margin:0;max-width:56ch;color:#d8dfeb}
 .lcr b{color:var(--cream);font-family:var(--narrow);font-size:22px;display:block;margin-bottom:4px}
@@ -593,7 +595,7 @@ footer small{color:#7d8ca5;font-size:14px}
     </div>
     <div class="ttfeed" id="tiktok-feed">
       <div class="tt-head">
-        <h3>Latest on TikTok</h3>
+        <h3>Latest on <span>TikTok</span></h3>
         <a class="btn ghost" href="https://www.tiktok.com/@commonsensegay" rel="noopener" target="_blank" data-tt="feed_follow">Follow @commonsensegay</a>
       </div>
       <div class="tt-box" id="tt-box"><p class="tt-wait">Loading the latest videos…</p></div>
@@ -753,7 +755,7 @@ function initDock(){
 (function(){
   var box=document.getElementById("tt-box"); if(!box)return; var done=false;
   function load(){ if(done)return; done=true;
-    box.innerHTML='<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@commonsensegay" data-unique-id="commonsensegay" data-embed-type="creator" style="max-width:780px;min-width:288px;"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@commonsensegay?refer=creator_embed">@commonsensegay</a></section></blockquote>';
+    box.innerHTML='<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@commonsensegay" data-unique-id="commonsensegay" data-embed-type="creator" style="min-width:288px;"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@commonsensegay?refer=creator_embed">@commonsensegay</a></section></blockquote>';
     var s=document.createElement("script"); s.async=true; s.src="https://www.tiktok.com/embed.js"; document.body.appendChild(s);
     if(typeof gtag==="function")gtag("event","tiktok_feed_view",{page_path:location.pathname});
   }
