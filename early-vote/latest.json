@@ -1,6 +1,6 @@
 {
- "date": "2026-11-02",
- "pulled": "Nov 2, 2026, 11:05 AM CT",
+ "date": "2026-11-03",
+ "pulled": "Nov 3, 2026, 10:15 AM CT",
  "all_ballots": 54357184,
  "states_reporting": 48,
  "hard": {
@@ -14,6 +14,6 @@
   "other_pct": 22.3,
   "margin": 14.2
  },
- "prev_date": "2026-11-01",
- "margin_change": 0.1
+ "prev_date": "2026-11-02",
+ "margin_change": 0.0
 }
