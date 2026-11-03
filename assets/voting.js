@@ -43,6 +43,7 @@
     // closing within 2 days
     list.filter(function(s){var x=status(s,t);return x.k==="open"&&x.days<=2}).forEach(function(s){add(s,"Last chance in <b>"+s.name+"</b>: early voting ends "+fmt(s.end,true))});
     var dleft=Math.round((eday-t)/MS);
+    if(dleft===0)msgs=[];
     msgs.push({st:null,text:dleft===0?"<b>Election Day is today.</b> Polls are open":"<b>Election Day is Tuesday, Nov 3</b>, "+dleft+" day"+(dleft===1?"":"s")+" away"});
 
     var txt=el.querySelector(".vb-msg"), go=el.querySelector(".vb-go"), i=0, timer=null;
