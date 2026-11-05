@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS = os.path.join(ROOT, "posts")
 OUT = os.path.join(ROOT, "blog")
 SITE = "https://commonsensegay.com"
-OG = SITE + "/assets/og-home-v4.jpg"
+OG = SITE + "/assets/og-home-v5.jpg"
 
 
 def parse(path):
@@ -78,7 +78,6 @@ HEAD = """<!doctype html>
   gtag('config', 'G-LYH4ZTMX31');
 </script>
 <script src="/assets/track.js" defer></script>
-<script src="/assets/eday.js" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
@@ -99,7 +98,6 @@ HEAD = """<!doctype html>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/rss+xml" title="Common Sense Gay" href="/blog/feed.xml">
-<link rel="stylesheet" href="/assets/votebar.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Archivo+Narrow:wght@600;700&display=swap">
@@ -123,6 +121,7 @@ a:focus-visible{{outline:3px solid var(--sun);outline-offset:3px}}
 .nav a:hover,.nav a[aria-current]{{color:var(--cream)}}
 .nav a.ev{{background:#f5a21f;color:#0c1e38;padding:4px 12px;border-radius:999px}}
 @media (max-width:700px){{.nav a:not(.keep){{display:none}}}}
+@media (max-width:400px){{.nav{{gap:12px;font-size:15px}}.mark{{font-size:15px}}}}
 .top{{background:var(--navy);color:var(--cream);padding:52px 0 56px;border-bottom:6px solid var(--red)}}
 .kick{{font-family:var(--narrow);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:15px;color:var(--sun);margin:0 0 12px}}
 .kick a{{color:var(--sun);text-decoration:none}}
@@ -168,18 +167,13 @@ footer{{background:var(--night);color:#7d8ca5;padding:30px 0;font-size:14px;bord
 </style>
 </head>
 <body>
-<div class="votebar" id="votebar" role="region" aria-label="Early voting dates" hidden>
-  <div class="vb-in"><span class="vb-star" aria-hidden="true">★</span><span class="vb-msg" aria-live="polite"></span><a class="vb-go" href="https://www.nass.org/can-i-vote/find-your-polling-place" rel="noopener">Find your polling place</a><a class="vb-all" href="/vote/">All states</a></div>
-</div>
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="/"><img src="/assets/logo.png" alt="" width="44" height="44">Common Sense Gay</a>
     <nav class="nav" aria-label="Main">
+      <a class="keep" href="/#note">Personal note</a>
       <a class="keep" href="/blog/"{blogcur}>Blog</a>
-      <a class="keep ev" href="/early-vote/">Vote tracker</a>
-      <a href="/odds/">Betting odds</a>
-      <a href="/vote/">Where to vote</a>
-      <a href="/#follow">Follow</a>
+      <a class="keep" href="/#follow">Follow</a>
     </nav>
   </div>
 </header>
@@ -193,7 +187,6 @@ FOOT = """<section class="sub"><div class="wrap narrow"><p class="kick" style="c
   </div>
 </section>
 <footer><div class="wrap">Reality over ideology. Data over narratives. I'm your Common Sense Gay.</div></footer>
-<script src="/assets/voting.js" defer></script>
 </body>
 </html>
 """
@@ -270,7 +263,7 @@ def main():
     # sitemap + robots for the whole site
     today = datetime.date.today().isoformat()
     newest = posts[0]["date"] if posts else today
-    urls = [("/", today, "daily", "1.0"), ("/early-vote/", today, "daily", "0.9"), ("/vote/", today, "weekly", "0.8"), ("/abbott-impact/", today, "weekly", "0.8"), ("/odds/", today, "daily", "0.8"),
+    urls = [("/", today, "daily", "1.0"),
             ("/blog/", newest, "daily", "0.8")] + [(p["url"], p["date"], "monthly", "0.7") for p in posts]
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u, d, f, pr in urls:

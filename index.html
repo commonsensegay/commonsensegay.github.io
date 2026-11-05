@@ -11,28 +11,25 @@
   gtag('config', 'G-LYH4ZTMX31');
 </script>
 <script src="/assets/track.js" defer></script>
-<script src="/assets/eday.js" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Common Sense Gay | Gay Republican Commentary, Receipts and the 2026 Early Vote Tracker</title>
+<title>Common Sense Gay | Gay Republican Commentary and Receipts</title>
 <meta name="description" content="Common Sense Gay investigates the stories everyone else skims, with public records, official data and the receipts to back them up.">
 <link rel="canonical" href="https://commonsensegay.com/">
 <meta property="og:title" content="Common Sense Gay">
-<meta property="og:description" content="Reality over ideology. Data over narratives. Political commentary and investigations built on receipts, plus the live 2026 early vote tracker.">
+<meta property="og:description" content="Reality over ideology. Data over narratives. Political commentary and investigations built on receipts.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://commonsensegay.com/">
-<meta property="og:image" content="https://commonsensegay.com/assets/og-home-v4.jpg">
+<meta property="og:image" content="https://commonsensegay.com/assets/og-home-v5.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Common Sense Gay">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@commonsensegay">
-<meta name="twitter:image" content="https://commonsensegay.com/assets/og-home-v4.jpg">
+<meta name="twitter:image" content="https://commonsensegay.com/assets/og-home-v5.jpg">
 <meta name="theme-color" content="#0d1f3a">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/votebar.css">
-<link rel="stylesheet" href="/assets/abbott-impact.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Archivo+Narrow:wght@600;700&display=swap">
@@ -75,7 +72,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 .nav a.ev-link:hover{background:#ffb84a;color:#0c1e38}
 @media (max-width:480px){.mark{font-size:16px;line-height:1.15;gap:8px}.mark img{width:38px;height:38px}.nav .ev-long{display:none}.nav .ev-short{display:inline}.nav{gap:8px}.nav a.ev-link,.nav a.gotv-link{padding:4px 10px}}
 @media (max-width:1030px){.nav a:not(.keep){display:none}.nav{gap:14px}}
-@media (max-width:480px){.nav a.keep:not(.gotv-link):not(.ev-link){display:none}}
+@media (max-width:480px){.nav{gap:12px;font-size:15px}}
 @media (max-width:400px){.mark{font-size:14px;gap:6px}.mark img{width:34px;height:34px}.nav{gap:6px}.nav a.ev-link,.nav a.gotv-link{padding:4px 8px;font-size:15px}}
 
 /* hero */
@@ -133,6 +130,13 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset
 @media (prefers-reduced-motion:reduce){.horizon .sun{animation:none}}
 @media (max-width:600px){.horizon{height:150px}.horizon .sun{width:300px;height:300px;margin-left:-150px;bottom:-130px}.horizon .stripes i{height:12px;margin-top:10px}}
 
+.note-sec{background:var(--night);padding:64px 0 8px}
+.note-card{max-width:760px;margin:0 auto;background:#fbf5e6;color:#1b1d22;border-top:6px solid var(--sun);border-radius:6px;padding:34px 38px 30px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.note-card .note-k{font-family:var(--narrow);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:15px;color:var(--red);margin:0 0 8px}
+.note-card h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(32px,4.6vw,50px);line-height:1;color:var(--navy);margin:0 0 18px}
+.note-card p{font-size:19px;line-height:1.65;margin:0 0 16px}
+.note-card .note-sign{font-family:var(--narrow);font-weight:700;font-size:21px;color:var(--navy);margin:22px 0 0}
+@media (max-width:600px){.note-card{padding:26px 20px 22px}.note-card p{font-size:17.5px}}
 /* gay republicans exist */
 .exist{background:var(--red);color:#fff6e3;padding:80px 0}
 .ex-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:48px;align-items:center}
@@ -359,27 +363,19 @@ footer small{color:#7d8ca5;font-size:14px}
 </head>
 <body>
 
-<div class="votebar" id="votebar" role="region" aria-label="Early voting dates" hidden>
-  <div class="vb-in"><span class="vb-star" aria-hidden="true">★</span><span class="vb-msg" aria-live="polite"></span><a class="vb-go" href="https://www.nass.org/can-i-vote/find-your-polling-place" rel="noopener">Find your polling place</a><a class="vb-all" href="/vote/">All states</a></div>
-</div>
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="/"><img src="/assets/logo.png" alt="" width="44" height="44">Common Sense Gay</a>
     <nav class="nav" aria-label="Main">
-      <a class="keep gv-nav" href="/vote/"><span class="gv-star" aria-hidden="true">★</span> Get out the vote</a>
-      <a class="keep ev-link" href="/early-vote/"><span class="ev-long">Early vote tracker</span><span class="ev-short">Vote tracker</span></a>
-      <a class="keep gotv-link" href="/early-vote/#volunteer"><span class="ev-long">Start texting for a win</span><span class="ev-short">Text to win</span></a>
-      <a href="/odds/">Odds</a>
-      <a href="#abbott-impact">Abbott Impact</a>
-      <a href="/blog/">Blog</a>
+      <a class="keep" href="#note">Personal note</a>
+      <a class="keep" href="/blog/">Blog</a>
       <a href="#newsletter">Newsletter</a>
-      <a href="#follow">Follow</a>
+      <a class="keep" href="#follow">Follow</a>
     </nav>
   </div>
 </header>
 
 <main>
-<aside class="edgbar" aria-label="Follow Election Data Guy"><div class="wrap edgbar-in"><p><span class="edgbar-k">Where I get my early vote numbers</span><b>Election Data Guy</b>. Independent, no spin. I've followed him since 2024.</p><a class="edgbar-go" href="https://x.com/E_DataGuy" rel="noopener" target="_blank" data-edg="homepage_top"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Follow @E_DataGuy</a></div></aside>
 <section class="hero" aria-labelledby="hero-title" style="padding:0">
   <div class="wrap">
     <div class="hero-text">
@@ -416,6 +412,21 @@ footer small{color:#7d8ca5;font-size:14px}
   </div>
 </section>
 
+<section class="note-sec" id="note" aria-labelledby="note-title">
+  <div class="wrap">
+    <div class="note-card">
+      <p class="note-k">★ A personal note ★</p>
+      <h2 id="note-title">I'm stepping away for a little while</h2>
+      <p>I'm working through some personal things, and I won't be posting on my social media accounts for now. But I'm not giving up. I'll be back in due time.</p>
+      <p>Let's be honest, I also need a break from the overwhelming negativity I've received.</p>
+      <p>The midterms were well fought by the Democrats, and I wish them success as they legislate these next two years. Now it's time to focus on the things the American people actually care about: affordability, healthcare costs and America First policies.</p>
+      <p>Those America First policies are what won Republicans the trifecta in 2024, and they didn't follow through on that mandate. This is now a second mandate to fix these systemic problems.</p>
+      <p>And I'll say this. In 2024 I didn't gloat. I didn't threaten the people on the left who thought they would win. Telling people to kill themselves isn't civil discourse, and it's not the conversation we should be having when we all care about this country. At least most of us do.</p>
+      <p>I look forward to the break, and I'll see y'all real soon.</p>
+      <p class="note-sign">I'm your Common Sense Gay.</p>
+    </div>
+  </div>
+</section>
 <section class="follow" id="follow" aria-labelledby="follow-title">
   <div class="wrap">
     <h2 id="follow-title">Follow along</h2>
@@ -464,52 +475,6 @@ footer small{color:#7d8ca5;font-size:14px}
     </div>
   </div>
 </section>
-<section class="ai" id="abbott-impact" aria-labelledby="ai-title" data-ai-view="homepage">
-  <div class="wrap">
-    <div class="ai-grid">
-      <div>
-        <p class="ai-k">★ Texas, this one's on us ★</p>
-        <h2 id="ai-title">Abbott Impact</h2>
-        <p class="ai-sub">Help keep Texas red, right from your phone.</p>
-        <p class="ai-body"><b>Early voting in Texas starts Monday, October 19.</b> Abbott Impact is the free volunteer app from the Texans for Greg Abbott campaign. It matches your contacts to the Texas voter file, so you can see which of your friends and family have already voted and remind the ones who haven't with one tap. Elections are won by whoever shows up, and nobody gets your friends to show up better than you.</p>
-        <div class="ai-ctas">
-          <a class="ai-btn go" href="https://abbottimpact.org/register?utm_source=commonsensegay&amp;utm_medium=referral&amp;utm_campaign=abbott_impact" rel="noopener" data-ai="register">Sign up free</a>
-          <a class="ai-btn store" href="https://apps.apple.com/us/app/abbott-impact/id6749019654" rel="noopener" data-ai="app_store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.8-1.1-2.9-4.2zM13.9 5.3c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg>App Store</a>
-          <a class="ai-btn store" href="https://play.google.com/store/apps/details?id=com.RightImpact" rel="noopener" data-ai="google_play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6c-.3.3-.4.7-.4 1.2v16.4c0 .5.1.9.4 1.2l9.2-9.4L4 2.6zm10.3 10.5 2.6 2.6-11 6.3 8.4-8.9zm0-2.2L5.9 2l11 6.3-2.6 2.6zm5.6.1-2.6-1.5-2.8 2.9 2.8 2.9 2.6-1.5c.8-.5.8-1.4 0-2.8z"/></svg>Google Play</a>
-        </div>
-        <a class="ai-more" href="/abbott-impact/" data-ai="learn_more">How it works, start to finish &rarr;</a>
-      </div>
-      <div class="ai-phone" aria-hidden="true">
-        <div class="notch"></div>
-        <p class="ph-h">Your friends · early voting</p>
-        <ul>
-          <li>Mom <span class="yes">Voted</span></li>
-          <li>Jake from work <span class="no">Not yet</span></li>
-          <li>Aunt Linda <span class="no">Not yet</span></li>
-          <li>Marcus <span class="yes">Voted</span></li>
-          <li>The neighbors <span class="no">Not yet</span></li>
-        </ul>
-        <div class="ph-btn">Send 3 reminders</div>
-        <p class="ph-n">Illustration only. Names are made up.</p>
-      </div>
-    </div>
-
-    <div class="ai-tools">
-      <div class="ai-tool"><b>Friends</b><p>Match your contacts to the Texas voter file. During early voting, only the people who haven't voted yet show up, so you never nag someone who already went.</p></div>
-      <div class="ai-tool"><b>Neighbors</b><p>Text targeted Texas voters one on one through a private campaign number. Your personal number is never shown.</p></div>
-      <div class="ai-tool"><b>Doors</b><p>See the targeted houses near you, with a script and a quick survey for every door you knock.</p></div>
-      <div class="ai-tool"><b>Calls</b><p>Call voters through a private number, with one-click voicemails when nobody picks up.</p></div>
-    </div>
-
-    <ol class="ai-steps">
-      <li><span><b>Sign up free</b>You need a Texas address. No training required.</span></li>
-      <li><span><b>Get the app</b>iPhone or Android. Log in with the same account.</span></li>
-      <li><span><b>Start with your people</b>Every action earns points you can trade for campaign swag and experiences.</span></li>
-    </ol>
-
-    <p class="ai-fine">Abbott Impact is run and paid for by Texans for Greg Abbott. It's a campaign app, not a government website. Sign-up links go to abbottimpact.org.</p>
-  </div>
-</section>
 
 <section class="nl" id="newsletter" aria-labelledby="nl-title">
   <div class="wrap nl-grid">
@@ -518,7 +483,7 @@ footer small{color:#7d8ca5;font-size:14px}
       <h2 id="nl-title">Out &amp; Right</h2>
       <p class="nl-sub">Out of the closet. Right of center.</p>
       <p class="nl-body">The stories everyone else skims, with the public records, official data and vote counts to back them up. Straight to your inbox, free. No spin, no made-up facts.</p>
-      <ul class="nl-list"><li>The daily take, explained like an adult</li><li>Early vote and polling numbers as they move</li><li>Every claim sourced</li></ul>
+      <ul class="nl-list"><li>The daily take, explained like an adult</li><li>Records and data behind the headlines</li><li>Every claim sourced</li></ul>
     </div>
     <div class="nl-form">
       <iframe src="https://commonsensegay.substack.com/embed" title="Subscribe to Out &amp; Right" loading="lazy" frameborder="0" scrolling="no"></iframe>
@@ -527,42 +492,6 @@ footer small{color:#7d8ca5;font-size:14px}
   </div>
 </section>
 
-<section class="paper" id="tracker" aria-labelledby="tracker-title">
-  <div class="wrap">
-    <p class="livepill"><i aria-hidden="true"></i><span>Updated every morning <span id="ev-upd"></span></span></p>
-    <h2 id="tracker-title">2026 early vote tracker</h2>
-    <p class="intro">Who has already voted in the midterm, by the party they're registered with, state by state. Pulled from official state files every morning and checked against the University of Florida Election Lab.</p>
-    <div class="tracker">
-      <div>
-        <p class="asof" id="ev-asof">Party-registration states, latest pull</p>
-        <div class="split">
-          <span class="n dem" id="ev-dem">53.2%</span><span class="n rep" id="ev-rep">27.6%</span>
-          <span class="l dem">Registered Democrats</span><span class="l rep">Registered Republicans</span>
-        </div>
-        <div class="bigbar" role="img" id="ev-bar" aria-label="Democrats 53.2 percent, other 19.2 percent, Republicans 27.6 percent">
-          <i class="bd" id="ev-bd" style="width:53.2%"></i><i class="bo" id="ev-bo" style="width:19.2%"></i><i class="br" id="ev-br" style="width:27.6%"></i>
-        </div>
-        <ul class="facts">
-          <li><span>Ballots with a party on record</span><span id="ev-hard">1,838,270</span></li>
-          <li><span>All early ballots, every reporting state</span><span id="ev-all">3,765,784</span></li>
-          <li><span>Democratic margin</span><span id="ev-margin">D +25.7</span></li>
-          <li><span>Change since the previous pull</span><span id="ev-chg">0.1 pts toward Republicans</span></li>
-        </ul>
-        <p class="caveat">This counts who returned a ballot, by registration. It doesn't tell you how anyone voted. Early vote leans Democratic every cycle because mail voting does; the tracker compares it to the 2022 finish line.</p>
-        <div class="ctas"><a class="btn primary" href="/early-vote/">See every state</a><a class="btn ghost" href="/odds/">Betting odds vs. the vote</a><a class="btn fb" href="https://www.facebook.com/Commonsensegay/" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4.2h-3c-2.8 0-4.4 1.8-4.4 4.6V11H7v3.7h2.6V22h3.8v-7.3h3l.5-3.7h-3.5V9.1c0-.7.3-1.1 1-1.1z"/></svg>Get the daily read on Facebook</a></div>
-      </div>
-      <div class="why">
-        <h3>Why I built it</h3>
-        <p>Every election night somebody screams fraud and somebody else screams landslide, and neither one checked the numbers. These are the state's own counts, updated daily, so you can watch the trend instead of the spin.</p>
-        <h3>What to watch</h3>
-        <p>Whether the Democratic edge in early ballots is bigger or smaller than it was at the end of 2022. In-person early voting is where Republicans close the gap, and more states open it every day through November 3.</p>
-        <h3>Where the numbers come from</h3>
-        <p>State election offices via the Election Data Guy tracker, cross-checked with Dr. Michael McDonald's UF Election Lab. The 2022 baseline is from the US Elections Project.</p>
-        <div class="edg"><p class="edg-k">Where I get my numbers</p><p class="edg-h">Follow Election Data Guy on X</p><p class="edg-b">I've followed him since 2024, and he's where I get my early vote insights. He tracks returned ballots in every state that reports them and models the states that don't register by party. Independent, no spin, just the numbers. If you like this tracker, follow the source.</p><a class="btn edg-go" href="https://x.com/E_DataGuy" rel="noopener" target="_blank" data-edg="homepage"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Follow @E_DataGuy</a></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="take" id="take" aria-labelledby="take-title" hidden>
   <div class="wrap">
@@ -630,27 +559,7 @@ footer small{color:#7d8ca5;font-size:14px}
 </footer>
 
 <script>
-(function(){
-  var fmt=function(n){return Number(n).toLocaleString("en-US")};
-  var set=function(id,t){var e=document.getElementById(id);if(e)e.textContent=t};
-  fetch("/early-vote/latest.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(d){
-    if(!d||!d.hard)return;
-    var h=d.hard;
-    set("ev-asof","Party-registration states, pulled "+d.pulled);
-    set("ev-upd","· last pull "+d.pulled.replace(/^([A-Za-z]+ \d+), \d{4},/,"$1,"));
-    set("ev-dem",h.dem_pct+"%");set("ev-rep",h.rep_pct+"%");
-    document.getElementById("ev-bd").style.width=h.dem_pct+"%";
-    document.getElementById("ev-bo").style.width=h.other_pct+"%";
-    document.getElementById("ev-br").style.width=h.rep_pct+"%";
-    document.getElementById("ev-bar").setAttribute("aria-label","Democrats "+h.dem_pct+" percent, other "+h.other_pct+" percent, Republicans "+h.rep_pct+" percent");
-    set("ev-hard",fmt(h.total));set("ev-all",fmt(d.all_ballots));
-    set("ev-margin",(h.margin>=0?"D +":"R +")+Math.abs(h.margin));
-    if(typeof d.margin_change==="number"){
-      var c=d.margin_change;
-      set("ev-chg",c===0?"No change":Math.abs(c)+" pts toward "+(c>0?"Democrats":"Republicans"));
-    }
-  }).catch(function(){});
-})();
+
 
 
 
@@ -756,7 +665,6 @@ function initDock(){
   }).catch(function(){});
 })();
 </script>
-<script src="/assets/voting.js"></script>
 <script>
 (function(){
   var box=document.getElementById("tt-box"); if(!box)return; var done=false;
