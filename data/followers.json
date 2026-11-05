@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-05",
   "note": "Counts as shown publicly on each profile. TikTok and Facebook display rounded numbers. Instagram on 2026-10-14 as reported by the account owner. Facebook from 2026-10-19 read from the logged-in page count.",
   "history": [
     {
@@ -169,6 +169,14 @@
       "instagram": 27000,
       "youtube": 207,
       "x": 1173
+    },
+    {
+      "date": "2026-11-05",
+      "tiktok": 52600,
+      "facebook": null,
+      "instagram": null,
+      "youtube": 207,
+      "x": 1171
     }
   ],
   "milestones": [
