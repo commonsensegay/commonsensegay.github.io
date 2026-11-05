@@ -2,17 +2,21 @@
 title: A personal note
 date: 2026-11-05
 time: 01:00
-summary: I'm stepping away from social media for a little while to work through some personal things. I'm not giving up, and I'll be back in due time.
+summary: I'm stepping away from social media for a little while to focus on some exciting things I have going on personally. I'm not giving up, and I'll be back in due time.
 ---
 <div class="tldr" markdown="1">
 TL;DR
 
-- I'm taking a break from posting on social media while I work through some personal things.
+- I'm taking a break from posting on social media to focus on some exciting things I have going on personally.
 - I'm not giving up. I'll be back in due time.
 - Congratulations to the Democrats on a well fought midterm. Now let's focus on affordability, healthcare costs and America First policies.
 </div>
 
-I'm working through some personal things, and I won't be posting on my social media accounts for now. But I'm not giving up. I'll be back in due time.
+Friends,
+
+I've really enjoyed getting to know all of y'all over this past year. This has been a really fun journey, and I look forward to continuing it. But all of us need a break at times, and I need one to focus on some really exciting things I have going on personally.
+
+I won't be posting on my social media accounts for now. But I'm not giving up. I'll be back in due time.
 
 Let's be honest, I also need a break from the overwhelming negativity I've received.
 
