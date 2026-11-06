@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "note": "Counts as shown publicly on each profile. TikTok and Facebook display rounded numbers. Instagram on 2026-10-14 as reported by the account owner. Facebook from 2026-10-19 read from the logged-in page count.",
   "history": [
     {
@@ -177,6 +177,14 @@
       "instagram": null,
       "youtube": 207,
       "x": 1171
+    },
+    {
+      "date": "2026-11-06",
+      "tiktok": 52600,
+      "facebook": null,
+      "instagram": null,
+      "youtube": 208,
+      "x": 1171
     }
   ],
   "milestones": [
@@ -263,6 +271,13 @@
       "type": "best_week",
       "value": 1173,
       "note": "X had its best 7-day gain on record, up 216 followers versus 7 days earlier (957 on 2026-10-28 to 1,173)."
+    },
+    {
+      "date": "2026-11-06",
+      "platform": "youtube",
+      "type": "best_week",
+      "value": 208,
+      "note": "YouTube had its best 7-day gain on record, up 4 subscribers versus 7 days earlier (204 on 2026-10-30 to 208)."
     }
   ]
 }
